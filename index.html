@@ -115,6 +115,33 @@
             background: #c12c42;
         }
 
+        .discord-btn {
+            background: #5865F2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .discord-btn:hover {
+            background: #4752c4;
+        }
+
+        .discord-btn i {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
         .thank-you {
             margin-top: 20px;
             padding: 15px;
@@ -130,6 +157,7 @@
             font-size: 0.9em;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -141,6 +169,10 @@
             <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
             <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
         </div>
+
+        <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
+            <i class="fab fa-discord"></i> <span id="discord-text">Tham gia Discord của chúng tôi</span>
+        </a>
 
         <div class="qr-code">
             <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
@@ -185,6 +217,7 @@
             vi: {
                 title: "Ủng Hộ Server ABCXYZ",
                 subtitle: "Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!",
+                discord: "Tham gia Discord của chúng tôi",
                 bankInfo: "Thông Tin Chuyển Khoản",
                 bank: "Ngân hàng:",
                 account: "Số tài khoản:",
@@ -198,6 +231,7 @@
             en: {
                 title: "Donate to ABCXYZ Server",
                 subtitle: "Thank you for supporting our server!",
+                discord: "Join Our Discord",
                 bankInfo: "Bank Transfer Information",
                 bank: "Bank:",
                 account: "Account Number:",
@@ -213,6 +247,7 @@
         function changeLanguage(lang) {
             document.getElementById('page-title').textContent = translations[lang].title;
             document.getElementById('page-subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('discord-text').textContent = translations[lang].discord;
             document.getElementById('bank-info-title').textContent = translations[lang].bankInfo;
             document.getElementById('bank-label').textContent = translations[lang].bank;
             document.getElementById('account-label').textContent = translations[lang].account;
