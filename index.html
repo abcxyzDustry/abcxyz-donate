@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ủng Hộ Server ABCXYZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #e3344e, #4CAF50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 3px solid #e3344e;
+            border-radius: 10px;
+            padding: 10px;
+            background: white;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .bank-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .bank-info h3 {
+            color: #e3344e;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .language-switcher {
+            margin: 20px 0;
+        }
+
+        .lang-btn {
+            background: #e3344e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: #c12c42;
+        }
+
+        .thank-you {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e8;
+            border-radius: 10px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">abcxyz</div>
+        <h1 class="title" id="page-title">Ủng Hộ Server ABCXYZ</h1>
+        <p class="subtitle" id="page-subtitle">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
+
+        <div class="language-switcher">
+            <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+            <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+        </div>
+
+        <div class="qr-code">
+            <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
+                 alt="QR Code Donate">
+        </div>
+
+        <div class="bank-info">
+            <h3 id="bank-info-title">Thông Tin Chuyển Khoản</h3>
+            <div class="info-item">
+                <span class="info-label" id="bank-label">Ngân hàng:</span>
+                <span class="info-value">VIB</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" id="account-label">Số tài khoản:</span>
+                <span class="info-value">068394585</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" id="account-name-label">Chủ tài khoản:</span>
+                <span class="info-value">ABCXYZ SERVER</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" id="amount-label">Số tiền:</span>
+                <span class="info-value" id="amount-value">Tùy tâm</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label" id="note-label">Nội dung:</span>
+                <span class="info-value">Ủng hộ máy chủ abcxyz</span>
+            </div>
+        </div>
+
+        <div class="thank-you" id="thank-you-message">
+            ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
+        </div>
+
+        <div class="footer" id="footer-text">
+            Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            vi: {
+                title: "Ủng Hộ Server ABCXYZ",
+                subtitle: "Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!",
+                bankInfo: "Thông Tin Chuyển Khoản",
+                bank: "Ngân hàng:",
+                account: "Số tài khoản:",
+                accountName: "Chủ tài khoản:",
+                amount: "Số tiền:",
+                amountValue: "Tùy tâm",
+                note: "Nội dung:",
+                thankYou: "❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!",
+                footer: "Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!"
+            },
+            en: {
+                title: "Donate to ABCXYZ Server",
+                subtitle: "Thank you for supporting our server!",
+                bankInfo: "Bank Transfer Information",
+                bank: "Bank:",
+                account: "Account Number:",
+                accountName: "Account Holder:",
+                amount: "Amount:",
+                amountValue: "Any amount",
+                note: "Description:",
+                thankYou: "❤️ Every contribution is appreciated and helps the server develop better!",
+                footer: "ABCXYZ New Gen Server - Thank you for your support!"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('page-title').textContent = translations[lang].title;
+            document.getElementById('page-subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('bank-info-title').textContent = translations[lang].bankInfo;
+            document.getElementById('bank-label').textContent = translations[lang].bank;
+            document.getElementById('account-label').textContent = translations[lang].account;
+            document.getElementById('account-name-label').textContent = translations[lang].accountName;
+            document.getElementById('amount-label').textContent = translations[lang].amount;
+            document.getElementById('amount-value').textContent = translations[lang].amountValue;
+            document.getElementById('note-label').textContent = translations[lang].note;
+            document.getElementById('thank-you-message').textContent = translations[lang].thankYou;
+            document.getElementById('footer-text').textContent = translations[lang].footer;
+        }
+
+        // Set default language to Vietnamese
+        changeLanguage('vi');
+    </script>
+</body>
+</html>
