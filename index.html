@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ủng Hộ Server ABCXYZ</title>
+    <title>ABCXYZ Mindustry Server</title>
     <style>
         * {
             margin: 0;
@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         .container {
@@ -29,6 +30,7 @@
             max-width: 500px;
             width: 100%;
             text-align: center;
+            position: relative;
         }
 
         .logo {
@@ -156,59 +158,451 @@
             color: #666;
             font-size: 0.9em;
         }
+
+        /* Menu Button */
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e3344e;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            z-index: 1000;
+        }
+
+        .menu-content {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .menu-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background 0.3s;
+        }
+
+        .menu-content a:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-content a:last-child {
+            border-bottom: none;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+            text-align: left;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #e3344e;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: #e3344e;
+            margin-bottom: 5px;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .plugin-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .plugin-price {
+            color: #e3344e;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .buy-btn {
+            background: #e3344e;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .feedback-form {
+            margin-top: 20px;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: #e3344e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        /* Admin Login */
+        .admin-login-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+
+        .login-form {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #ffeaa7;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #2196F3;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .plugin-form {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .plugin-form input, .plugin-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .orders-list {
+            margin-top: 15px;
+        }
+
+        .order-item {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Menu Button -->
+    <button class="menu-btn" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Menu Content -->
+    <div class="menu-content" id="menuContent">
+        <a href="#" onclick="showPage('home')">🏠 Trang Chủ</a>
+        <a href="#" onclick="showPage('plugin-store')">🛒 Cửa Hàng Plugin</a>
+        <a href="#" onclick="showPage('feedback')">💬 Góp Ý</a>
+        <a href="#" onclick="showPage('donate')">💰 Donate</a>
+    </div>
+
+    <!-- Main Container -->
     <div class="container">
-        <div class="logo">abcxyz</div>
-        <h1 class="title" id="page-title">Ủng Hộ Server ABCXYZ</h1>
-        <p class="subtitle" id="page-subtitle">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
+        <!-- Donate Page (Default) -->
+        <div id="donate-page" class="page-content active">
+            <div class="logo">abcxyz</div>
+            <h1 class="title" id="page-title">Ủng Hộ Server ABCXYZ</h1>
+            <p class="subtitle" id="page-subtitle">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
 
-        <div class="language-switcher">
-            <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-            <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
+            <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
+                <i class="fab fa-discord"></i> <span id="discord-text">Tham gia Discord của chúng tôi</span>
+            </a>
+
+            <div class="qr-code">
+                <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
+                     alt="QR Code Donate">
+            </div>
+
+            <div class="bank-info">
+                <h3 id="bank-info-title">Thông Tin Chuyển Khoản</h3>
+                <div class="info-item">
+                    <span class="info-label" id="bank-label">Ngân hàng:</span>
+                    <span class="info-value">VIB</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="account-label">Số tài khoản:</span>
+                    <span class="info-value">068394585</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="account-name-label">Chủ tài khoản:</span>
+                    <span class="info-value">ABCXYZ SERVER</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="amount-label">Số tiền:</span>
+                    <span class="info-value" id="amount-value">Tùy tâm</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="note-label">Nội dung:</span>
+                    <span class="info-value">Ủng hộ máy chủ abcxyz</span>
+                </div>
+            </div>
+
+            <div class="thank-you" id="thank-you-message">
+                ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
+            </div>
+
+            <div class="footer" id="footer-text">
+                Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+            </div>
         </div>
 
-        <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
-            <i class="fab fa-discord"></i> <span id="discord-text">Tham gia Discord của chúng tôi</span>
-        </a>
+        <!-- Home Page -->
+        <div id="home-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <div class="logo">abcxyz</div>
+            <h1 class="title">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
+            <p class="subtitle">Máy chủ Mindustry Server của Việt Nam</p>
+            
+            <div class="bank-info">
+                <h3>Giới Thiệu Server</h3>
+                <p>ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>Hiệu suất ổn định 24/7</li>
+                    <li>Cộng đồng thân thiện, nhiệt tình</li>
+                    <li>Plugin độc quyền và hấp dẫn</li>
+                    <li>Hỗ trợ kỹ thuật nhanh chóng</li>
+                </ul>
+            </div>
 
-        <div class="qr-code">
-            <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
-                 alt="QR Code Donate">
+            <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
+                <i class="fab fa-discord"></i> Tham Gia Discord Ngay
+            </button>
+
+            <div class="bank-info">
+                <h3>Đánh Giá Từ Cộng Đồng</h3>
+                
+                <div class="review-item">
+                    <div class="review-author">Nguyễn Văn A</div>
+                    <div class="rating">★★★★★</div>
+                    <p>"Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình."</p>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-author">Trần Thị B</div>
+                    <div class="rating">★★★★★</div>
+                    <p>"Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!"</p>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-author">Lê Văn C</div>
+                    <div class="rating">★★★★☆</div>
+                    <p>"Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!"</p>
+                </div>
+            </div>
         </div>
 
-        <div class="bank-info">
-            <h3 id="bank-info-title">Thông Tin Chuyển Khoản</h3>
-            <div class="info-item">
-                <span class="info-label" id="bank-label">Ngân hàng:</span>
-                <span class="info-value">VIB</span>
+        <!-- Plugin Store Page -->
+        <div id="plugin-store-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <div class="logo">abcxyz</div>
+            <h1 class="title">Cửa Hàng Plugin ABCXYZ</h1>
+            <p class="subtitle">Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới</p>
+
+            <!-- Admin Login Button (Hiển thị cho mọi người) -->
+            <button class="admin-login-btn" onclick="showAdminLogin()">
+                <i class="fas fa-lock"></i> Đăng Nhập Admin
+            </button>
+
+            <!-- Admin Login Form -->
+            <div class="login-form" id="adminLoginForm" style="display: none;">
+                <h3><i class="fas fa-user-shield"></i> Đăng Nhập Admin</h3>
+                <input type="text" id="adminUsername" placeholder="Tên đăng nhập">
+                <input type="password" id="adminPassword" placeholder="Mật khẩu">
+                <button class="submit-btn" onclick="adminLogin()">Đăng Nhập</button>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                    <strong>Thông tin đăng nhập mẫu:</strong><br>
+                    Username: admin | Password: 123456
+                </p>
             </div>
-            <div class="info-item">
-                <span class="info-label" id="account-label">Số tài khoản:</span>
-                <span class="info-value">068394585</span>
+
+            <div class="bank-info">
+                <h3>Plugin Đang Bán</h3>
+                
+                <div class="plugin-item">
+                    <h4>⚡ Auto Factory</h4>
+                    <p>Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất</p>
+                    <div class="plugin-price">150.000 VND</div>
+                    <button class="buy-btn">Mua Ngay</button>
+                </div>
+
+                <div class="plugin-item">
+                    <h4>🛡️ Advanced Defense</h4>
+                    <p>Hệ thống phòng thủ thông minh với AI tiên tiến</p>
+                    <div class="plugin-price">200.000 VND</div>
+                    <button class="buy-btn">Mua Ngay</button>
+                </div>
+
+                <div class="plugin-item">
+                    <h4>📊 Statistics Pro</h4>
+                    <p>Theo dõi và phân tích chi tiết hiệu suất game</p>
+                    <div class="plugin-price">100.000 VND</div>
+                    <button class="buy-btn">Mua Ngay</button>
+                </div>
             </div>
-            <div class="info-item">
-                <span class="info-label" id="account-name-label">Chủ tài khoản:</span>
-                <span class="info-value">KIỀU THANH HẢI</span>
+
+            <!-- Admin Panel (Chỉ hiển thị khi đã đăng nhập) -->
+            <div class="admin-panel" id="adminPanel" style="display: none;">
+                <div class="admin-header">
+                    <h3><i class="fas fa-cog"></i> Admin Panel</h3>
+                    <button class="logout-btn" onclick="adminLogout()">Đăng Xuất</button>
+                </div>
+
+                <!-- Quản lý Plugin -->
+                <div class="plugin-form">
+                    <h4>Thêm Plugin Mới</h4>
+                    <input type="text" id="pluginName" placeholder="Tên plugin">
+                    <input type="text" id="pluginPrice" placeholder="Giá (VND)">
+                    <textarea id="pluginDescription" placeholder="Mô tả plugin"></textarea>
+                    <button class="submit-btn" onclick="addPlugin()">Thêm Plugin</button>
+                </div>
+
+                <!-- Quản lý Đơn hàng -->
+                <div class="orders-list">
+                    <h4>Đơn Hàng Gần Đây</h4>
+                    <div class="order-item">
+                        <strong>Auto Factory</strong> - 150.000 VND<br>
+                        <small>Khách hàng: nguyenvana@gmail.com</small><br>
+                        <small>Trạng thái: <span style="color: #ff9800;">Chờ xử lý</span></small>
+                    </div>
+                    <div class="order-item">
+                        <strong>Advanced Defense</strong> - 200.000 VND<br>
+                        <small>Khách hàng: tranhib@yahoo.com</small><br>
+                        <small>Trạng thái: <span style="color: #4CAF50;">Đã hoàn thành</span></small>
+                    </div>
+                </div>
             </div>
-            <div class="info-item">
-                <span class="info-label" id="amount-label">Số tiền:</span>
-                <span class="info-value" id="amount-value">Tùy tâm</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label" id="note-label">Nội dung:</span>
-                <span class="info-value">Ủng hộ máy chủ abcxyz</span>
+
+            <div class="bank-info">
+                <h3>Đặt Hàng Plugin Mới</h3>
+                <p>Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!</p>
+                <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
+                    <i class="fab fa-discord"></i> Liên Hệ Đặt Plugin
+                </button>
             </div>
         </div>
 
-        <div class="thank-you" id="thank-you-message">
-            ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
-        </div>
+        <!-- Feedback Page -->
+        <div id="feedback-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <div class="logo">abcxyz</div>
+            <h1 class="title">Góp Ý Cho Server</h1>
+            <p class="subtitle">Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server</p>
 
-        <div class="footer" id="footer-text">
-            Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+            <div class="bank-info">
+                <h3>Gửi Góp Ý Của Bạn</h3>
+                <div class="feedback-form">
+                    <textarea id="feedback-text" placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..."></textarea>
+                    <button class="submit-btn" onclick="submitFeedback()">Gửi Góp Ý</button>
+                </div>
+            </div>
+
+            <div class="thank-you">
+                💡 Mọi góp ý của bạn đều được chúng tôi ghi nhận và xem xét cải thiện!
+            </div>
         </div>
     </div>
 
@@ -244,6 +638,14 @@
             }
         };
 
+        // Admin credentials (trong thực tế nên lưu ở server)
+        const adminCredentials = {
+            username: "admin",
+            password: "123456"
+        };
+
+        let isAdminLoggedIn = false;
+
         function changeLanguage(lang) {
             document.getElementById('page-title').textContent = translations[lang].title;
             document.getElementById('page-subtitle').textContent = translations[lang].subtitle;
@@ -258,6 +660,98 @@
             document.getElementById('thank-you-message').textContent = translations[lang].thankYou;
             document.getElementById('footer-text').textContent = translations[lang].footer;
         }
+
+        // Menu Functions
+        function toggleMenu() {
+            const menu = document.getElementById('menuContent');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function showPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(page + '-page').classList.add('active');
+            
+            // Close menu
+            document.getElementById('menuContent').style.display = 'none';
+        }
+
+        function submitFeedback() {
+            const feedback = document.getElementById('feedback-text').value;
+            if (feedback.trim() === '') {
+                alert('Vui lòng nhập góp ý của bạn!');
+                return;
+            }
+            
+            alert('Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.');
+            document.getElementById('feedback-text').value = '';
+        }
+
+        // Admin Functions
+        function showAdminLogin() {
+            const loginForm = document.getElementById('adminLoginForm');
+            loginForm.style.display = loginForm.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminLoginForm').style.display = 'none';
+                alert('Đăng nhập admin thành công!');
+            } else {
+                alert('Sai tên đăng nhập hoặc mật khẩu!');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            alert('Đã đăng xuất khỏi admin panel!');
+        }
+
+        function addPlugin() {
+            if (!isAdminLoggedIn) {
+                alert('Vui lòng đăng nhập admin trước!');
+                return;
+            }
+
+            const name = document.getElementById('pluginName').value;
+            const price = document.getElementById('pluginPrice').value;
+            const description = document.getElementById('pluginDescription').value;
+
+            if (!name || !price || !description) {
+                alert('Vui lòng điền đầy đủ thông tin plugin!');
+                return;
+            }
+
+            alert(`Đã thêm plugin: ${name}\nGiá: ${price} VND\nMô tả: ${description}`);
+            
+            // Reset form
+            document.getElementById('pluginName').value = '';
+            document.getElementById('pluginPrice').value = '';
+            document.getElementById('pluginDescription').value = '';
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('menuContent');
+            const menuBtn = document.querySelector('.menu-btn');
+            
+            if (!menu.contains(event.target) && !menuBtn.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
 
         // Set default language to Vietnamese
         changeLanguage('vi');
