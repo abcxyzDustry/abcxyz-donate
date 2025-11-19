@@ -386,6 +386,8 @@
         .loading {
             color: #666;
             font-style: italic;
+            padding: 10px;
+            text-align: center;
         }
 
         .error {
@@ -394,6 +396,7 @@
             padding: 10px;
             border-radius: 5px;
             margin: 10px 0;
+            border: 1px solid #f5c6cb;
         }
 
         .success {
@@ -402,6 +405,22 @@
             padding: 10px;
             border-radius: 5px;
             margin: 10px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-pending {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .status-cancelled {
+            color: #dc3545;
+            font-weight: bold;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -570,6 +589,12 @@
                     <button class="logout-btn" onclick="adminLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
                 </div>
 
+                <!-- Stats -->
+                <div class="plugin-form">
+                    <h4 data-vi="Thống Kê" data-en="Statistics">Thống Kê</h4>
+                    <div id="stats-info" class="loading" data-vi="Đang tải thống kê..." data-en="Loading statistics...">Đang tải thống kê...</div>
+                </div>
+
                 <div class="plugin-form">
                     <h4 data-vi="Thêm Plugin Mới" data-en="Add New Plugin">Thêm Plugin Mới</h4>
                     <input type="text" id="pluginName" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
@@ -582,6 +607,13 @@
                     <h4 data-vi="Đơn Hàng Gần Đây" data-en="Recent Orders">Đơn Hàng Gần Đây</h4>
                     <div id="orders-list">
                         <div class="loading" data-vi="Đang tải đơn hàng..." data-en="Loading orders...">Đang tải đơn hàng...</div>
+                    </div>
+                </div>
+
+                <div class="orders-list">
+                    <h4 data-vi="Phản Hồi Gần Đây" data-en="Recent Feedback">Phản Hồi Gần Đây</h4>
+                    <div id="feedback-list">
+                        <div class="loading" data-vi="Đang tải phản hồi..." data-en="Loading feedback...">Đang tải phản hồi...</div>
                     </div>
                 </div>
             </div>
@@ -622,10 +654,8 @@
     </div>
 
     <script>
-        // Configuration
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:3000/api'
-            : 'https://your-backend-url.onrender.com/api'; // THAY URL BACKEND CỦA BẠN Ở ĐÂY
+        // Configuration - THAY URL BACKEND CỦA BẠN Ở ĐÂY
+        const API_BASE_URL = 'https://abcxyz-backend-9yxb.onrender.com/api';
 
         // Global variables
         let currentLanguage = 'vi';
@@ -691,6 +721,22 @@
                 });
             },
 
+            async getFeedback(token) {
+                return this.request('/feedback', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            },
+
+            async getStats(token) {
+                return this.request('/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            },
+
             async createOrder(orderData) {
                 return this.request('/orders', {
                     method: 'POST',
@@ -698,8 +744,14 @@
                 });
             },
 
-            async testConnection() {
-                return this.request('/test-db');
+            async updateOrderStatus(orderId, status, token) {
+                return this.request(`/orders/${orderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status })
+                });
             }
         };
 
@@ -742,7 +794,7 @@
             if (page === 'plugin-store') {
                 loadPlugins();
                 if (isAdminLoggedIn) {
-                    loadOrders();
+                    loadAdminData();
                 }
             }
         }
@@ -768,7 +820,7 @@
                         <h4>⚡ ${plugin.name}</h4>
                         <p>${plugin.description}</p>
                         <div class="plugin-price">${parseInt(plugin.price).toLocaleString()} VND</div>
-                        <button class="buy-btn" onclick="buyPlugin(${plugin.id})" 
+                        <button class="buy-btn" onclick="buyPlugin(${plugin.id}, '${plugin.name}')" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                 `).join('');
@@ -782,10 +834,10 @@
             }
         }
 
-        async function buyPlugin(pluginId) {
+        async function buyPlugin(pluginId, pluginName) {
             const email = prompt(currentLanguage === 'vi' 
-                ? 'Nhập email của bạn để đặt mua:' 
-                : 'Enter your email to purchase:');
+                ? 'Nhập email của bạn để đặt mua ' + pluginName + ':' 
+                : 'Enter your email to purchase ' + pluginName + ':');
             
             if (!email) return;
 
@@ -864,7 +916,7 @@
                     document.getElementById('adminLoginForm').style.display = 'none';
                     
                     await loadPlugins();
-                    await loadOrders();
+                    await loadAdminData();
                     
                     alert(currentLanguage === 'vi' ? 'Đăng nhập admin thành công!' : 'Admin login successful!');
                 } else {
@@ -884,6 +936,120 @@
             document.getElementById('adminUsername').value = '';
             document.getElementById('adminPassword').value = '';
             alert(currentLanguage === 'vi' ? 'Đã đăng xuất khỏi admin panel!' : 'Logged out from admin panel!');
+        }
+
+        async function loadAdminData() {
+            await loadStats();
+            await loadOrders();
+            await loadAdminFeedback();
+        }
+
+        async function loadStats() {
+            const statsInfo = document.getElementById('stats-info');
+            
+            if (!adminToken) return;
+
+            try {
+                const stats = await api.getStats(adminToken);
+                statsInfo.innerHTML = `
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <strong>${currentLanguage === 'vi' ? 'Plugin:' : 'Plugins:'}</strong> ${stats.plugins}
+                        </div>
+                        <div>
+                            <strong>${currentLanguage === 'vi' ? 'Đơn hàng:' : 'Orders:'}</strong> ${stats.orders}
+                        </div>
+                        <div>
+                            <strong>${currentLanguage === 'vi' ? 'Phản hồi:' : 'Feedback:'}</strong> ${stats.feedback}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                statsInfo.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải thống kê' : 'Error loading stats') + '</div>';
+            }
+        }
+
+        async function loadOrders() {
+            const ordersList = document.getElementById('orders-list');
+            
+            if (!adminToken) return;
+
+            try {
+                const orders = await api.getOrders(adminToken);
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<div class="loading">' + 
+                        (currentLanguage === 'vi' ? 'Chưa có đơn hàng nào.' : 'No orders yet.') + '</div>';
+                    return;
+                }
+
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <strong>${order.plugin_name || 'Custom Plugin'}</strong> - ${parseInt(order.price || 0).toLocaleString()} VND<br>
+                        <small>${currentLanguage === 'vi' ? 'Khách hàng: ' : 'Customer: '}${order.customer_email}</small><br>
+                        <small>${currentLanguage === 'vi' ? 'Trạng thái: ' : 'Status: '}
+                            <span class="status-${order.status}">
+                                ${currentLanguage === 'vi' 
+                                    ? (order.status === 'completed' ? 'Đã hoàn thành' : 
+                                       order.status === 'cancelled' ? 'Đã hủy' : 'Chờ xử lý')
+                                    : (order.status === 'completed' ? 'Completed' : 
+                                       order.status === 'cancelled' ? 'Cancelled' : 'Pending')}
+                            </span>
+                        </small>
+                        <br>
+                        <small>
+                            <button onclick="updateOrderStatus(${order.id}, 'completed')" class="buy-btn" style="padding: 2px 8px; font-size: 0.8em;">✓</button>
+                            <button onclick="updateOrderStatus(${order.id}, 'cancelled')" class="logout-btn" style="padding: 2px 8px; font-size: 0.8em;">✗</button>
+                        </small>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                ordersList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải đơn hàng: ' : 'Error loading orders: ') + error.message + '</div>';
+            }
+        }
+
+        async function loadAdminFeedback() {
+            const feedbackList = document.getElementById('feedback-list');
+            
+            if (!adminToken) return;
+
+            try {
+                const feedbacks = await api.getFeedback(adminToken);
+                
+                if (feedbacks.length === 0) {
+                    feedbackList.innerHTML = '<div class="loading">' + 
+                        (currentLanguage === 'vi' ? 'Chưa có phản hồi nào.' : 'No feedback yet.') + '</div>';
+                    return;
+                }
+
+                feedbackList.innerHTML = feedbacks.map(fb => `
+                    <div class="order-item">
+                        <p>${fb.message}</p>
+                        <small>${fb.user_email ? `Email: ${fb.user_email}` : 'Ẩn danh'} | ${new Date(fb.created_at).toLocaleDateString()}</small>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                feedbackList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải phản hồi' : 'Error loading feedback') + '</div>';
+            }
+        }
+
+        async function updateOrderStatus(orderId, status) {
+            if (!adminToken) return;
+
+            try {
+                await api.updateOrderStatus(orderId, status, adminToken);
+                await loadOrders();
+                await loadStats();
+                
+                alert(currentLanguage === 'vi' ? 'Đã cập nhật trạng thái đơn hàng!' : 'Order status updated!');
+            } catch (error) {
+                alert(currentLanguage === 'vi' ? 'Lỗi cập nhật đơn hàng' : 'Error updating order');
+            }
         }
 
         async function addPlugin() {
@@ -918,45 +1084,12 @@
                     document.getElementById('pluginDescription').value = '';
                     
                     await loadPlugins();
+                    await loadStats();
                 }
             } catch (error) {
                 alert(currentLanguage === 'vi' 
                     ? 'Lỗi khi thêm plugin: ' + error.message 
                     : 'Error adding plugin: ' + error.message);
-            }
-        }
-
-        async function loadOrders() {
-            const ordersList = document.getElementById('orders-list');
-            
-            if (!adminToken) return;
-
-            try {
-                const orders = await api.getOrders(adminToken);
-                
-                if (orders.length === 0) {
-                    ordersList.innerHTML = '<div class="loading">' + 
-                        (currentLanguage === 'vi' ? 'Chưa có đơn hàng nào.' : 'No orders yet.') + '</div>';
-                    return;
-                }
-
-                ordersList.innerHTML = orders.map(order => `
-                    <div class="order-item">
-                        <strong>${order.plugin_name || 'Custom Plugin'}</strong> - ${parseInt(order.price || 0).toLocaleString()} VND<br>
-                        <small>${currentLanguage === 'vi' ? 'Khách hàng: ' : 'Customer: '}${order.customer_email}</small><br>
-                        <small>${currentLanguage === 'vi' ? 'Trạng thái: ' : 'Status: '}
-                            <span style="color: ${order.status === 'completed' ? '#4CAF50' : '#ff9800'};">
-                                ${currentLanguage === 'vi' 
-                                    ? (order.status === 'completed' ? 'Đã hoàn thành' : 'Chờ xử lý')
-                                    : (order.status === 'completed' ? 'Completed' : 'Pending')}
-                            </span>
-                        </small>
-                    </div>
-                `).join('');
-
-            } catch (error) {
-                ordersList.innerHTML = '<div class="error">' + 
-                    (currentLanguage === 'vi' ? 'Lỗi tải đơn hàng: ' : 'Error loading orders: ') + error.message + '</div>';
             }
         }
 
@@ -981,15 +1114,11 @@
                 isAdminLoggedIn = true;
                 document.getElementById('adminPanel').style.display = 'block';
                 loadPlugins();
-                loadOrders();
+                loadAdminData();
             }
 
-            // Test API connection
-            api.testConnection().then(result => {
-                console.log('API Connection:', result);
-            }).catch(error => {
-                console.warn('API Connection failed:', error);
-            });
+            // Load plugins on page load
+            loadPlugins();
         });
     </script>
 </body>
