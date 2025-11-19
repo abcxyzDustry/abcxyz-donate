@@ -422,16 +422,15 @@
             color: #dc3545;
             font-weight: bold;
         }
+
+        /* Language switcher for donate page */
+        .donate-language-switcher {
+            margin: 20px 0;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Language Switcher -->
-    <div class="language-switcher">
-        <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 VI</button>
-        <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 EN</button>
-    </div>
-
     <!-- Menu Button -->
     <button class="menu-btn" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
@@ -441,7 +440,7 @@
     <div class="menu-content" id="menuContent">
         <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
         <a href="#" onclick="showPage('plugin-store')" data-vi="🛒 Cửa Hàng Plugin" data-en="🛒 Plugin Store">🛒 Cửa Hàng Plugin</a>
-        <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp Ý" data-en="💬 Feedback">💬 Góp Ý</a>
+        <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp ý" data-en="💬 Feedback">💬 Góp ý</a>
         <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
     </div>
 
@@ -449,6 +448,12 @@
     <div class="container">
         <!-- Donate Page (Default) -->
         <div id="donate-page" class="page-content active">
+            <!-- Language Switcher for Donate Page -->
+            <div class="donate-language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
             <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
@@ -568,10 +573,7 @@
                 <input type="text" id="adminUsername" placeholder="Username" data-vi-placeholder="Tên đăng nhập" data-en-placeholder="Username">
                 <input type="password" id="adminPassword" placeholder="Password" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
                 <button class="submit-btn" onclick="adminLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
-                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-                    <strong data-vi="Thông tin đăng nhập mẫu:" data-en="Sample login credentials:">Thông tin đăng nhập mẫu:</strong><br>
-                    <span data-vi="Username: admin | Password: 123456" data-en="Username: admin | Password: 123456">Username: admin | Password: 123456</span>
-                </p>
+                <!-- ĐÃ XÓA THÔNG TIN ĐĂNG NHẬP MẪU -->
             </div>
 
             <!-- Plugins List -->
@@ -654,7 +656,7 @@
     </div>
 
     <script>
-        // Configuration - THAY URL BACKEND CỦA BẠN Ở ĐÂY
+        // Configuration - ĐÃ CẬP NHẬT URL
         const API_BASE_URL = 'https://abcxyz-backend-9yxb.onrender.com/api';
 
         // Global variables
