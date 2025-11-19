@@ -100,17 +100,21 @@
 
         .language-switcher {
             margin: 20px 0;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
         .lang-btn {
             background: #e3344e;
             color: white;
             border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
+            padding: 8px 15px;
+            margin: 0 2px;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
+            font-size: 0.9em;
         }
 
         .lang-btn:hover {
@@ -382,6 +386,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 VI</button>
+        <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 EN</button>
+    </div>
+
     <!-- Menu Button -->
     <button class="menu-btn" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
@@ -389,10 +399,10 @@
 
     <!-- Menu Content -->
     <div class="menu-content" id="menuContent">
-        <a href="#" onclick="showPage('home')">🏠 Trang Chủ</a>
-        <a href="#" onclick="showPage('plugin-store')">🛒 Cửa Hàng Plugin</a>
-        <a href="#" onclick="showPage('feedback')">💬 Góp Ý</a>
-        <a href="#" onclick="showPage('donate')">💰 Donate</a>
+        <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
+        <a href="#" onclick="showPage('plugin-store')" data-vi="🛒 Cửa Hàng Plugin" data-en="🛒 Plugin Store">🛒 Cửa Hàng Plugin</a>
+        <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp Ý" data-en="💬 Feedback">💬 Góp Ý</a>
+        <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
     </div>
 
     <!-- Main Container -->
@@ -400,16 +410,11 @@
         <!-- Donate Page (Default) -->
         <div id="donate-page" class="page-content active">
             <div class="logo">abcxyz</div>
-            <h1 class="title" id="page-title">Ủng Hộ Server ABCXYZ</h1>
-            <p class="subtitle" id="page-subtitle">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
-
-            <div class="language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
+            <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
+            <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
 
             <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
-                <i class="fab fa-discord"></i> <span id="discord-text">Tham gia Discord của chúng tôi</span>
+                <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
             </a>
 
             <div class="qr-code">
@@ -418,247 +423,245 @@
             </div>
 
             <div class="bank-info">
-                <h3 id="bank-info-title">Thông Tin Chuyển Khoản</h3>
+                <h3 data-vi="Thông Tin Chuyển Khoản" data-en="Bank Transfer Information">Thông Tin Chuyển Khoản</h3>
                 <div class="info-item">
-                    <span class="info-label" id="bank-label">Ngân hàng:</span>
+                    <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
                     <span class="info-value">VIB</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" id="account-label">Số tài khoản:</span>
+                    <span class="info-label" data-vi="Số tài khoản:" data-en="Account Number:">Số tài khoản:</span>
                     <span class="info-value">068394585</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" id="account-name-label">Chủ tài khoản:</span>
+                    <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
                     <span class="info-value">ABCXYZ SERVER</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" id="amount-label">Số tiền:</span>
-                    <span class="info-value" id="amount-value">Tùy tâm</span>
+                    <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
+                    <span class="info-value" data-vi="Tùy tâm" data-en="Any amount">Tùy tâm</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" id="note-label">Nội dung:</span>
-                    <span class="info-value">Ủng hộ máy chủ abcxyz</span>
+                    <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
+                    <span class="info-value" data-vi="Ủng hộ máy chủ abcxyz" data-en="Support abcxyz server">Ủng hộ máy chủ abcxyz</span>
                 </div>
             </div>
 
-            <div class="thank-you" id="thank-you-message">
+            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the server develop better!">
                 ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
             </div>
 
-            <div class="footer" id="footer-text">
+            <div class="footer" data-vi="Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!" data-en="ABCXYZ New Gen Server - Thank you for your support!">
                 Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
             </div>
         </div>
 
         <!-- Home Page -->
         <div id="home-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
             <div class="logo">abcxyz</div>
-            <h1 class="title">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
-            <p class="subtitle">Máy chủ Mindustry Server của Việt Nam</p>
+            <h1 class="title" data-vi="Chào Mừng Đến Với ABCXYZ Mindustry Server" data-en="Welcome to ABCXYZ Mindustry Server">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
+            <p class="subtitle" data-vi="Máy chủ Mindustry Server của Việt Nam" data-en="Vietnam's Mindustry Server">Máy chủ Mindustry Server của Việt Nam</p>
             
             <div class="bank-info">
-                <h3>Giới Thiệu Server</h3>
-                <p>ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:</p>
+                <h3 data-vi="Giới Thiệu Server" data-en="Server Introduction">Giới Thiệu Server</h3>
+                <p data-vi="ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:" data-en="ABCXYZ Mindustry Server is Vietnam's leading Mindustry game server, offering an excellent gaming experience with:">
+                    ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:
+                </p>
                 <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>Hiệu suất ổn định 24/7</li>
-                    <li>Cộng đồng thân thiện, nhiệt tình</li>
-                    <li>Plugin độc quyền và hấp dẫn</li>
-                    <li>Hỗ trợ kỹ thuật nhanh chóng</li>
+                    <li data-vi="Hiệu suất ổn định 24/7" data-en="24/7 stable performance">Hiệu suất ổn định 24/7</li>
+                    <li data-vi="Cộng đồng thân thiện, nhiệt tình" data-en="Friendly and enthusiastic community">Cộng đồng thân thiện, nhiệt tình</li>
+                    <li data-vi="Plugin độc quyền và hấp dẫn" data-en="Exclusive and attractive plugins">Plugin độc quyền và hấp dẫn</li>
+                    <li data-vi="Hỗ trợ kỹ thuật nhanh chóng" data-en="Fast technical support">Hỗ trợ kỹ thuật nhanh chóng</li>
                 </ul>
             </div>
 
             <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
-                <i class="fab fa-discord"></i> Tham Gia Discord Ngay
+                <i class="fab fa-discord"></i> <span data-vi="Tham Gia Discord Ngay" data-en="Join Discord Now">Tham Gia Discord Ngay</span>
             </button>
 
             <div class="bank-info">
-                <h3>Đánh Giá Từ Cộng Đồng</h3>
+                <h3 data-vi="Đánh Giá Từ Cộng Đồng" data-en="Community Reviews">Đánh Giá Từ Cộng Đồng</h3>
                 
                 <div class="review-item">
                     <div class="review-author">Nguyễn Văn A</div>
                     <div class="rating">★★★★★</div>
-                    <p>"Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình."</p>
+                    <p data-vi="Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình." data-en="This server is the best server I've ever joined! The community is very friendly and the admin is very enthusiastic.">
+                        "Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình."
+                    </p>
                 </div>
 
                 <div class="review-item">
                     <div class="review-author">Trần Thị B</div>
                     <div class="rating">★★★★★</div>
-                    <p>"Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!"</p>
+                    <p data-vi="Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!" data-en="The exclusive plugins are extremely interesting, cannot be found on other servers. Very worth playing long-term!">
+                        "Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!"
+                    </p>
                 </div>
 
                 <div class="review-item">
                     <div class="review-author">Lê Văn C</div>
                     <div class="rating">★★★★☆</div>
-                    <p>"Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!"</p>
+                    <p data-vi="Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!" data-en="Stable server, low lag. Some maintenance times but notifications are very clear. Very satisfied!">
+                        "Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!"
+                    </p>
                 </div>
             </div>
         </div>
 
         <!-- Plugin Store Page -->
         <div id="plugin-store-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
             <div class="logo">abcxyz</div>
-            <h1 class="title">Cửa Hàng Plugin ABCXYZ</h1>
-            <p class="subtitle">Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới</p>
+            <h1 class="title" data-vi="Cửa Hàng Plugin ABCXYZ" data-en="ABCXYZ Plugin Store">Cửa Hàng Plugin ABCXYZ</h1>
+            <p class="subtitle" data-vi="Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới" data-en="Where you can buy server running plugins or order new plugins">
+                Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới
+            </p>
 
-            <!-- Admin Login Button (Hiển thị cho mọi người) -->
+            <!-- Admin Login Button -->
             <button class="admin-login-btn" onclick="showAdminLogin()">
-                <i class="fas fa-lock"></i> Đăng Nhập Admin
+                <i class="fas fa-lock"></i> <span data-vi="Đăng Nhập Admin" data-en="Admin Login">Đăng Nhập Admin</span>
             </button>
 
             <!-- Admin Login Form -->
             <div class="login-form" id="adminLoginForm" style="display: none;">
-                <h3><i class="fas fa-user-shield"></i> Đăng Nhập Admin</h3>
-                <input type="text" id="adminUsername" placeholder="Tên đăng nhập">
-                <input type="password" id="adminPassword" placeholder="Mật khẩu">
-                <button class="submit-btn" onclick="adminLogin()">Đăng Nhập</button>
+                <h3><i class="fas fa-user-shield"></i> <span data-vi="Đăng Nhập Admin" data-en="Admin Login">Đăng Nhập Admin</span></h3>
+                <input type="text" id="adminUsername" placeholder="Username" data-vi-placeholder="Tên đăng nhập" data-en-placeholder="Username">
+                <input type="password" id="adminPassword" placeholder="Password" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                <button class="submit-btn" onclick="adminLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
                 <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-                    <strong>Thông tin đăng nhập mẫu:</strong><br>
-                    Username: admin | Password: 123456
+                    <strong data-vi="Thông tin đăng nhập mẫu:" data-en="Sample login credentials:">Thông tin đăng nhập mẫu:</strong><br>
+                    <span data-vi="Username: admin | Password: 123456" data-en="Username: admin | Password: 123456">Username: admin | Password: 123456</span>
                 </p>
             </div>
 
             <div class="bank-info">
-                <h3>Plugin Đang Bán</h3>
+                <h3 data-vi="Plugin Đang Bán" data-en="Available Plugins">Plugin Đang Bán</h3>
                 
                 <div class="plugin-item">
-                    <h4>⚡ Auto Factory</h4>
-                    <p>Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất</p>
+                    <h4>⚡ <span data-vi="Auto Factory" data-en="Auto Factory">Auto Factory</span></h4>
+                    <p data-vi="Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất" data-en="Automate production systems in-game, optimize performance">
+                        Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất
+                    </p>
                     <div class="plugin-price">150.000 VND</div>
-                    <button class="buy-btn">Mua Ngay</button>
+                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                 </div>
 
                 <div class="plugin-item">
-                    <h4>🛡️ Advanced Defense</h4>
-                    <p>Hệ thống phòng thủ thông minh với AI tiên tiến</p>
+                    <h4>🛡️ <span data-vi="Advanced Defense" data-en="Advanced Defense">Advanced Defense</span></h4>
+                    <p data-vi="Hệ thống phòng thủ thông minh với AI tiên tiến" data-en="Smart defense system with advanced AI">
+                        Hệ thống phòng thủ thông minh với AI tiên tiến
+                    </p>
                     <div class="plugin-price">200.000 VND</div>
-                    <button class="buy-btn">Mua Ngay</button>
+                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                 </div>
 
                 <div class="plugin-item">
-                    <h4>📊 Statistics Pro</h4>
-                    <p>Theo dõi và phân tích chi tiết hiệu suất game</p>
+                    <h4>📊 <span data-vi="Statistics Pro" data-en="Statistics Pro">Statistics Pro</span></h4>
+                    <p data-vi="Theo dõi và phân tích chi tiết hiệu suất game" data-en="Track and analyze detailed game performance">
+                        Theo dõi và phân tích chi tiết hiệu suất game
+                    </p>
                     <div class="plugin-price">100.000 VND</div>
-                    <button class="buy-btn">Mua Ngay</button>
+                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                 </div>
             </div>
 
-            <!-- Admin Panel (Chỉ hiển thị khi đã đăng nhập) -->
+            <!-- Admin Panel -->
             <div class="admin-panel" id="adminPanel" style="display: none;">
                 <div class="admin-header">
-                    <h3><i class="fas fa-cog"></i> Admin Panel</h3>
-                    <button class="logout-btn" onclick="adminLogout()">Đăng Xuất</button>
+                    <h3><i class="fas fa-cog"></i> <span data-vi="Admin Panel" data-en="Admin Panel">Admin Panel</span></h3>
+                    <button class="logout-btn" onclick="adminLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
                 </div>
 
-                <!-- Quản lý Plugin -->
                 <div class="plugin-form">
-                    <h4>Thêm Plugin Mới</h4>
-                    <input type="text" id="pluginName" placeholder="Tên plugin">
-                    <input type="text" id="pluginPrice" placeholder="Giá (VND)">
-                    <textarea id="pluginDescription" placeholder="Mô tả plugin"></textarea>
-                    <button class="submit-btn" onclick="addPlugin()">Thêm Plugin</button>
+                    <h4 data-vi="Thêm Plugin Mới" data-en="Add New Plugin">Thêm Plugin Mới</h4>
+                    <input type="text" id="pluginName" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
+                    <input type="text" id="pluginPrice" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
+                    <textarea id="pluginDescription" data-vi-placeholder="Mô tả plugin" data-en-placeholder="Plugin description"></textarea>
+                    <button class="submit-btn" onclick="addPlugin()" data-vi="Thêm Plugin" data-en="Add Plugin">Thêm Plugin</button>
                 </div>
 
-                <!-- Quản lý Đơn hàng -->
                 <div class="orders-list">
-                    <h4>Đơn Hàng Gần Đây</h4>
+                    <h4 data-vi="Đơn Hàng Gần Đây" data-en="Recent Orders">Đơn Hàng Gần Đây</h4>
                     <div class="order-item">
                         <strong>Auto Factory</strong> - 150.000 VND<br>
-                        <small>Khách hàng: nguyenvana@gmail.com</small><br>
-                        <small>Trạng thái: <span style="color: #ff9800;">Chờ xử lý</span></small>
+                        <small data-vi="Khách hàng: nguyenvana@gmail.com" data-en="Customer: nguyenvana@gmail.com">Khách hàng: nguyenvana@gmail.com</small><br>
+                        <small data-vi="Trạng thái: " data-en="Status: ">Trạng thái: <span style="color: #ff9800;" data-vi="Chờ xử lý" data-en="Pending">Chờ xử lý</span></small>
                     </div>
                     <div class="order-item">
                         <strong>Advanced Defense</strong> - 200.000 VND<br>
-                        <small>Khách hàng: tranhib@yahoo.com</small><br>
-                        <small>Trạng thái: <span style="color: #4CAF50;">Đã hoàn thành</span></small>
+                        <small data-vi="Khách hàng: tranhib@yahoo.com" data-en="Customer: tranhib@yahoo.com">Khách hàng: tranhib@yahoo.com</small><br>
+                        <small data-vi="Trạng thái: " data-en="Status: ">Trạng thái: <span style="color: #4CAF50;" data-vi="Đã hoàn thành" data-en="Completed">Đã hoàn thành</span></small>
                     </div>
                 </div>
             </div>
 
             <div class="bank-info">
-                <h3>Đặt Hàng Plugin Mới</h3>
-                <p>Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!</p>
+                <h3 data-vi="Đặt Hàng Plugin Mới" data-en="Order New Plugin">Đặt Hàng Plugin Mới</h3>
+                <p data-vi="Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!" data-en="Want a custom plugin based on your idea? Contact us!">
+                    Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!
+                </p>
                 <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
-                    <i class="fab fa-discord"></i> Liên Hệ Đặt Plugin
+                    <i class="fab fa-discord"></i> <span data-vi="Liên Hệ Đặt Plugin" data-en="Contact for Plugin">Liên Hệ Đặt Plugin</span>
                 </button>
             </div>
         </div>
 
         <!-- Feedback Page -->
         <div id="feedback-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
             <div class="logo">abcxyz</div>
-            <h1 class="title">Góp Ý Cho Server</h1>
-            <p class="subtitle">Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server</p>
+            <h1 class="title" data-vi="Góp Ý Cho Server" data-en="Server Feedback">Góp Ý Cho Server</h1>
+            <p class="subtitle" data-vi="Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server" data-en="Your feedback helps us improve server quality">
+                Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server
+            </p>
 
             <div class="bank-info">
-                <h3>Gửi Góp Ý Của Bạn</h3>
+                <h3 data-vi="Gửi Góp Ý Của Bạn" data-en="Send Your Feedback">Gửi Góp Ý Của Bạn</h3>
                 <div class="feedback-form">
-                    <textarea id="feedback-text" placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..."></textarea>
-                    <button class="submit-btn" onclick="submitFeedback()">Gửi Góp Ý</button>
+                    <textarea id="feedback-text" data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-en-placeholder="Please share your opinions, feedback or suggestions for the server..."></textarea>
+                    <button class="submit-btn" onclick="submitFeedback()" data-vi="Gửi Góp Ý" data-en="Submit Feedback">Gửi Góp Ý</button>
                 </div>
             </div>
 
-            <div class="thank-you">
+            <div class="thank-you" data-vi="💡 Mọi góp ý của bạn đều được chúng tôi ghi nhận và xem xét cải thiện!" data-en="💡 All your feedback is recorded and considered for improvement!">
                 💡 Mọi góp ý của bạn đều được chúng tôi ghi nhận và xem xét cải thiện!
             </div>
         </div>
     </div>
 
     <script>
-        const translations = {
-            vi: {
-                title: "Ủng Hộ Server ABCXYZ",
-                subtitle: "Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!",
-                discord: "Tham gia Discord của chúng tôi",
-                bankInfo: "Thông Tin Chuyển Khoản",
-                bank: "Ngân hàng:",
-                account: "Số tài khoản:",
-                accountName: "Chủ tài khoản:",
-                amount: "Số tiền:",
-                amountValue: "Tùy tâm",
-                note: "Nội dung:",
-                thankYou: "❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!",
-                footer: "Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!"
-            },
-            en: {
-                title: "Donate to ABCXYZ Server",
-                subtitle: "Thank you for supporting our server!",
-                discord: "Join Our Discord",
-                bankInfo: "Bank Transfer Information",
-                bank: "Bank:",
-                account: "Account Number:",
-                accountName: "Account Holder:",
-                amount: "Amount:",
-                amountValue: "Any amount",
-                note: "Description:",
-                thankYou: "❤️ Every contribution is appreciated and helps the server develop better!",
-                footer: "ABCXYZ New Gen Server - Thank you for your support!"
-            }
-        };
-
-        // Admin credentials (trong thực tế nên lưu ở server)
+        // Admin credentials
         const adminCredentials = {
             username: "admin",
             password: "123456"
         };
 
         let isAdminLoggedIn = false;
+        let currentLanguage = 'vi';
 
+        // Language management
         function changeLanguage(lang) {
-            document.getElementById('page-title').textContent = translations[lang].title;
-            document.getElementById('page-subtitle').textContent = translations[lang].subtitle;
-            document.getElementById('discord-text').textContent = translations[lang].discord;
-            document.getElementById('bank-info-title').textContent = translations[lang].bankInfo;
-            document.getElementById('bank-label').textContent = translations[lang].bank;
-            document.getElementById('account-label').textContent = translations[lang].account;
-            document.getElementById('account-name-label').textContent = translations[lang].accountName;
-            document.getElementById('amount-label').textContent = translations[lang].amount;
-            document.getElementById('amount-value').textContent = translations[lang].amountValue;
-            document.getElementById('note-label').textContent = translations[lang].note;
-            document.getElementById('thank-you-message').textContent = translations[lang].thankYou;
-            document.getElementById('footer-text').textContent = translations[lang].footer;
+            currentLanguage = lang;
+            
+            // Update all elements with data attributes
+            document.querySelectorAll('[data-vi], [data-en]').forEach(element => {
+                if (element.hasAttribute(`data-${lang}`)) {
+                    const newText = element.getAttribute(`data-${lang}`);
+                    if (element.placeholder !== undefined) {
+                        element.placeholder = newText;
+                    } else {
+                        element.textContent = newText;
+                    }
+                }
+            });
+            
+            // Update placeholders separately
+            document.querySelectorAll('[data-vi-placeholder]').forEach(element => {
+                element.placeholder = element.getAttribute(`data-${lang}-placeholder`);
+            });
+            
+            // Save language preference
+            localStorage.setItem('preferredLanguage', lang);
         }
 
         // Menu Functions
@@ -668,26 +671,24 @@
         }
 
         function showPage(page) {
-            // Hide all pages
             document.querySelectorAll('.page-content').forEach(p => {
                 p.classList.remove('active');
             });
-            
-            // Show selected page
             document.getElementById(page + '-page').classList.add('active');
-            
-            // Close menu
             document.getElementById('menuContent').style.display = 'none';
         }
 
         function submitFeedback() {
             const feedback = document.getElementById('feedback-text').value;
             if (feedback.trim() === '') {
-                alert('Vui lòng nhập góp ý của bạn!');
+                alert(currentLanguage === 'vi' ? 'Vui lòng nhập góp ý của bạn!' : 'Please enter your feedback!');
                 return;
             }
             
-            alert('Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.');
+            // Here you would typically send to a backend
+            console.log('Feedback submitted:', feedback);
+            
+            alert(currentLanguage === 'vi' ? 'Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.' : 'Thank you for your feedback! We will review and improve the server.');
             document.getElementById('feedback-text').value = '';
         }
 
@@ -705,9 +706,9 @@
                 isAdminLoggedIn = true;
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('adminLoginForm').style.display = 'none';
-                alert('Đăng nhập admin thành công!');
+                alert(currentLanguage === 'vi' ? 'Đăng nhập admin thành công!' : 'Admin login successful!');
             } else {
-                alert('Sai tên đăng nhập hoặc mật khẩu!');
+                alert(currentLanguage === 'vi' ? 'Sai tên đăng nhập hoặc mật khẩu!' : 'Wrong username or password!');
             }
         }
 
@@ -717,12 +718,12 @@
             document.getElementById('adminLoginForm').style.display = 'none';
             document.getElementById('adminUsername').value = '';
             document.getElementById('adminPassword').value = '';
-            alert('Đã đăng xuất khỏi admin panel!');
+            alert(currentLanguage === 'vi' ? 'Đã đăng xuất khỏi admin panel!' : 'Logged out from admin panel!');
         }
 
         function addPlugin() {
             if (!isAdminLoggedIn) {
-                alert('Vui lòng đăng nhập admin trước!');
+                alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập admin trước!' : 'Please login as admin first!');
                 return;
             }
 
@@ -731,13 +732,17 @@
             const description = document.getElementById('pluginDescription').value;
 
             if (!name || !price || !description) {
-                alert('Vui lòng điền đầy đủ thông tin plugin!');
+                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin plugin!' : 'Please fill in all plugin information!');
                 return;
             }
 
-            alert(`Đã thêm plugin: ${name}\nGiá: ${price} VND\nMô tả: ${description}`);
+            // Here you would typically send to a backend/database
+            console.log('New plugin added:', { name, price, description });
             
-            // Reset form
+            alert(currentLanguage === 'vi' ? 
+                `Đã thêm plugin: ${name}\nGiá: ${price} VND` : 
+                `Plugin added: ${name}\nPrice: ${price} VND`);
+            
             document.getElementById('pluginName').value = '';
             document.getElementById('pluginPrice').value = '';
             document.getElementById('pluginDescription').value = '';
@@ -753,8 +758,12 @@
             }
         });
 
-        // Set default language to Vietnamese
-        changeLanguage('vi');
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved language preference
+            const savedLanguage = localStorage.getItem('preferredLanguage') || 'vi';
+            changeLanguage(savedLanguage);
+        });
     </script>
 </body>
 </html>
