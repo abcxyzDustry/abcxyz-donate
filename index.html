@@ -915,7 +915,7 @@
         let userToken = localStorage.getItem('userToken');
         let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
 
-        // API Functions
+        // API Functions - FIXED VERSION
         const api = {
             async request(endpoint, options = {}) {
                 try {
@@ -1019,7 +1019,7 @@
                 });
             },
 
-            // User APIs
+            // User APIs - FIXED
             async userRegister(userData) {
                 return this.request('/users/register', {
                     method: 'POST',
@@ -1093,11 +1093,13 @@
         function showLoginForm() {
             document.getElementById('login-form').style.display = 'block';
             document.getElementById('register-form').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'none';
         }
 
         function showRegisterForm() {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('register-form').style.display = 'block';
+            document.getElementById('user-profile').style.display = 'none';
         }
 
         function showUserProfile() {
@@ -1229,7 +1231,7 @@
             }
         }
 
-        // Plugin Management
+        // Plugin Management - FIXED
         async function loadPlugins() {
             const pluginsList = document.getElementById('plugins-list');
             
@@ -1413,6 +1415,9 @@
                         <div>
                             <strong>${currentLanguage === 'vi' ? 'Phản hồi:' : 'Feedback:'}</strong> ${stats.feedback}
                         </div>
+                        <div>
+                            <strong>${currentLanguage === 'vi' ? 'Người dùng:' : 'Users:'}</strong> ${stats.users}
+                        </div>
                     </div>
                 `;
             } catch (error) {
@@ -1506,6 +1511,7 @@
             }
         }
 
+        // Add Plugin - FIXED VERSION
         async function addPlugin() {
             if (!isAdminLoggedIn) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập admin trước!' : 'Please login as admin first!');
@@ -1517,8 +1523,9 @@
             const description = document.getElementById('pluginDescription').value;
             const imageUrl = document.getElementById('pluginImage').value;
 
-            if (!name || !price || !description) {
-                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin plugin!' : 'Please fill in all plugin information!');
+            // Validate input
+            if (!name || name.trim() === '' || !price || !description || description.trim() === '') {
+                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin plugin (tên, giá, mô tả)!' : 'Please fill in all plugin information (name, price, description)!');
                 return;
             }
 
@@ -1533,6 +1540,8 @@
                 if (imageUrl && imageUrl.trim() !== '') {
                     pluginData.image_url = imageUrl.trim();
                 }
+
+                console.log('Sending plugin data:', pluginData);
 
                 const result = await api.addPlugin(pluginData, adminToken);
 
@@ -1585,6 +1594,8 @@
             // Check if user is logged in
             if (userToken && currentUser) {
                 showUserProfile();
+            } else {
+                showLoginForm();
             }
 
             // Load plugins on page load
