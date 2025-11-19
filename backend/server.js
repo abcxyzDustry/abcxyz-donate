@@ -158,24 +158,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// User authentication middleware
-const authenticateUser = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET || 'abcxyz_secret', (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-  });
-};
-
 // ==================== ROUTES ====================
 
 // Health check
@@ -195,34 +177,6 @@ app.get('/api/health', async (req, res) => {
       message: 'Database connection failed',
       error: error.message 
     });
-  }
-});
-
-// Reset admin password (temporary endpoint)
-app.post('/api/admin/reset-password', async (req, res) => {
-  try {
-    const plainPassword = '0796438068';
-    const saltRounds = 12;
-    const passwordHash = await bcrypt.hash(plainPassword, saltRounds);
-
-    const result = await pool.query(
-      'UPDATE admin_users SET password_hash = $1 WHERE username = $2 RETURNING *',
-      [passwordHash, 'owner']
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Admin user not found' });
-    }
-
-    res.json({
-      message: 'Password reset successfully',
-      username: 'owner',
-      password: '0796438068',
-      status: 'Password updated in database'
-    });
-  } catch (error) {
-    console.error('Reset password error:', error);
-    res.status(500).json({ error: 'Failed to reset password' });
   }
 });
 
@@ -263,7 +217,7 @@ app.post('/api/users/register', async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: user.id, email: user.email, type: 'user' },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET || 'abcxyz_secret',
       { expiresIn: '30d' }
     );
@@ -315,7 +269,7 @@ app.post('/api/users/login', async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: user.id, email: user.email, type: 'user' },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET || 'abcxyz_secret',
       { expiresIn: '30d' }
     );
@@ -335,12 +289,12 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-// Get user's orders
-app.get('/api/users/orders', authenticateUser, async (req, res) => {
+// Get user's orders - FIXED VERSION
+app.get('/api/users/orders', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    console.log('Getting orders for user:', userId);
+    console.log('Getting orders for user ID:', userId);
 
     // Get user email first
     const userResult = await pool.query('SELECT email FROM users WHERE id = $1', [userId]);
@@ -351,6 +305,8 @@ app.get('/api/users/orders', authenticateUser, async (req, res) => {
 
     const userEmail = userResult.rows[0].email;
 
+    console.log('User email found:', userEmail);
+
     const result = await pool.query(`
       SELECT o.*, p.name as plugin_name, p.price, p.image_url
       FROM orders o 
@@ -358,6 +314,8 @@ app.get('/api/users/orders', authenticateUser, async (req, res) => {
       WHERE o.customer_email = $1
       ORDER BY o.created_at DESC
     `, [userEmail]);
+
+    console.log('User orders found:', result.rows.length);
 
     res.json(result.rows);
   } catch (error) {
@@ -397,7 +355,7 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username, type: 'admin' },
+      { id: user.id, username: user.username },
       process.env.JWT_SECRET || 'abcxyz_secret',
       { expiresIn: '24h' }
     );
@@ -426,15 +384,19 @@ app.get('/api/plugins', async (req, res) => {
   }
 });
 
-// Add new plugin (Owner only)
+// Add new plugin (Owner only) - FIXED VERSION
 app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
     const { name, price, description, image_url } = req.body;
 
     console.log('Add plugin request:', { name, price, description, image_url });
 
-    if (!name || !price || !description) {
-      return res.status(400).json({ error: 'Name, price and description are required' });
+    // Check if all required fields are present and not empty
+    if (!name || name.trim() === '' || !price || !description || description.trim() === '') {
+      return res.status(400).json({ 
+        error: 'Name, price and description are required',
+        received: { name, price, description }
+      });
     }
 
     // Validate price is a number
@@ -492,13 +454,13 @@ app.post('/api/feedback', async (req, res) => {
   try {
     const { message, email } = req.body;
 
-    if (!message) {
+    if (!message || message.trim() === '') {
       return res.status(400).json({ error: 'Message is required' });
     }
 
     const result = await pool.query(
       'INSERT INTO feedback (message, user_email) VALUES ($1, $2) RETURNING *',
-      [message, email || null]
+      [message.trim(), email || null]
     );
 
     res.status(201).json({ 
@@ -536,13 +498,13 @@ app.post('/api/orders', async (req, res) => {
 
     console.log('Create order request:', { plugin_id, customer_email, customer_name });
 
-    if (!customer_email) {
+    if (!customer_email || customer_email.trim() === '') {
       return res.status(400).json({ error: 'Customer email is required' });
     }
 
     const result = await pool.query(
       'INSERT INTO orders (plugin_id, customer_email, customer_name) VALUES ($1, $2, $3) RETURNING *',
-      [plugin_id || null, customer_email, customer_name || 'Customer']
+      [plugin_id || null, customer_email.trim(), customer_name || 'Customer']
     );
 
     res.status(201).json({
@@ -630,7 +592,7 @@ app.use('/api/*', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     message: '🚀 ABCXYZ Server API',
-    version: '2.1.0',
+    version: '2.2.0',
     admin: 'owner/0796438068',
     database: 'PostgreSQL (Connected)',
     status: '✅ Fully Operational',
@@ -689,15 +651,13 @@ async function startServer() {
       console.log(`📊 Health: https://abcxyz-backend-9yxb.onrender.com/api/health`);
       console.log(`🔑 Admin Login: https://abcxyz-backend-9yxb.onrender.com/api/admin/login`);
       console.log(`👤 User Register: https://abcxyz-backend-9yxb.onrender.com/api/users/register`);
-      console.log(`🔄 Reset Password: https://abcxyz-backend-9yxb.onrender.com/api/admin/reset-password`);
       console.log(`🔑 Admin Credentials: username="owner", password="0796438068"`);
       console.log(`✅ Server is fully operational with ALL FIXES!`);
       console.log(`🔧 Fixed Issues:`);
-      console.log(`   ✅ Database constraints removed`);
-      console.log(`   ✅ Better error messages`);
-      console.log(`   ✅ Input validation improved`);
-      console.log(`   ✅ Price validation added`);
-      console.log(`   ✅ Debug logging enabled`);
+      console.log(`   ✅ User authentication fixed`);
+      console.log(`   ✅ Plugin validation improved`);
+      console.log(`   ✅ Better error handling`);
+      console.log(`   ✅ Input trimming added`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
