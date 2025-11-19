@@ -382,6 +382,27 @@
             border-radius: 5px;
             border-left: 4px solid #4CAF50;
         }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .success {
+            color: #155724;
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -534,34 +555,11 @@
                 </p>
             </div>
 
+            <!-- Plugins List -->
             <div class="bank-info">
                 <h3 data-vi="Plugin Đang Bán" data-en="Available Plugins">Plugin Đang Bán</h3>
-                
-                <div class="plugin-item">
-                    <h4>⚡ <span data-vi="Auto Factory" data-en="Auto Factory">Auto Factory</span></h4>
-                    <p data-vi="Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất" data-en="Automate production systems in-game, optimize performance">
-                        Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất
-                    </p>
-                    <div class="plugin-price">150.000 VND</div>
-                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
-                </div>
-
-                <div class="plugin-item">
-                    <h4>🛡️ <span data-vi="Advanced Defense" data-en="Advanced Defense">Advanced Defense</span></h4>
-                    <p data-vi="Hệ thống phòng thủ thông minh với AI tiên tiến" data-en="Smart defense system with advanced AI">
-                        Hệ thống phòng thủ thông minh với AI tiên tiến
-                    </p>
-                    <div class="plugin-price">200.000 VND</div>
-                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
-                </div>
-
-                <div class="plugin-item">
-                    <h4>📊 <span data-vi="Statistics Pro" data-en="Statistics Pro">Statistics Pro</span></h4>
-                    <p data-vi="Theo dõi và phân tích chi tiết hiệu suất game" data-en="Track and analyze detailed game performance">
-                        Theo dõi và phân tích chi tiết hiệu suất game
-                    </p>
-                    <div class="plugin-price">100.000 VND</div>
-                    <button class="buy-btn" data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                <div id="plugins-list">
+                    <div class="loading" data-vi="Đang tải plugins..." data-en="Loading plugins...">Đang tải plugins...</div>
                 </div>
             </div>
 
@@ -575,22 +573,15 @@
                 <div class="plugin-form">
                     <h4 data-vi="Thêm Plugin Mới" data-en="Add New Plugin">Thêm Plugin Mới</h4>
                     <input type="text" id="pluginName" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
-                    <input type="text" id="pluginPrice" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
+                    <input type="number" id="pluginPrice" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
                     <textarea id="pluginDescription" data-vi-placeholder="Mô tả plugin" data-en-placeholder="Plugin description"></textarea>
                     <button class="submit-btn" onclick="addPlugin()" data-vi="Thêm Plugin" data-en="Add Plugin">Thêm Plugin</button>
                 </div>
 
                 <div class="orders-list">
                     <h4 data-vi="Đơn Hàng Gần Đây" data-en="Recent Orders">Đơn Hàng Gần Đây</h4>
-                    <div class="order-item">
-                        <strong>Auto Factory</strong> - 150.000 VND<br>
-                        <small data-vi="Khách hàng: nguyenvana@gmail.com" data-en="Customer: nguyenvana@gmail.com">Khách hàng: nguyenvana@gmail.com</small><br>
-                        <small data-vi="Trạng thái: " data-en="Status: ">Trạng thái: <span style="color: #ff9800;" data-vi="Chờ xử lý" data-en="Pending">Chờ xử lý</span></small>
-                    </div>
-                    <div class="order-item">
-                        <strong>Advanced Defense</strong> - 200.000 VND<br>
-                        <small data-vi="Khách hàng: tranhib@yahoo.com" data-en="Customer: tranhib@yahoo.com">Khách hàng: tranhib@yahoo.com</small><br>
-                        <small data-vi="Trạng thái: " data-en="Status: ">Trạng thái: <span style="color: #4CAF50;" data-vi="Đã hoàn thành" data-en="Completed">Đã hoàn thành</span></small>
+                    <div id="orders-list">
+                        <div class="loading" data-vi="Đang tải đơn hàng..." data-en="Loading orders...">Đang tải đơn hàng...</div>
                     </div>
                 </div>
             </div>
@@ -618,6 +609,7 @@
             <div class="bank-info">
                 <h3 data-vi="Gửi Góp Ý Của Bạn" data-en="Send Your Feedback">Gửi Góp Ý Của Bạn</h3>
                 <div class="feedback-form">
+                    <input type="email" id="feedback-email" data-vi-placeholder="Email (tùy chọn)" data-en-placeholder="Email (optional)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
                     <textarea id="feedback-text" data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-en-placeholder="Please share your opinions, feedback or suggestions for the server..."></textarea>
                     <button class="submit-btn" onclick="submitFeedback()" data-vi="Gửi Góp Ý" data-en="Submit Feedback">Gửi Góp Ý</button>
                 </div>
@@ -630,20 +622,91 @@
     </div>
 
     <script>
-        // Admin credentials
-        const adminCredentials = {
-            username: "admin",
-            password: "123456"
-        };
+        // Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api'
+            : 'https://your-backend-url.onrender.com/api'; // THAY URL BACKEND CỦA BẠN Ở ĐÂY
 
-        let isAdminLoggedIn = false;
+        // Global variables
         let currentLanguage = 'vi';
+        let isAdminLoggedIn = false;
+        let adminToken = localStorage.getItem('adminToken');
+
+        // API Functions
+        const api = {
+            async request(endpoint, options = {}) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        },
+                        ...options
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Request failed:', error);
+                    throw error;
+                }
+            },
+
+            async adminLogin(username, password) {
+                return this.request('/admin/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ username, password })
+                });
+            },
+
+            async getPlugins() {
+                return this.request('/plugins');
+            },
+
+            async addPlugin(pluginData, token) {
+                return this.request('/plugins', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(pluginData)
+                });
+            },
+
+            async submitFeedback(feedbackData) {
+                return this.request('/feedback', {
+                    method: 'POST',
+                    body: JSON.stringify(feedbackData)
+                });
+            },
+
+            async getOrders(token) {
+                return this.request('/orders', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            },
+
+            async createOrder(orderData) {
+                return this.request('/orders', {
+                    method: 'POST',
+                    body: JSON.stringify(orderData)
+                });
+            },
+
+            async testConnection() {
+                return this.request('/test-db');
+            }
+        };
 
         // Language management
         function changeLanguage(lang) {
             currentLanguage = lang;
             
-            // Update all elements with data attributes
             document.querySelectorAll('[data-vi], [data-en]').forEach(element => {
                 if (element.hasAttribute(`data-${lang}`)) {
                     const newText = element.getAttribute(`data-${lang}`);
@@ -655,12 +718,10 @@
                 }
             });
             
-            // Update placeholders separately
             document.querySelectorAll('[data-vi-placeholder]').forEach(element => {
                 element.placeholder = element.getAttribute(`data-${lang}-placeholder`);
             });
             
-            // Save language preference
             localStorage.setItem('preferredLanguage', lang);
         }
 
@@ -676,20 +737,104 @@
             });
             document.getElementById(page + '-page').classList.add('active');
             document.getElementById('menuContent').style.display = 'none';
+
+            // Load data when switching to plugin store
+            if (page === 'plugin-store') {
+                loadPlugins();
+                if (isAdminLoggedIn) {
+                    loadOrders();
+                }
+            }
         }
 
-        function submitFeedback() {
+        // Plugin Management
+        async function loadPlugins() {
+            const pluginsList = document.getElementById('plugins-list');
+            
+            try {
+                pluginsList.innerHTML = '<div class="loading">' + 
+                    (currentLanguage === 'vi' ? 'Đang tải plugins...' : 'Loading plugins...') + '</div>';
+                
+                const plugins = await api.getPlugins();
+                
+                if (plugins.length === 0) {
+                    pluginsList.innerHTML = '<div class="loading">' + 
+                        (currentLanguage === 'vi' ? 'Chưa có plugin nào.' : 'No plugins available.') + '</div>';
+                    return;
+                }
+
+                pluginsList.innerHTML = plugins.map(plugin => `
+                    <div class="plugin-item">
+                        <h4>⚡ ${plugin.name}</h4>
+                        <p>${plugin.description}</p>
+                        <div class="plugin-price">${parseInt(plugin.price).toLocaleString()} VND</div>
+                        <button class="buy-btn" onclick="buyPlugin(${plugin.id})" 
+                                data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                    </div>
+                `).join('');
+
+                // Update language for newly created buttons
+                changeLanguage(currentLanguage);
+
+            } catch (error) {
+                pluginsList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải plugins: ' : 'Error loading plugins: ') + error.message + '</div>';
+            }
+        }
+
+        async function buyPlugin(pluginId) {
+            const email = prompt(currentLanguage === 'vi' 
+                ? 'Nhập email của bạn để đặt mua:' 
+                : 'Enter your email to purchase:');
+            
+            if (!email) return;
+
+            try {
+                const result = await api.createOrder({
+                    plugin_id: pluginId,
+                    customer_email: email,
+                    customer_name: 'Customer'
+                });
+
+                alert(currentLanguage === 'vi' 
+                    ? 'Đã đặt mua thành công! Chúng tôi sẽ liên hệ với bạn qua email.' 
+                    : 'Purchase successful! We will contact you via email.');
+
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi khi đặt mua: ' + error.message 
+                    : 'Purchase error: ' + error.message);
+            }
+        }
+
+        // Feedback Management
+        async function submitFeedback() {
             const feedback = document.getElementById('feedback-text').value;
+            const email = document.getElementById('feedback-email').value;
+
             if (feedback.trim() === '') {
                 alert(currentLanguage === 'vi' ? 'Vui lòng nhập góp ý của bạn!' : 'Please enter your feedback!');
                 return;
             }
-            
-            // Here you would typically send to a backend
-            console.log('Feedback submitted:', feedback);
-            
-            alert(currentLanguage === 'vi' ? 'Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.' : 'Thank you for your feedback! We will review and improve the server.');
-            document.getElementById('feedback-text').value = '';
+
+            try {
+                await api.submitFeedback({
+                    message: feedback,
+                    email: email || null
+                });
+                
+                alert(currentLanguage === 'vi' 
+                    ? 'Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.' 
+                    : 'Thank you for your feedback! We will review and improve the server.');
+                
+                document.getElementById('feedback-text').value = '';
+                document.getElementById('feedback-email').value = '';
+
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi khi gửi góp ý: ' + error.message 
+                    : 'Error submitting feedback: ' + error.message);
+            }
         }
 
         // Admin Functions
@@ -698,22 +843,42 @@
             loginForm.style.display = loginForm.style.display === 'block' ? 'none' : 'block';
         }
 
-        function adminLogin() {
+        async function adminLogin() {
             const username = document.getElementById('adminUsername').value;
             const password = document.getElementById('adminPassword').value;
 
-            if (username === adminCredentials.username && password === adminCredentials.password) {
-                isAdminLoggedIn = true;
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminLoginForm').style.display = 'none';
-                alert(currentLanguage === 'vi' ? 'Đăng nhập admin thành công!' : 'Admin login successful!');
-            } else {
-                alert(currentLanguage === 'vi' ? 'Sai tên đăng nhập hoặc mật khẩu!' : 'Wrong username or password!');
+            if (!username || !password) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng nhập đầy đủ thông tin!' : 'Please enter all information!');
+                return;
+            }
+
+            try {
+                const result = await api.adminLogin(username, password);
+                
+                if (result.token) {
+                    isAdminLoggedIn = true;
+                    adminToken = result.token;
+                    
+                    localStorage.setItem('adminToken', adminToken);
+                    document.getElementById('adminPanel').style.display = 'block';
+                    document.getElementById('adminLoginForm').style.display = 'none';
+                    
+                    await loadPlugins();
+                    await loadOrders();
+                    
+                    alert(currentLanguage === 'vi' ? 'Đăng nhập admin thành công!' : 'Admin login successful!');
+                } else {
+                    alert(result.error || (currentLanguage === 'vi' ? 'Đăng nhập thất bại!' : 'Login failed!'));
+                }
+            } catch (error) {
+                alert(currentLanguage === 'vi' ? 'Lỗi kết nối server!' : 'Server connection error!');
             }
         }
 
         function adminLogout() {
             isAdminLoggedIn = false;
+            adminToken = null;
+            localStorage.removeItem('adminToken');
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('adminLoginForm').style.display = 'none';
             document.getElementById('adminUsername').value = '';
@@ -721,7 +886,7 @@
             alert(currentLanguage === 'vi' ? 'Đã đăng xuất khỏi admin panel!' : 'Logged out from admin panel!');
         }
 
-        function addPlugin() {
+        async function addPlugin() {
             if (!isAdminLoggedIn) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập admin trước!' : 'Please login as admin first!');
                 return;
@@ -736,16 +901,63 @@
                 return;
             }
 
-            // Here you would typically send to a backend/database
-            console.log('New plugin added:', { name, price, description });
+            try {
+                const result = await api.addPlugin({
+                    name,
+                    price: parseFloat(price),
+                    description
+                }, adminToken);
+
+                if (result.plugin) {
+                    alert(currentLanguage === 'vi' 
+                        ? `Đã thêm plugin: ${name}\nGiá: ${price} VND` 
+                        : `Plugin added: ${name}\nPrice: ${price} VND`);
+                    
+                    document.getElementById('pluginName').value = '';
+                    document.getElementById('pluginPrice').value = '';
+                    document.getElementById('pluginDescription').value = '';
+                    
+                    await loadPlugins();
+                }
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi khi thêm plugin: ' + error.message 
+                    : 'Error adding plugin: ' + error.message);
+            }
+        }
+
+        async function loadOrders() {
+            const ordersList = document.getElementById('orders-list');
             
-            alert(currentLanguage === 'vi' ? 
-                `Đã thêm plugin: ${name}\nGiá: ${price} VND` : 
-                `Plugin added: ${name}\nPrice: ${price} VND`);
-            
-            document.getElementById('pluginName').value = '';
-            document.getElementById('pluginPrice').value = '';
-            document.getElementById('pluginDescription').value = '';
+            if (!adminToken) return;
+
+            try {
+                const orders = await api.getOrders(adminToken);
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<div class="loading">' + 
+                        (currentLanguage === 'vi' ? 'Chưa có đơn hàng nào.' : 'No orders yet.') + '</div>';
+                    return;
+                }
+
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <strong>${order.plugin_name || 'Custom Plugin'}</strong> - ${parseInt(order.price || 0).toLocaleString()} VND<br>
+                        <small>${currentLanguage === 'vi' ? 'Khách hàng: ' : 'Customer: '}${order.customer_email}</small><br>
+                        <small>${currentLanguage === 'vi' ? 'Trạng thái: ' : 'Status: '}
+                            <span style="color: ${order.status === 'completed' ? '#4CAF50' : '#ff9800'};">
+                                ${currentLanguage === 'vi' 
+                                    ? (order.status === 'completed' ? 'Đã hoàn thành' : 'Chờ xử lý')
+                                    : (order.status === 'completed' ? 'Completed' : 'Pending')}
+                            </span>
+                        </small>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                ordersList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải đơn hàng: ' : 'Error loading orders: ') + error.message + '</div>';
+            }
         }
 
         // Close menu when clicking outside
@@ -763,6 +975,21 @@
             // Load saved language preference
             const savedLanguage = localStorage.getItem('preferredLanguage') || 'vi';
             changeLanguage(savedLanguage);
+
+            // Check if admin is already logged in
+            if (adminToken) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                loadPlugins();
+                loadOrders();
+            }
+
+            // Test API connection
+            api.testConnection().then(result => {
+                console.log('API Connection:', result);
+            }).catch(error => {
+                console.warn('API Connection failed:', error);
+            });
         });
     </script>
 </body>
