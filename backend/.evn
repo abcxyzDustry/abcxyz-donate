@@ -1,0 +1,7 @@
+# Environment Configuration
+NODE_ENV=production
+PORT=3000
+JWT_SECRET=abcxyz_super_secret_key_2024_change_this_in_production
+
+# Database Configuration - THAY THẾ VỚI CONNECTION STRING CỦA BẠN
+DATABASE_URL=postgresql://postgres:11111111Ab%40@db.wpbawgsrsfxuygoqmjrt.supabase.co:5432/postgres
