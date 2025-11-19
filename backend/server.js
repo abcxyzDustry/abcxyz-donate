@@ -12,21 +12,29 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Database connection
+// Database connection với Supabase
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  ssl: { 
+    rejectUnauthorized: false 
+  }
 });
 
 // Test database connection
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('Database connection error:', err);
-  } else {
-    console.log('Database connected successfully');
-    release();
+const testConnection = async () => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT NOW() as time, version() as version');
+    console.log('✅ Supabase Database Connected Successfully!');
+    console.log('📅 Time:', result.rows[0].time);
+    console.log('🗄️ Database Version:', result.rows[0].version.split(',')[0]);
+    client.release();
+  } catch (err) {
+    console.error('❌ Database Connection Failed:', err.message);
   }
-});
+};
+
+testConnection();
 
 // Initialize database tables
 const initDatabase = async () => {
@@ -83,9 +91,20 @@ const initDatabase = async () => {
       ON CONFLICT (username) DO NOTHING
     `, [hashedPassword]);
 
-    console.log('Database initialized successfully');
+    // Insert sample plugins
+    await pool.query(`
+      INSERT INTO plugins (name, price, description) 
+      VALUES 
+        ('Auto Factory', 150000, 'Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất'),
+        ('Advanced Defense', 200000, 'Hệ thống phòng thủ thông minh với AI tiên tiến'),
+        ('Statistics Pro', 100000, 'Theo dõi và phân tích chi tiết hiệu suất game')
+      ON CONFLICT DO NOTHING
+    `);
+
+    console.log('✅ Database initialized successfully');
+
   } catch (error) {
-    console.error('Database initialization error:', error);
+    console.error('❌ Database initialization error:', error);
   }
 };
 
@@ -111,10 +130,45 @@ const authenticateToken = (req, res, next) => {
 
 // Routes
 
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'ABCXYZ Server API is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Test database connection
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW() as current_time, version() as version');
+    res.json({
+      status: 'success',
+      message: '✅ Connected to Supabase PostgreSQL',
+      database: {
+        time: result.rows[0].current_time,
+        version: result.rows[0].version.split(',')[0]
+      },
+      project: 'abcxyz-server'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: '❌ Database connection failed',
+      error: error.message
+    });
+  }
+});
+
 // Admin login
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
 
     const result = await pool.query(
       'SELECT * FROM admin_users WHERE username = $1',
@@ -167,9 +221,13 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
     const { name, price, description } = req.body;
 
+    if (!name || !price || !description) {
+      return res.status(400).json({ error: 'Name, price and description are required' });
+    }
+
     const result = await pool.query(
       'INSERT INTO plugins (name, price, description) VALUES ($1, $2, $3) RETURNING *',
-      [name, price, description]
+      [name, parseFloat(price), description]
     );
 
     res.status(201).json({
@@ -186,6 +244,10 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
 app.post('/api/feedback', async (req, res) => {
   try {
     const { message, email } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
 
     await pool.query(
       'INSERT INTO feedback (message, user_email) VALUES ($1, $2)',
@@ -207,6 +269,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
       FROM orders o 
       LEFT JOIN plugins p ON o.plugin_id = p.id 
       ORDER BY o.created_at DESC
+      LIMIT 50
     `);
     res.json(result.rows);
   } catch (error) {
@@ -220,9 +283,13 @@ app.post('/api/orders', async (req, res) => {
   try {
     const { plugin_id, customer_email, customer_name } = req.body;
 
+    if (!customer_email) {
+      return res.status(400).json({ error: 'Customer email is required' });
+    }
+
     const result = await pool.query(
       'INSERT INTO orders (plugin_id, customer_email, customer_name) VALUES ($1, $2, $3) RETURNING *',
-      [plugin_id, customer_email, customer_name]
+      [plugin_id, customer_email, customer_name || 'Customer']
     );
 
     res.status(201).json({
@@ -235,11 +302,32 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'ABCXYZ Server API is running' });
+// Get feedback (Admin only)
+app.get('/api/feedback', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM feedback ORDER BY created_at DESC LIMIT 50'
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Get feedback error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 404 handler
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Unhandled error:', error);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📊 API Health: http://localhost:${PORT}/api/health`);
+  console.log(`🗄️ DB Test: http://localhost:${PORT}/api/test-db`);
 });
