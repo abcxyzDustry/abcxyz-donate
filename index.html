@@ -184,7 +184,7 @@
             top: 60px;
             right: 20px;
             background: white;
-            min-width: 200px;
+            min-width: 250px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 10px;
             z-index: 1000;
@@ -427,6 +427,68 @@
         .donate-language-switcher {
             margin: 20px 0;
         }
+
+        /* Services Page Styles */
+        .service-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #e3344e;
+            text-align: center;
+        }
+
+        .service-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #e3344e;
+        }
+
+        .service-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .service-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #ffeaa7;
+            font-size: 0.9em;
+        }
+
+        .service-btn {
+            background: #e3344e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .service-btn:hover {
+            background: #c12c42;
+        }
+
+        .services-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -440,6 +502,7 @@
     <div class="menu-content" id="menuContent">
         <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
         <a href="#" onclick="showPage('plugin-store')" data-vi="🛒 Cửa Hàng Plugin" data-en="🛒 Plugin Store">🛒 Cửa Hàng Plugin</a>
+        <a href="#" onclick="showPage('services')" data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</a>
         <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp ý" data-en="💬 Feedback">💬 Góp ý</a>
         <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
     </div>
@@ -628,6 +691,58 @@
                 <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
                     <i class="fab fa-discord"></i> <span data-vi="Liên Hệ Đặt Plugin" data-en="Contact for Plugin">Liên Hệ Đặt Plugin</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Services Page -->
+        <div id="services-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <div class="logo">abcxyz</div>
+            <h1 class="title" data-vi="Các Dịch Vụ Khác" data-en="Other Services">Các Dịch Vụ Khác</h1>
+            <p class="subtitle" data-vi="Khám phá thêm các dịch vụ đa dạng từ chúng tôi" data-en="Discover more diverse services from us">
+                Khám phá thêm các dịch vụ đa dạng từ chúng tôi
+            </p>
+
+            <div class="services-grid">
+                <!-- Casino Service -->
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <div class="service-title" data-vi="Sòng Bạc Trực Tuyến" data-en="Online Casino">Sòng Bạc Trực Tuyến</div>
+                    <div class="service-description" data-vi="Trải nghiệm casino trực tuyến đẳng cấp với đa dạng trò chơi và tỷ lệ cược hấp dẫn" data-en="Experience premium online casino with diverse games and attractive odds">
+                        Trải nghiệm casino trực tuyến đẳng cấp với đa dạng trò chơi và tỷ lệ cược hấp dẫn
+                    </div>
+                    <div class="service-warning" data-vi="⚠️ Khi tham gia, bạn đồng ý với các điều khoản về nạp/rút tiền và quy định của chúng tôi" data-en="⚠️ By participating, you agree to our deposit/withdrawal terms and conditions">
+                        ⚠️ Khi tham gia, bạn đồng ý với các điều khoản về nạp/rút tiền và quy định của chúng tôi
+                    </div>
+                    <a href="https://one11bet-com.onrender.com/web/" target="_blank" class="service-btn">
+                        <i class="fas fa-external-link-alt"></i> 
+                        <span data-vi="Truy Cập Ngay" data-en="Visit Now">Truy Cập Ngay</span>
+                    </a>
+                </div>
+
+                <!-- Travel Service -->
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="service-title" data-vi="Du Lịch Trung Quốc" data-en="China Travel">Du Lịch Trung Quốc</div>
+                    <div class="service-description" data-vi="Khám phá vẻ đẹp Trung Quốc với các tour du lịch chất lượng cao, giá cả hợp lý" data-en="Discover China's beauty with high-quality tours at reasonable prices">
+                        Khám phá vẻ đẹp Trung Quốc với các tour du lịch chất lượng cao, giá cả hợp lý
+                    </div>
+                    <a href="https://abcxyzdustry.github.io/halong-tour-website/" target="_blank" class="service-btn">
+                        <i class="fas fa-external-link-alt"></i> 
+                        <span data-vi="Khám Phá Tour" data-en="Explore Tours">Khám Phá Tour</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="thank-you" style="margin-top: 30px;">
+                <i class="fas fa-handshake"></i> 
+                <span data-vi="Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!" data-en="Thank you for trusting and using our services!">
+                    Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!
+                </span>
             </div>
         </div>
 
