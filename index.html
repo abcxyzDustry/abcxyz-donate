@@ -244,6 +244,15 @@
             margin: 15px 0;
             border-radius: 10px;
             border: 1px solid #ddd;
+            position: relative;
+        }
+
+        .plugin-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
 
         .plugin-price {
@@ -261,6 +270,19 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
         .feedback-form {
@@ -294,6 +316,39 @@
             border-radius: 5px;
             cursor: pointer;
             margin-bottom: 20px;
+        }
+
+        /* Auth Forms */
+        .auth-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .auth-switch a {
+            color: #e3344e;
+            cursor: pointer;
+            text-decoration: underline;
         }
 
         /* Admin Login */
@@ -381,6 +436,13 @@
             margin: 8px 0;
             border-radius: 5px;
             border-left: 4px solid #4CAF50;
+        }
+
+        .user-orders {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
         }
 
         .loading {
@@ -489,6 +551,25 @@
             gap: 20px;
             margin-top: 20px;
         }
+
+        /* User Profile */
+        .user-profile {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .user-info {
+            margin-bottom: 15px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -520,6 +601,44 @@
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
             <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
+
+            <!-- User Auth Section -->
+            <div id="user-auth-section">
+                <div class="auth-form" id="login-form">
+                    <h3 data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</h3>
+                    <input type="email" id="login-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
+                    <input type="password" id="login-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
+                    <div class="auth-switch">
+                        <span data-vi="Chưa có tài khoản? " data-en="Don't have an account? ">Chưa có tài khoản? </span>
+                        <a onclick="showRegisterForm()" data-vi="Đăng ký ngay" data-en="Register now">Đăng ký ngay</a>
+                    </div>
+                </div>
+
+                <div class="auth-form" id="register-form" style="display: none;">
+                    <h3 data-vi="Đăng Ký" data-en="Register">Đăng Ký</h3>
+                    <input type="text" id="register-name" placeholder="Họ tên" data-vi-placeholder="Họ tên" data-en-placeholder="Full name">
+                    <input type="email" id="register-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
+                    <input type="password" id="register-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userRegister()" data-vi="Đăng Ký" data-en="Register">Đăng Ký</button>
+                    <div class="auth-switch">
+                        <span data-vi="Đã có tài khoản? " data-en="Already have an account? ">Đã có tài khoản? </span>
+                        <a onclick="showLoginForm()" data-vi="Đăng nhập" data-en="Login">Đăng nhập</a>
+                    </div>
+                </div>
+
+                <div class="user-profile" id="user-profile" style="display: none;">
+                    <div class="user-info">
+                        <h3 data-vi="Thông Tin Tài Khoản" data-en="Account Information">Thông Tin Tài Khoản</h3>
+                        <p><strong data-vi="Tên:" data-en="Name:">Tên:</strong> <span id="user-display-name"></span></p>
+                        <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
+                    </div>
+                    <div class="user-actions">
+                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
+                        <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
+                    </div>
+                </div>
+            </div>
 
             <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
                 <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
@@ -667,6 +786,7 @@
                     <input type="text" id="pluginName" placeholder="Tên plugin" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
                     <input type="number" id="pluginPrice" placeholder="Giá (VND)" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
                     <textarea id="pluginDescription" placeholder="Mô tả plugin" data-vi-placeholder="Mô tả plugin" data-en-placeholder="Plugin description"></textarea>
+                    <input type="url" id="pluginImage" placeholder="URL ảnh (tùy chọn)" data-vi-placeholder="URL ảnh (tùy chọn)" data-en-placeholder="Image URL (optional)">
                     <button class="submit-btn" onclick="addPlugin()" data-vi="Thêm Plugin" data-en="Add Plugin">Thêm Plugin</button>
                 </div>
 
@@ -693,6 +813,18 @@
                 <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
                     <i class="fab fa-discord"></i> <span data-vi="Liên Hệ Đặt Plugin" data-en="Contact for Plugin">Liên Hệ Đặt Plugin</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- My Orders Page -->
+        <div id="my-orders-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <div class="logo">abcxyz</div>
+            <h1 class="title" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</h1>
+            <p class="subtitle" data-vi="Quản lý đơn hàng bạn đã đặt" data-en="Manage your orders">Quản lý đơn hàng bạn đã đặt</p>
+
+            <div class="user-orders" id="user-orders-list">
+                <div class="loading" data-vi="Đang tải đơn hàng..." data-en="Loading orders...">Đang tải đơn hàng...</div>
             </div>
         </div>
 
@@ -780,6 +912,8 @@
         let currentLanguage = 'vi';
         let isAdminLoggedIn = false;
         let adminToken = localStorage.getItem('adminToken');
+        let userToken = localStorage.getItem('userToken');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
 
         // API Functions
         const api = {
@@ -805,6 +939,7 @@
                 }
             },
 
+            // Admin APIs
             async adminLogin(username, password) {
                 return this.request('/admin/login', {
                     method: 'POST',
@@ -823,6 +958,15 @@
                         'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(pluginData)
+                });
+            },
+
+            async deletePlugin(pluginId, token) {
+                return this.request(`/plugins/${pluginId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
             },
 
@@ -873,6 +1017,29 @@
                     },
                     body: JSON.stringify({ status: status })
                 });
+            },
+
+            // User APIs
+            async userRegister(userData) {
+                return this.request('/users/register', {
+                    method: 'POST',
+                    body: JSON.stringify(userData)
+                });
+            },
+
+            async userLogin(credentials) {
+                return this.request('/users/login', {
+                    method: 'POST',
+                    body: JSON.stringify(credentials)
+                });
+            },
+
+            async getUserOrders(token) {
+                return this.request('/users/orders', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
             }
         };
 
@@ -911,12 +1078,154 @@
             document.getElementById(page + '-page').classList.add('active');
             document.getElementById('menuContent').style.display = 'none';
 
-            // Load data when switching to plugin store
+            // Load data when switching to specific pages
             if (page === 'plugin-store') {
                 loadPlugins();
                 if (isAdminLoggedIn) {
                     loadAdminData();
                 }
+            } else if (page === 'my-orders') {
+                loadUserOrders();
+            }
+        }
+
+        // User Authentication Functions
+        function showLoginForm() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+
+        function showUserProfile() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'block';
+            
+            if (currentUser) {
+                document.getElementById('user-display-name').textContent = currentUser.name;
+                document.getElementById('user-display-email').textContent = currentUser.email;
+            }
+        }
+
+        async function userRegister() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            if (!name || !email || !password) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin!' : 'Please fill in all information!');
+                return;
+            }
+
+            try {
+                const result = await api.userRegister({
+                    name: name.trim(),
+                    email: email.trim(),
+                    password: password
+                });
+
+                if (result.token) {
+                    userToken = result.token;
+                    currentUser = result.user;
+                    
+                    localStorage.setItem('userToken', userToken);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    showUserProfile();
+                    alert(currentLanguage === 'vi' ? 'Đăng ký thành công!' : 'Registration successful!');
+                }
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi đăng ký: ' + error.message 
+                    : 'Registration error: ' + error.message);
+            }
+        }
+
+        async function userLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin!' : 'Please fill in all information!');
+                return;
+            }
+
+            try {
+                const result = await api.userLogin({
+                    email: email.trim(),
+                    password: password
+                });
+
+                if (result.token) {
+                    userToken = result.token;
+                    currentUser = result.user;
+                    
+                    localStorage.setItem('userToken', userToken);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    showUserProfile();
+                    alert(currentLanguage === 'vi' ? 'Đăng nhập thành công!' : 'Login successful!');
+                }
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi đăng nhập: ' + error.message 
+                    : 'Login error: ' + error.message);
+            }
+        }
+
+        function userLogout() {
+            userToken = null;
+            currentUser = null;
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('currentUser');
+            showLoginForm();
+            alert(currentLanguage === 'vi' ? 'Đã đăng xuất!' : 'Logged out!');
+        }
+
+        async function loadUserOrders() {
+            const ordersList = document.getElementById('user-orders-list');
+            
+            if (!userToken) {
+                ordersList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Vui lòng đăng nhập để xem đơn hàng' : 'Please login to view orders') + '</div>';
+                return;
+            }
+
+            try {
+                ordersList.innerHTML = '<div class="loading">' + 
+                    (currentLanguage === 'vi' ? 'Đang tải đơn hàng...' : 'Loading orders...') + '</div>';
+                
+                const orders = await api.getUserOrders(userToken);
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<div class="loading">' + 
+                        (currentLanguage === 'vi' ? 'Chưa có đơn hàng nào.' : 'No orders yet.') + '</div>';
+                    return;
+                }
+
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <strong>${order.plugin_name || 'Custom Plugin'}</strong> - ${parseInt(order.price || 0).toLocaleString()} VND<br>
+                        <small>${currentLanguage === 'vi' ? 'Trạng thái: ' : 'Status: '}
+                            <span class="status-${order.status}">
+                                ${currentLanguage === 'vi' 
+                                    ? (order.status === 'completed' ? 'Đã hoàn thành' : 
+                                       order.status === 'cancelled' ? 'Đã hủy' : 'Chờ xử lý')
+                                    : (order.status === 'completed' ? 'Completed' : 
+                                       order.status === 'cancelled' ? 'Cancelled' : 'Pending')}
+                            </span>
+                        </small><br>
+                        <small>${currentLanguage === 'vi' ? 'Ngày đặt: ' : 'Order date: '}${new Date(order.created_at).toLocaleDateString()}</small>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                ordersList.innerHTML = '<div class="error">' + 
+                    (currentLanguage === 'vi' ? 'Lỗi tải đơn hàng: ' : 'Error loading orders: ') + error.message + '</div>';
             }
         }
 
@@ -938,6 +1247,8 @@
 
                 pluginsList.innerHTML = plugins.map(plugin => `
                     <div class="plugin-item">
+                        ${isAdminLoggedIn ? `<button class="delete-btn" onclick="deletePlugin(${plugin.id})" title="Xóa plugin">✕</button>` : ''}
+                        ${plugin.image_url ? `<img src="${plugin.image_url}" alt="${plugin.name}" class="plugin-image" onerror="this.style.display='none'">` : ''}
                         <h4>⚡ ${plugin.name}</h4>
                         <p>${plugin.description}</p>
                         <div class="plugin-price">${parseInt(plugin.price).toLocaleString()} VND</div>
@@ -956,17 +1267,17 @@
         }
 
         async function buyPlugin(pluginId, pluginName) {
-            const email = prompt(currentLanguage === 'vi' 
-                ? 'Nhập email của bạn để đặt mua ' + pluginName + ':' 
-                : 'Enter your email to purchase ' + pluginName + ':');
-            
-            if (!email) return;
+            if (!userToken) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
+                showLoginForm();
+                return;
+            }
 
             try {
                 const result = await api.createOrder({
                     plugin_id: pluginId,
-                    customer_email: email,
-                    customer_name: 'Customer'
+                    customer_email: currentUser.email,
+                    customer_name: currentUser.name
                 });
 
                 alert(currentLanguage === 'vi' 
@@ -977,6 +1288,23 @@
                 alert(currentLanguage === 'vi' 
                     ? 'Lỗi khi đặt mua: ' + error.message 
                     : 'Purchase error: ' + error.message);
+            }
+        }
+
+        async function deletePlugin(pluginId) {
+            if (!isAdminLoggedIn || !confirm(currentLanguage === 'vi' ? 'Bạn có chắc muốn xóa plugin này?' : 'Are you sure you want to delete this plugin?')) {
+                return;
+            }
+
+            try {
+                await api.deletePlugin(pluginId, adminToken);
+                alert(currentLanguage === 'vi' ? 'Đã xóa plugin!' : 'Plugin deleted!');
+                await loadPlugins();
+                await loadStats();
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi khi xóa plugin: ' + error.message 
+                    : 'Error deleting plugin: ' + error.message);
             }
         }
 
@@ -1187,6 +1515,7 @@
             const name = document.getElementById('pluginName').value;
             const price = document.getElementById('pluginPrice').value;
             const description = document.getElementById('pluginDescription').value;
+            const imageUrl = document.getElementById('pluginImage').value;
 
             if (!name || !price || !description) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin plugin!' : 'Please fill in all plugin information!');
@@ -1194,25 +1523,35 @@
             }
 
             try {
-                const result = await api.addPlugin({
-                    name,
+                const pluginData = {
+                    name: name.trim(),
                     price: parseFloat(price),
-                    description
-                }, adminToken);
+                    description: description.trim()
+                };
+
+                // Thêm image_url nếu có
+                if (imageUrl && imageUrl.trim() !== '') {
+                    pluginData.image_url = imageUrl.trim();
+                }
+
+                const result = await api.addPlugin(pluginData, adminToken);
 
                 if (result.plugin) {
                     alert(currentLanguage === 'vi' 
-                        ? `Đã thêm plugin: ${name}\nGiá: ${price} VND` 
-                        : `Plugin added: ${name}\nPrice: ${price} VND`);
+                        ? `Đã thêm plugin: ${name}\nGiá: ${parseFloat(price).toLocaleString()} VND` 
+                        : `Plugin added: ${name}\nPrice: ${parseFloat(price).toLocaleString()} VND`);
                     
+                    // Reset form
                     document.getElementById('pluginName').value = '';
                     document.getElementById('pluginPrice').value = '';
                     document.getElementById('pluginDescription').value = '';
+                    document.getElementById('pluginImage').value = '';
                     
                     await loadPlugins();
                     await loadStats();
                 }
             } catch (error) {
+                console.error('Add plugin error:', error);
                 alert(currentLanguage === 'vi' 
                     ? 'Lỗi khi thêm plugin: ' + error.message 
                     : 'Error adding plugin: ' + error.message);
@@ -1241,6 +1580,11 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 loadPlugins();
                 loadAdminData();
+            }
+
+            // Check if user is logged in
+            if (userToken && currentUser) {
+                showUserProfile();
             }
 
             // Load plugins on page load
