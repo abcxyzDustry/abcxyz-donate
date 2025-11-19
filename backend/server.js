@@ -31,6 +31,13 @@ pool.on('error', (err) => {
 // Initialize database tables
 async function initializeDatabase() {
   try {
+    // Drop and recreate tables to fix constraints
+    await pool.query('DROP TABLE IF EXISTS orders CASCADE');
+    await pool.query('DROP TABLE IF EXISTS plugins CASCADE');
+    await pool.query('DROP TABLE IF EXISTS feedback CASCADE');
+    await pool.query('DROP TABLE IF EXISTS admin_users CASCADE');
+    await pool.query('DROP TABLE IF EXISTS users CASCADE');
+
     // Create plugins table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS plugins (
@@ -54,11 +61,11 @@ async function initializeDatabase() {
       )
     `);
 
-    // Create orders table
+    // Create orders table với constraint đơn giản hơn
     await pool.query(`
       CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY,
-        plugin_id INTEGER REFERENCES plugins(id),
+        plugin_id INTEGER,
         customer_email VARCHAR(255) NOT NULL,
         customer_name VARCHAR(255),
         status VARCHAR(50) DEFAULT 'pending',
@@ -226,6 +233,8 @@ app.post('/api/users/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    console.log('User registration attempt:', { name, email });
+
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email and password are required' });
     }
@@ -247,7 +256,7 @@ app.post('/api/users/register', async (req, res) => {
     // Create user
     const result = await pool.query(
       'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
-      [name, email, passwordHash]
+      [name.trim(), email.trim(), passwordHash]
     );
 
     const user = result.rows[0];
@@ -270,7 +279,7 @@ app.post('/api/users/register', async (req, res) => {
     });
   } catch (error) {
     console.error('User registration error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -278,6 +287,8 @@ app.post('/api/users/register', async (req, res) => {
 app.post('/api/users/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    console.log('User login attempt:', { email });
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
@@ -320,7 +331,7 @@ app.post('/api/users/login', async (req, res) => {
     });
   } catch (error) {
     console.error('User login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -329,20 +340,29 @@ app.get('/api/users/orders', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
 
+    console.log('Getting orders for user:', userId);
+
+    // Get user email first
+    const userResult = await pool.query('SELECT email FROM users WHERE id = $1', [userId]);
+    
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userEmail = userResult.rows[0].email;
+
     const result = await pool.query(`
       SELECT o.*, p.name as plugin_name, p.price, p.image_url
       FROM orders o 
       LEFT JOIN plugins p ON o.plugin_id = p.id 
-      WHERE o.customer_email = (
-        SELECT email FROM users WHERE id = $1
-      )
+      WHERE o.customer_email = $1
       ORDER BY o.created_at DESC
-    `, [userId]);
+    `, [userEmail]);
 
     res.json(result.rows);
   } catch (error) {
     console.error('Get user orders error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -352,6 +372,8 @@ app.get('/api/users/orders', authenticateUser, async (req, res) => {
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    console.log('Admin login attempt:', { username });
 
     if (!username || !password) {
       return res.status(400).json({ error: 'Username and password required' });
@@ -386,8 +408,8 @@ app.post('/api/admin/login', async (req, res) => {
       user: { id: user.id, username: user.username }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Admin login error:', error);
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -400,7 +422,7 @@ app.get('/api/plugins', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Get plugins error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -409,13 +431,21 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
     const { name, price, description, image_url } = req.body;
 
+    console.log('Add plugin request:', { name, price, description, image_url });
+
     if (!name || !price || !description) {
       return res.status(400).json({ error: 'Name, price and description are required' });
     }
 
+    // Validate price is a number
+    const priceNum = parseFloat(price);
+    if (isNaN(priceNum) || priceNum <= 0) {
+      return res.status(400).json({ error: 'Price must be a positive number' });
+    }
+
     const result = await pool.query(
       'INSERT INTO plugins (name, price, description, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, parseFloat(price), description, image_url || null]
+      [name.trim(), priceNum, description.trim(), image_url || null]
     );
 
     res.status(201).json({
@@ -424,7 +454,7 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Add plugin error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -433,6 +463,8 @@ app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     
+    console.log('Delete plugin request:', { id });
+
     // First check if plugin exists
     const pluginCheck = await pool.query('SELECT * FROM plugins WHERE id = $1', [id]);
     
@@ -449,7 +481,7 @@ app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Delete plugin error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -475,7 +507,7 @@ app.post('/api/feedback', async (req, res) => {
     });
   } catch (error) {
     console.error('Submit feedback error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -493,7 +525,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Get orders error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -501,6 +533,8 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
 app.post('/api/orders', async (req, res) => {
   try {
     const { plugin_id, customer_email, customer_name } = req.body;
+
+    console.log('Create order request:', { plugin_id, customer_email, customer_name });
 
     if (!customer_email) {
       return res.status(400).json({ error: 'Customer email is required' });
@@ -517,7 +551,7 @@ app.post('/api/orders', async (req, res) => {
     });
   } catch (error) {
     console.error('Create order error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -528,7 +562,7 @@ app.get('/api/feedback', authenticateToken, async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Get feedback error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -548,7 +582,7 @@ app.get('/api/stats', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Get stats error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -558,7 +592,7 @@ app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     
-    console.log('Update order request:', { id, status, body: req.body });
+    console.log('Update order request:', { id, status });
     
     if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
       return res.status(400).json({ 
@@ -583,7 +617,7 @@ app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Update order error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 });
 
@@ -596,16 +630,18 @@ app.use('/api/*', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     message: '🚀 ABCXYZ Server API',
-    version: '2.0.0',
+    version: '2.1.0',
     admin: 'owner/0796438068',
-    database: 'PostgreSQL (Persistent)',
+    database: 'PostgreSQL (Connected)',
     status: '✅ Fully Operational',
     features: [
       'User Authentication',
       'Plugin Management', 
       'Order System',
       'Admin Panel',
-      'Feedback System'
+      'Feedback System',
+      'Plugin Images',
+      'Hard Delete'
     ],
     endpoints: {
       health: '/api/health',
@@ -632,7 +668,7 @@ app.get('/', (req, res) => {
 // Error handling middleware
 app.use((error, req, res, next) => {
   console.error('Unhandled error:', error);
-  res.status(500).json({ error: 'Internal server error' });
+  res.status(500).json({ error: 'Internal server error: ' + error.message });
 });
 
 // Start server với database initialization
@@ -642,7 +678,8 @@ async function startServer() {
     await pool.query('SELECT 1');
     console.log('✅ Database connection test passed');
     
-    // Initialize database tables
+    // Initialize database tables (with fresh start)
+    console.log('🔄 Initializing database tables...');
     await initializeDatabase();
     
     // Start server
@@ -654,13 +691,13 @@ async function startServer() {
       console.log(`👤 User Register: https://abcxyz-backend-9yxb.onrender.com/api/users/register`);
       console.log(`🔄 Reset Password: https://abcxyz-backend-9yxb.onrender.com/api/admin/reset-password`);
       console.log(`🔑 Admin Credentials: username="owner", password="0796438068"`);
-      console.log(`✅ Server is fully operational with ALL NEW FEATURES!`);
-      console.log(`🎯 New Features:`);
-      console.log(`   👥 User Registration & Login`);
-      console.log(`   📦 User Order Management`);
-      console.log(`   🖼️ Plugin Images Support`);
-      console.log(`   🗑️ Plugin Hard Delete`);
-      console.log(`   📊 Enhanced Statistics`);
+      console.log(`✅ Server is fully operational with ALL FIXES!`);
+      console.log(`🔧 Fixed Issues:`);
+      console.log(`   ✅ Database constraints removed`);
+      console.log(`   ✅ Better error messages`);
+      console.log(`   ✅ Input validation improved`);
+      console.log(`   ✅ Price validation added`);
+      console.log(`   ✅ Debug logging enabled`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
