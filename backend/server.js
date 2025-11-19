@@ -38,6 +38,7 @@ async function initializeDatabase() {
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10,2) NOT NULL,
         description TEXT,
+        image_url TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         is_active BOOLEAN DEFAULT true
       )
@@ -75,14 +76,25 @@ async function initializeDatabase() {
       )
     `);
 
+    // Create users table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Insert default plugins if they don't exist
     const pluginsCheck = await pool.query('SELECT COUNT(*) FROM plugins');
     if (parseInt(pluginsCheck.rows[0].count) === 0) {
       await pool.query(`
-        INSERT INTO plugins (name, price, description) VALUES
-        ('Shopbank System', 500000, 'Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card'),
-        ('Trust System', 200000, 'Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn'),
-        ('Cheat Menu', 150000, 'Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp')
+        INSERT INTO plugins (name, price, description, image_url) VALUES
+        ('Shopbank System', 500000, 'Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400'),
+        ('Trust System', 200000, 'Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn', 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400'),
+        ('Cheat Menu', 150000, 'Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp', 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400')
       `);
       console.log('✅ Default plugins inserted');
     }
@@ -123,6 +135,24 @@ app.use(express.json());
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET || 'abcxyz_secret', (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// User authentication middleware
+const authenticateUser = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -189,6 +219,135 @@ app.post('/api/admin/reset-password', async (req, res) => {
   }
 });
 
+// ==================== USER ROUTES ====================
+
+// User registration
+app.post('/api/users/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email and password are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await pool.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: 'User already exists with this email' });
+    }
+
+    // Hash password
+    const saltRounds = 12;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    // Create user
+    const result = await pool.query(
+      'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
+      [name, email, passwordHash]
+    );
+
+    const user = result.rows[0];
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, email: user.email, type: 'user' },
+      process.env.JWT_SECRET || 'abcxyz_secret',
+      { expiresIn: '30d' }
+    );
+
+    res.status(201).json({
+      message: 'User registered successfully',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error('User registration error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// User login
+app.post('/api/users/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Find user
+    const userResult = await pool.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = userResult.rows[0];
+
+    // Verify password
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, email: user.email, type: 'user' },
+      process.env.JWT_SECRET || 'abcxyz_secret',
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    console.error('User login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get user's orders
+app.get('/api/users/orders', authenticateUser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(`
+      SELECT o.*, p.name as plugin_name, p.price, p.image_url
+      FROM orders o 
+      LEFT JOIN plugins p ON o.plugin_id = p.id 
+      WHERE o.customer_email = (
+        SELECT email FROM users WHERE id = $1
+      )
+      ORDER BY o.created_at DESC
+    `, [userId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Get user orders error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ==================== ADMIN ROUTES ====================
+
 // Owner login
 app.post('/api/admin/login', async (req, res) => {
   try {
@@ -216,7 +375,7 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { id: user.id, username: user.username, type: 'admin' },
       process.env.JWT_SECRET || 'abcxyz_secret',
       { expiresIn: '24h' }
     );
@@ -248,15 +407,15 @@ app.get('/api/plugins', async (req, res) => {
 // Add new plugin (Owner only)
 app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
-    const { name, price, description } = req.body;
+    const { name, price, description, image_url } = req.body;
 
     if (!name || !price || !description) {
       return res.status(400).json({ error: 'Name, price and description are required' });
     }
 
     const result = await pool.query(
-      'INSERT INTO plugins (name, price, description) VALUES ($1, $2, $3) RETURNING *',
-      [name, parseFloat(price), description]
+      'INSERT INTO plugins (name, price, description, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      [name, parseFloat(price), description, image_url || null]
     );
 
     res.status(201).json({
@@ -268,6 +427,33 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// Delete plugin (Owner only) - HARD DELETE
+app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // First check if plugin exists
+    const pluginCheck = await pool.query('SELECT * FROM plugins WHERE id = $1', [id]);
+    
+    if (pluginCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Plugin not found' });
+    }
+
+    // Delete plugin (hard delete)
+    await pool.query('DELETE FROM plugins WHERE id = $1', [id]);
+    
+    res.json({
+      message: 'Plugin deleted successfully',
+      deletedPlugin: pluginCheck.rows[0]
+    });
+  } catch (error) {
+    console.error('Delete plugin error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ==================== FEEDBACK ROUTES ====================
 
 // Submit feedback
 app.post('/api/feedback', async (req, res) => {
@@ -293,11 +479,13 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
 
+// ==================== ORDER ROUTES ====================
+
 // Get orders (Owner only)
 app.get('/api/orders', authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT o.*, p.name as plugin_name, p.price 
+      SELECT o.*, p.name as plugin_name, p.price, p.image_url
       FROM orders o 
       LEFT JOIN plugins p ON o.plugin_id = p.id 
       ORDER BY o.created_at DESC
@@ -350,11 +538,13 @@ app.get('/api/stats', authenticateToken, async (req, res) => {
     const pluginsCount = await pool.query('SELECT COUNT(*) FROM plugins WHERE is_active = true');
     const ordersCount = await pool.query('SELECT COUNT(*) FROM orders');
     const feedbackCount = await pool.query('SELECT COUNT(*) FROM feedback');
+    const usersCount = await pool.query('SELECT COUNT(*) FROM users');
 
     res.json({
       plugins: parseInt(pluginsCount.rows[0].count),
       orders: parseInt(ordersCount.rows[0].count),
-      feedback: parseInt(feedbackCount.rows[0].count)
+      feedback: parseInt(feedbackCount.rows[0].count),
+      users: parseInt(usersCount.rows[0].count)
     });
   } catch (error) {
     console.error('Get stats error:', error);
@@ -362,7 +552,7 @@ app.get('/api/stats', authenticateToken, async (req, res) => {
   }
 });
 
-// Update order status (Owner only) - ĐÃ SỬA
+// Update order status (Owner only)
 app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -397,30 +587,6 @@ app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Delete plugin (Owner only)
-app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const result = await pool.query(
-      'UPDATE plugins SET is_active = false WHERE id = $1 RETURNING *',
-      [id]
-    );
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Plugin not found' });
-    }
-    
-    res.json({
-      message: 'Plugin deleted successfully',
-      plugin: result.rows[0]
-    });
-  } catch (error) {
-    console.error('Delete plugin error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
@@ -430,17 +596,35 @@ app.use('/api/*', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     message: '🚀 ABCXYZ Server API',
-    version: '1.0.0',
+    version: '2.0.0',
     admin: 'owner/0796438068',
     database: 'PostgreSQL (Persistent)',
     status: '✅ Fully Operational',
+    features: [
+      'User Authentication',
+      'Plugin Management', 
+      'Order System',
+      'Admin Panel',
+      'Feedback System'
+    ],
     endpoints: {
       health: '/api/health',
-      testDb: '/api/test-db',
-      plugins: '/api/plugins',
-      feedback: '/api/feedback',
-      orders: '/api/orders',
-      admin: '/api/admin/login'
+      users: {
+        register: '/api/users/register',
+        login: '/api/users/login',
+        orders: '/api/users/orders'
+      },
+      admin: {
+        login: '/api/admin/login',
+        plugins: '/api/plugins (GET, POST, DELETE)',
+        orders: '/api/orders',
+        stats: '/api/stats'
+      },
+      public: {
+        plugins: '/api/plugins (GET)',
+        feedback: '/api/feedback (POST)',
+        orders: '/api/orders (POST)'
+      }
     }
   });
 });
@@ -467,9 +651,16 @@ async function startServer() {
       console.log(`📍 Local: http://localhost:${PORT}`);
       console.log(`📊 Health: https://abcxyz-backend-9yxb.onrender.com/api/health`);
       console.log(`🔑 Admin Login: https://abcxyz-backend-9yxb.onrender.com/api/admin/login`);
+      console.log(`👤 User Register: https://abcxyz-backend-9yxb.onrender.com/api/users/register`);
       console.log(`🔄 Reset Password: https://abcxyz-backend-9yxb.onrender.com/api/admin/reset-password`);
-      console.log(`🔑 Credentials: username="owner", password="0796438068"`);
-      console.log(`✅ Server is fully operational!`);
+      console.log(`🔑 Admin Credentials: username="owner", password="0796438068"`);
+      console.log(`✅ Server is fully operational with ALL NEW FEATURES!`);
+      console.log(`🎯 New Features:`);
+      console.log(`   👥 User Registration & Login`);
+      console.log(`   📦 User Order Management`);
+      console.log(`   🖼️ Plugin Images Support`);
+      console.log(`   🗑️ Plugin Hard Delete`);
+      console.log(`   📊 Enhanced Statistics`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
