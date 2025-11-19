@@ -13,9 +13,9 @@ app.use(express.json());
 
 // In-memory database (luôn hoạt động)
 let plugins = [
-  { id: 1, name: "Auto Factory", price: 150000, description: "Tự động hóa hệ thống sản xuất trong game, tối ưu hiệu suất", created_at: new Date(), is_active: true },
-  { id: 2, name: "Advanced Defense", price: 200000, description: "Hệ thống phòng thủ thông minh với AI tiên tiến", created_at: new Date(), is_active: true },
-  { id: 3, name: "Statistics Pro", price: 100000, description: "Theo dõi và phân tích chi tiết hiệu suất game", created_at: new Date(), is_active: true }
+  { id: 1, name: "Shopbank System", price: 500000, description: "Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card", created_at: new Date(), is_active: true },
+  { id: 2, name: "Trust System", price: 200000, description: "Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn", created_at: new Date(), is_active: true },
+  { id: 3, name: "Cheat Menu", price: 150000, description: "Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp", created_at: new Date(), is_active: true }
 ];
 
 let feedbacks = [];
