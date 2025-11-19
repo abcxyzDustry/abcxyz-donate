@@ -128,14 +128,15 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Routes
+// ==================== ROUTES ====================
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'ABCXYZ Server API is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    version: '1.0.0'
   });
 });
 
@@ -159,6 +160,17 @@ app.get('/api/test-db', async (req, res) => {
       error: error.message
     });
   }
+});
+
+// Check environment variables
+app.get('/api/env-check', (req, res) => {
+  res.json({
+    port: process.env.PORT,
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    hasDatabaseUrl: !!process.env.DATABASE_URL,
+    nodeEnv: process.env.NODE_ENV,
+    databaseUrlLength: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0
+  });
 });
 
 // Admin login
@@ -249,12 +261,15 @@ app.post('/api/feedback', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    await pool.query(
-      'INSERT INTO feedback (message, user_email) VALUES ($1, $2)',
+    const result = await pool.query(
+      'INSERT INTO feedback (message, user_email) VALUES ($1, $2) RETURNING *',
       [message, email || null]
     );
 
-    res.status(201).json({ message: 'Feedback submitted successfully' });
+    res.status(201).json({ 
+      message: 'Feedback submitted successfully',
+      id: result.rows[0].id
+    });
   } catch (error) {
     console.error('Submit feedback error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -315,9 +330,83 @@ app.get('/api/feedback', authenticateToken, async (req, res) => {
   }
 });
 
-// 404 handler
+// Get stats (Admin only)
+app.get('/api/stats', authenticateToken, async (req, res) => {
+  try {
+    const pluginsCount = await pool.query('SELECT COUNT(*) FROM plugins WHERE is_active = true');
+    const ordersCount = await pool.query('SELECT COUNT(*) FROM orders');
+    const feedbackCount = await pool.query('SELECT COUNT(*) FROM feedback');
+    
+    res.json({
+      plugins: parseInt(pluginsCount.rows[0].count),
+      orders: parseInt(ordersCount.rows[0].count),
+      feedback: parseInt(feedbackCount.rows[0].count)
+    });
+  } catch (error) {
+    console.error('Get stats error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete plugin (Admin only)
+app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await pool.query('UPDATE plugins SET is_active = false WHERE id = $1', [id]);
+    
+    res.json({ message: 'Plugin deleted successfully' });
+  } catch (error) {
+    console.error('Delete plugin error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update order status (Admin only)
+app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (!['pending', 'completed', 'cancelled'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+    
+    const result = await pool.query(
+      'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
+      [status, id]
+    );
+    
+    res.json({
+      message: 'Order status updated successfully',
+      order: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Update order error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: '🚀 ABCXYZ Server API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      testDb: '/api/test-db',
+      plugins: '/api/plugins',
+      feedback: '/api/feedback',
+      orders: '/api/orders',
+      admin: '/api/admin/login'
+    },
+    documentation: 'Check README for API documentation'
+  });
 });
 
 // Error handling middleware
@@ -326,8 +415,13 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 API Health: http://localhost:${PORT}/api/health`);
-  console.log(`🗄️ DB Test: http://localhost:${PORT}/api/test-db`);
+  console.log(`📍 Local: http://localhost:${PORT}`);
+  console.log(`📊 Health: http://0.0.0.0:${PORT}/api/health`);
+  console.log(`🗄️ DB Test: http://0.0.0.0:${PORT}/api/test-db`);
+  console.log(`🔧 Env Check: http://0.0.0.0:${PORT}/api/env-check`);
 });
+
+module.exports = app;
