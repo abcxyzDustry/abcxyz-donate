@@ -570,6 +570,73 @@
             gap: 10px;
             justify-content: center;
         }
+
+        /* Download Section Styles */
+        .download-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-section h3 {
+            color: #e3344e;
+            margin-bottom: 15px;
+        }
+
+        .download-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .download-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-align: center;
+            min-height: 50px;
+        }
+
+        .download-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .download-btn.android {
+            background: #34A853;
+        }
+
+        .download-btn.windows {
+            background: #0078D7;
+        }
+
+        .download-btn.ios {
+            background: #000000;
+        }
+
+        .download-btn i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .download-note {
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -685,6 +752,13 @@
         <!-- Home Page -->
         <div id="home-page" class="page-content">
             <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            
+            <!-- Language Switcher for Home Page -->
+            <div class="donate-language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Chào Mừng Đến Với ABCXYZ Mindustry Server" data-en="Welcome to ABCXYZ Mindustry Server">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
             <p class="subtitle" data-vi="Máy chủ Mindustry Server của Việt Nam" data-en="Vietnam's Mindustry Server">Máy chủ Mindustry Server của Việt Nam</p>
@@ -700,6 +774,46 @@
                     <li data-vi="Plugin độc quyền và hấp dẫn" data-en="Exclusive and attractive plugins">Plugin độc quyền và hấp dẫn</li>
                     <li data-vi="Hỗ trợ kỹ thuật nhanh chóng" data-en="Fast technical support">Hỗ trợ kỹ thuật nhanh chóng</li>
                 </ul>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <h3 data-vi="Bạn muốn tải game phiên bản mới nhất?" data-en="Want to download the latest version of the game?">
+                    Bạn muốn tải game phiên bản mới nhất?
+                </h3>
+                <p data-vi="Hãy bấm vào phiên bản mà bạn muốn tải dưới đây:" data-en="Click on the version you want to download below:">
+                    Hãy bấm vào phiên bản mà bạn muốn tải dưới đây:
+                </p>
+                
+                <div class="download-grid">
+                    <a href="https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/build/1423268/5520270-unpacked-default?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20251119%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20251119T222438Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=7e4467d6e698970d99da3ce3096028083e0c029a34855ebb8bd411ddb3ef6f13" 
+                       target="_blank" class="download-btn android">
+                        <i class="fab fa-android"></i>
+                        <span data-vi="Mindustry v153 Android" data-en="Mindustry v153 Android">Mindustry v153 Android</span>
+                    </a>
+                    
+                    <a href="https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/build/1423264/5520251-archive-default?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20251119%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20251119T222602Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=c2b5f2b19db0c238b2359d29fa46eb9e701274586dde1623ef7aa8c5486ab50f" 
+                       target="_blank" class="download-btn windows">
+                        <i class="fab fa-windows"></i>
+                        <span data-vi="Mindustry v153 Windows 64bit" data-en="Mindustry v153 Windows 64bit">Mindustry v153 Windows 64bit</span>
+                    </a>
+                    
+                    <a href="https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/build/1423265/5520255-archive-default?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20251119%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20251119T222632Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=5700fc1db76c5367de28f00e76a3d50d4da04c94193b731b98c0e089b96a2c28" 
+                       target="_blank" class="download-btn windows">
+                        <i class="fab fa-windows"></i>
+                        <span data-vi="Mindustry v153 Windows 32bit" data-en="Mindustry v153 Windows 32bit">Mindustry v153 Windows 32bit</span>
+                    </a>
+                    
+                    <a href="https://testflight.apple.com/join/79Azm1hZ" 
+                       target="_blank" class="download-btn ios">
+                        <i class="fab fa-apple"></i>
+                        <span data-vi="Mindustry v153 iOS (TestFlight)" data-en="Mindustry v153 iOS (TestFlight)">Mindustry v153 iOS (TestFlight)</span>
+                    </a>
+                </div>
+                
+                <div class="download-note" data-vi="⚠️ Lưu ý: Các liên kết tải game được cung cấp từ nhà phát triển chính thức" data-en="⚠️ Note: Game download links are provided from the official developer">
+                    ⚠️ Lưu ý: Các liên kết tải game được cung cấp từ nhà phát triển chính thức
+                </div>
             </div>
 
             <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
