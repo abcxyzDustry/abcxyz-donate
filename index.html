@@ -633,10 +633,12 @@
             <!-- Admin Login Form -->
             <div class="login-form" id="adminLoginForm" style="display: none;">
                 <h3><i class="fas fa-user-shield"></i> <span data-vi="Đăng Nhập Admin" data-en="Admin Login">Đăng Nhập Admin</span></h3>
-                <input type="text" id="adminUsername" placeholder="Username" data-vi-placeholder="Tên đăng nhập" data-en-placeholder="Username">
-                <input type="password" id="adminPassword" placeholder="Password" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                <input type="text" id="adminUsername" placeholder="Tên đăng nhập" data-vi-placeholder="Tên đăng nhập" data-en-placeholder="Username">
+                <input type="password" id="adminPassword" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
                 <button class="submit-btn" onclick="adminLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
-                <!-- ĐÃ XÓA THÔNG TIN ĐĂNG NHẬP MẪU -->
+                <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                    <span data-vi="Mật khẩu mặc định: 0796438068" data-en="Default password: 0796438068">Mật khẩu mặc định: 0796438068</span>
+                </div>
             </div>
 
             <!-- Plugins List -->
@@ -662,9 +664,9 @@
 
                 <div class="plugin-form">
                     <h4 data-vi="Thêm Plugin Mới" data-en="Add New Plugin">Thêm Plugin Mới</h4>
-                    <input type="text" id="pluginName" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
-                    <input type="number" id="pluginPrice" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
-                    <textarea id="pluginDescription" data-vi-placeholder="Mô tả plugin" data-en-placeholder="Plugin description"></textarea>
+                    <input type="text" id="pluginName" placeholder="Tên plugin" data-vi-placeholder="Tên plugin" data-en-placeholder="Plugin name">
+                    <input type="number" id="pluginPrice" placeholder="Giá (VND)" data-vi-placeholder="Giá (VND)" data-en-placeholder="Price (VND)">
+                    <textarea id="pluginDescription" placeholder="Mô tả plugin" data-vi-placeholder="Mô tả plugin" data-en-placeholder="Plugin description"></textarea>
                     <button class="submit-btn" onclick="addPlugin()" data-vi="Thêm Plugin" data-en="Add Plugin">Thêm Plugin</button>
                 </div>
 
@@ -758,8 +760,8 @@
             <div class="bank-info">
                 <h3 data-vi="Gửi Góp Ý Của Bạn" data-en="Send Your Feedback">Gửi Góp Ý Của Bạn</h3>
                 <div class="feedback-form">
-                    <input type="email" id="feedback-email" data-vi-placeholder="Email (tùy chọn)" data-en-placeholder="Email (optional)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                    <textarea id="feedback-text" data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-en-placeholder="Please share your opinions, feedback or suggestions for the server..."></textarea>
+                    <input type="email" id="feedback-email" placeholder="Email (tùy chọn)" data-vi-placeholder="Email (tùy chọn)" data-en-placeholder="Email (optional)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <textarea id="feedback-text" placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-en-placeholder="Please share your opinions, feedback or suggestions for the server..."></textarea>
                     <button class="submit-btn" onclick="submitFeedback()" data-vi="Gửi Góp Ý" data-en="Submit Feedback">Gửi Góp Ý</button>
                 </div>
             </div>
@@ -792,7 +794,8 @@
                     });
                     
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        const errorText = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
                     }
                     
                     return await response.json();
@@ -865,9 +868,10 @@
                 return this.request(`/orders/${orderId}`, {
                     method: 'PATCH',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ status })
+                    body: JSON.stringify({ status: status })
                 });
             }
         };
@@ -1040,7 +1044,9 @@
                     alert(result.error || (currentLanguage === 'vi' ? 'Đăng nhập thất bại!' : 'Login failed!'));
                 }
             } catch (error) {
-                alert(currentLanguage === 'vi' ? 'Lỗi kết nối server!' : 'Server connection error!');
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi đăng nhập: ' + error.message 
+                    : 'Login error: ' + error.message);
             }
         }
 
@@ -1165,7 +1171,10 @@
                 
                 alert(currentLanguage === 'vi' ? 'Đã cập nhật trạng thái đơn hàng!' : 'Order status updated!');
             } catch (error) {
-                alert(currentLanguage === 'vi' ? 'Lỗi cập nhật đơn hàng' : 'Error updating order');
+                console.error('Update order error:', error);
+                alert(currentLanguage === 'vi' 
+                    ? 'Lỗi cập nhật đơn hàng: ' + error.message 
+                    : 'Error updating order: ' + error.message);
             }
         }
 
