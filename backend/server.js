@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Database connection với Supabase
+// Database connection với Render PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { 
@@ -25,7 +25,7 @@ const testConnection = async () => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT NOW() as time, version() as version');
-    console.log('✅ Supabase Database Connected Successfully!');
+    console.log('✅ PostgreSQL Database Connected Successfully!');
     console.log('📅 Time:', result.rows[0].time);
     console.log('🗄️ Database Version:', result.rows[0].version.split(',')[0]);
     client.release();
@@ -83,13 +83,18 @@ const initDatabase = async () => {
       )
     `);
 
-    // Create default admin user
-    const hashedPassword = await bcrypt.hash('123456', 10);
+    // Create OWNER account với password mới
+    const hashedPassword = await bcrypt.hash('11111111Ab@', 12);
+    
+    // Xóa admin cũ nếu tồn tại và tạo owner mới
+    await pool.query('DELETE FROM admin_users WHERE username IN ($1, $2)', ['admin', 'owner']);
+    
     await pool.query(`
       INSERT INTO admin_users (username, password_hash) 
-      VALUES ('admin', $1) 
-      ON CONFLICT (username) DO NOTHING
-    `, [hashedPassword]);
+      VALUES ($1, $2)
+    `, ['owner', hashedPassword]);
+
+    console.log('✅ Owner account created: username="owner", password="11111111Ab@"');
 
     // Insert sample plugins
     await pool.query(`
@@ -136,7 +141,8 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'ABCXYZ Server API is running',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    admin: 'owner/11111111Ab@'
   });
 });
 
@@ -146,12 +152,13 @@ app.get('/api/test-db', async (req, res) => {
     const result = await pool.query('SELECT NOW() as current_time, version() as version');
     res.json({
       status: 'success',
-      message: '✅ Connected to Supabase PostgreSQL',
+      message: '✅ Connected to PostgreSQL',
       database: {
         time: result.rows[0].current_time,
         version: result.rows[0].version.split(',')[0]
       },
-      project: 'abcxyz-server'
+      project: 'abcxyz-server',
+      admin: 'owner/11111111Ab@'
     });
   } catch (error) {
     res.status(500).json({
@@ -169,11 +176,11 @@ app.get('/api/env-check', (req, res) => {
     hasJwtSecret: !!process.env.JWT_SECRET,
     hasDatabaseUrl: !!process.env.DATABASE_URL,
     nodeEnv: process.env.NODE_ENV,
-    databaseUrlLength: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0
+    adminAccount: 'owner/11111111Ab@'
   });
 });
 
-// Admin login
+// Admin/Owner login
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -228,7 +235,7 @@ app.get('/api/plugins', async (req, res) => {
   }
 });
 
-// Add new plugin (Admin only)
+// Add new plugin (Owner only)
 app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
     const { name, price, description } = req.body;
@@ -276,7 +283,7 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
 
-// Get orders (Admin only)
+// Get orders (Owner only)
 app.get('/api/orders', authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(`
@@ -317,7 +324,7 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
-// Get feedback (Admin only)
+// Get feedback (Owner only)
 app.get('/api/feedback', authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(
@@ -330,17 +337,19 @@ app.get('/api/feedback', authenticateToken, async (req, res) => {
   }
 });
 
-// Get stats (Admin only)
+// Get stats (Owner only)
 app.get('/api/stats', authenticateToken, async (req, res) => {
   try {
     const pluginsCount = await pool.query('SELECT COUNT(*) FROM plugins WHERE is_active = true');
     const ordersCount = await pool.query('SELECT COUNT(*) FROM orders');
     const feedbackCount = await pool.query('SELECT COUNT(*) FROM feedback');
+    const adminCount = await pool.query('SELECT COUNT(*) FROM admin_users');
     
     res.json({
       plugins: parseInt(pluginsCount.rows[0].count),
       orders: parseInt(ordersCount.rows[0].count),
-      feedback: parseInt(feedbackCount.rows[0].count)
+      feedback: parseInt(feedbackCount.rows[0].count),
+      admin_users: parseInt(adminCount.rows[0].count)
     });
   } catch (error) {
     console.error('Get stats error:', error);
@@ -348,7 +357,7 @@ app.get('/api/stats', authenticateToken, async (req, res) => {
   }
 });
 
-// Delete plugin (Admin only)
+// Delete plugin (Owner only)
 app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -362,7 +371,7 @@ app.delete('/api/plugins/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Update order status (Admin only)
+// Update order status (Owner only)
 app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -387,6 +396,45 @@ app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// Create new admin user (Owner only)
+app.post('/api/admin/users', authenticateToken, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    
+    const result = await pool.query(
+      'INSERT INTO admin_users (username, password_hash) VALUES ($1, $2) RETURNING id, username, created_at',
+      [username, hashedPassword]
+    );
+
+    res.status(201).json({
+      message: 'Admin user created successfully',
+      user: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Create admin user error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get admin users (Owner only)
+app.get('/api/admin/users', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, username, created_at FROM admin_users ORDER BY created_at DESC'
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Get admin users error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
@@ -397,6 +445,7 @@ app.get('/', (req, res) => {
   res.json({
     message: '🚀 ABCXYZ Server API',
     version: '1.0.0',
+    admin: 'owner/11111111Ab@',
     endpoints: {
       health: '/api/health',
       testDb: '/api/test-db',
@@ -422,6 +471,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`📊 Health: http://0.0.0.0:${PORT}/api/health`);
   console.log(`🗄️ DB Test: http://0.0.0.0:${PORT}/api/test-db`);
   console.log(`🔧 Env Check: http://0.0.0.0:${PORT}/api/env-check`);
+  console.log(`🔑 Owner Account: username="owner", password="11111111Ab@"`);
 });
 
 module.exports = app;
