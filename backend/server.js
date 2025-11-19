@@ -362,19 +362,25 @@ app.get('/api/stats', authenticateToken, async (req, res) => {
   }
 });
 
-// Update order status (Owner only)
+// Update order status (Owner only) - ĐÃ SỬA
 app.patch('/api/orders/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
     
-    if (!['pending', 'completed', 'cancelled'].includes(status)) {
-      return res.status(400).json({ error: 'Invalid status' });
+    console.log('Update order request:', { id, status, body: req.body });
+    
+    if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
+      return res.status(400).json({ 
+        error: 'Invalid status',
+        validStatuses: ['pending', 'completed', 'cancelled'],
+        received: status 
+      });
     }
     
     const result = await pool.query(
       'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
-      [status, id]
+      [status, parseInt(id)]
     );
     
     if (result.rows.length === 0) {
