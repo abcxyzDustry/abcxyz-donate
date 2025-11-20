@@ -46,6 +46,7 @@ async function initializeDatabase() {
         price DECIMAL(10,2) NOT NULL,
         description TEXT,
         image_url TEXT,
+        gallery_images TEXT[],
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         is_active BOOLEAN DEFAULT true
       )
@@ -94,16 +95,34 @@ async function initializeDatabase() {
       )
     `);
 
-    // Insert default plugins if they don't exist
+    // Insert default plugins với ảnh thực tế và mô tả tiếng Anh
     const pluginsCheck = await pool.query('SELECT COUNT(*) FROM plugins');
     if (parseInt(pluginsCheck.rows[0].count) === 0) {
       await pool.query(`
-        INSERT INTO plugins (name, price, description, image_url) VALUES
-        ('Shopbank System', 500000, 'Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400'),
-        ('Trust System', 200000, 'Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn', 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400'),
-        ('Cheat Menu', 150000, 'Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp', 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400')
+        INSERT INTO plugins (name, price, description, image_url, gallery_images) VALUES
+        (
+          'Shopbank System', 
+          500000, 
+          'Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card. | Modern shop bank system with mini casino games inside Mindustry, modern banking system, transfers, loans, credit cards.', 
+          'https://i.imgur.com/S0T2s7q.png',
+          ARRAY['https://i.imgur.com/S0T2s7q.png', 'https://i.imgur.com/wR85ytB.png', 'https://i.imgur.com/P8YtHFc.png']
+        ),
+        (
+          'Trust System', 
+          200000, 
+          'Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn. | Anti-griefer system with player data storage, reputation system for player evaluation, various penalty levels and permanent bans.', 
+          'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400',
+          ARRAY['https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400']
+        ),
+        (
+          'Cheat Menu', 
+          150000, 
+          'Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp. | Exclusive cheat menu system for server owners, admins cannot interfere.', 
+          'https://i.imgur.com/haKTXSM.png',
+          ARRAY['https://i.imgur.com/haKTXSM.png', 'https://i.imgur.com/HaOYFyM.png']
+        )
       `);
-      console.log('✅ Default plugins inserted');
+      console.log('✅ Default plugins inserted with real images and English descriptions');
     }
 
     // Tạo password hash mới cho owner
@@ -308,7 +327,7 @@ app.get('/api/users/orders', authenticateToken, async (req, res) => {
     console.log('User email found:', userEmail);
 
     const result = await pool.query(`
-      SELECT o.*, p.name as plugin_name, p.price, p.image_url
+      SELECT o.*, p.name as plugin_name, p.price, p.image_url, p.gallery_images
       FROM orders o 
       LEFT JOIN plugins p ON o.plugin_id = p.id 
       WHERE o.customer_email = $1
@@ -387,9 +406,9 @@ app.get('/api/plugins', async (req, res) => {
 // Add new plugin (Owner only) - FIXED VERSION
 app.post('/api/plugins', authenticateToken, async (req, res) => {
   try {
-    const { name, price, description, image_url } = req.body;
+    const { name, price, description, image_url, gallery_images } = req.body;
 
-    console.log('Add plugin request:', { name, price, description, image_url });
+    console.log('Add plugin request:', { name, price, description, image_url, gallery_images });
 
     // Check if all required fields are present and not empty
     if (!name || name.trim() === '' || !price || !description || description.trim() === '') {
@@ -406,8 +425,8 @@ app.post('/api/plugins', authenticateToken, async (req, res) => {
     }
 
     const result = await pool.query(
-      'INSERT INTO plugins (name, price, description, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name.trim(), priceNum, description.trim(), image_url || null]
+      'INSERT INTO plugins (name, price, description, image_url, gallery_images) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [name.trim(), priceNum, description.trim(), image_url || null, gallery_images || null]
     );
 
     res.status(201).json({
@@ -479,7 +498,7 @@ app.post('/api/feedback', async (req, res) => {
 app.get('/api/orders', authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT o.*, p.name as plugin_name, p.price, p.image_url
+      SELECT o.*, p.name as plugin_name, p.price, p.image_url, p.gallery_images
       FROM orders o 
       LEFT JOIN plugins p ON o.plugin_id = p.id 
       ORDER BY o.created_at DESC
@@ -592,7 +611,7 @@ app.use('/api/*', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     message: '🚀 ABCXYZ Server API',
-    version: '2.2.0',
+    version: '2.3.0',
     admin: 'owner/0796438068',
     database: 'PostgreSQL (Connected)',
     status: '✅ Fully Operational',
@@ -602,8 +621,8 @@ app.get('/', (req, res) => {
       'Order System',
       'Admin Panel',
       'Feedback System',
-      'Plugin Images',
-      'Hard Delete'
+      'Plugin Images & Gallery',
+      'English + Vietnamese Descriptions'
     ],
     endpoints: {
       health: '/api/health',
@@ -652,12 +671,12 @@ async function startServer() {
       console.log(`🔑 Admin Login: https://abcxyz-backend-9yxb.onrender.com/api/admin/login`);
       console.log(`👤 User Register: https://abcxyz-backend-9yxb.onrender.com/api/users/register`);
       console.log(`🔑 Admin Credentials: username="owner", password="0796438068"`);
-      console.log(`✅ Server is fully operational with ALL FIXES!`);
-      console.log(`🔧 Fixed Issues:`);
-      console.log(`   ✅ User authentication fixed`);
-      console.log(`   ✅ Plugin validation improved`);
-      console.log(`   ✅ Better error handling`);
-      console.log(`   ✅ Input trimming added`);
+      console.log(`✅ Server is fully operational with REAL PLUGIN IMAGES!`);
+      console.log(`🆕 New Features:`);
+      console.log(`   ✅ Real plugin images from Imgur`);
+      console.log(`   ✅ Multiple gallery images support`);
+      console.log(`   ✅ Bilingual descriptions (VI + EN)`);
+      console.log(`   ✅ Enhanced plugin data structure`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
