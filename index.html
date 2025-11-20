@@ -699,6 +699,45 @@
             cursor: pointer;
             margin-top: 15px;
         }
+
+        /* Bank Transfer Modal */
+        .bank-transfer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bank-transfer-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .confirm-order-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+
+        .confirm-order-btn:hover {
+            background: #45a049;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -735,6 +774,53 @@
             </div>
             
             <button class="close-btn" onclick="closePaymentModal()" data-vi="Đóng" data-en="Close">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Bank Transfer Modal -->
+    <div class="bank-transfer-modal" id="bankTransferModal">
+        <div class="bank-transfer-content">
+            <h3 data-vi="Chuyển Khoản Ngân Hàng" data-en="Bank Transfer">Chuyển Khoản Ngân Hàng</h3>
+            <p data-vi="Vui lòng chuyển khoản theo thông tin sau:" data-en="Please transfer with the following information:">Vui lòng chuyển khoản theo thông tin sau:</p>
+            
+            <div class="qr-code">
+                <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=thanh+toan+plugin+abcxyz" 
+                     alt="QR Code Bank Transfer">
+            </div>
+
+            <div class="bank-info">
+                <div class="info-item">
+                    <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
+                    <span class="info-value">VIB</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Số tài khoản:" data-en="Account Number:">Số tài khoản:</span>
+                    <span class="info-value">068394585</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
+                    <span class="info-value">KIỀU THANH HẢI</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
+                    <span class="info-value" id="transferAmount" style="color: #e3344e; font-weight: bold;"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
+                    <span class="info-value" id="transferDescription" style="color: #e3344e; font-weight: bold;"></span>
+                </div>
+            </div>
+
+            <p style="margin: 15px 0; font-size: 0.9em; color: #666;">
+                <span data-vi="Sau khi chuyển khoản, vui lòng bấm 'Xác Nhận Đã Chuyển Khoản' để chúng tôi xử lý đơn hàng của bạn." data-en="After transferring, please click 'Confirm Transfer' for us to process your order.">
+                    Sau khi chuyển khoản, vui lòng bấm 'Xác Nhận Đã Chuyển Khoản' để chúng tôi xử lý đơn hàng của bạn.
+                </span>
+            </p>
+
+            <button class="confirm-order-btn" onclick="confirmBankTransfer()" data-vi="Xác Nhận Đã Chuyển Khoản" data-en="Confirm Transfer">
+                Xác Nhận Đã Chuyển Khoản
+            </button>
+            <button class="close-btn" onclick="closeBankTransferModal()" data-vi="Đóng" data-en="Close">Đóng</button>
         </div>
     </div>
 
@@ -1142,6 +1228,7 @@
         let userToken = localStorage.getItem('userToken');
         let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         let currentPluginForPayment = null;
+        let currentPluginPrice = 0;
 
         // API Functions - FIXED VERSION
         const api = {
@@ -1272,15 +1359,15 @@
         };
 
         // Payment Modal Functions
-        function showPaymentModal(pluginId, pluginName) {
+        function showPaymentModal(pluginId, pluginName, pluginPrice) {
             if (!userToken) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
                 showPage('account');
                 return;
             }
 
-            currentPluginForPayment = { id: pluginId, name: pluginName };
-            document.getElementById('pluginPaymentName').textContent = pluginName;
+            currentPluginForPayment = { id: pluginId, name: pluginName, price: pluginPrice };
+            document.getElementById('pluginPaymentName').textContent = `${pluginName} - ${parseInt(pluginPrice).toLocaleString()} VND`;
             document.getElementById('paymentModal').style.display = 'flex';
         }
 
@@ -1289,35 +1376,68 @@
             currentPluginForPayment = null;
         }
 
-        async function selectPayment(method) {
+        function selectPayment(method) {
             if (method === 'bank') {
                 closePaymentModal();
-                // Hiển thị thông tin chuyển khoản
-                alert(currentLanguage === 'vi' 
-                    ? 'Vui lòng chuyển khoản theo thông tin sau:\n\nNgân hàng: VIB\nSố tài khoản: 068394585\nChủ tài khoản: KIỀU THANH HẢI\nNội dung: Mua plugin ' + currentPluginForPayment.name + '\n\nSau khi chuyển khoản, đơn hàng sẽ được xác nhận trong vòng 24h.'
-                    : 'Please transfer with the following information:\n\nBank: VIB\nAccount Number: 068394585\nAccount Holder: KIỀU THANH HẢI\nDescription: Purchase plugin ' + currentPluginForPayment.name + '\n\nAfter transfer, your order will be confirmed within 24 hours.');
-                
-                // Tạo đơn hàng
-                try {
-                    const result = await api.createOrder({
-                        plugin_id: currentPluginForPayment.id,
-                        customer_email: currentUser.email,
-                        customer_name: currentUser.name
-                    });
-
-                    alert(currentLanguage === 'vi' 
-                        ? 'Đã tạo đơn hàng thành công! Vui lòng chuyển khoản và chờ xác nhận.' 
-                        : 'Order created successfully! Please transfer and wait for confirmation.');
-
-                } catch (error) {
-                    alert(currentLanguage === 'vi' 
-                        ? 'Lỗi khi tạo đơn hàng: ' + error.message 
-                        : 'Error creating order: ' + error.message);
-                }
+                showBankTransferModal();
             } else {
                 alert(currentLanguage === 'vi' 
                     ? 'Phương thức thanh toán này sẽ khả dụng trong thời gian tới!' 
                     : 'This payment method will be available soon!');
+            }
+        }
+
+        function showBankTransferModal() {
+            if (!currentPluginForPayment) return;
+
+            const modal = document.getElementById('bankTransferModal');
+            const amountElement = document.getElementById('transferAmount');
+            const descriptionElement = document.getElementById('transferDescription');
+
+            // Hiển thị số tiền
+            amountElement.textContent = `${parseInt(currentPluginForPayment.price).toLocaleString()} VND`;
+            
+            // Tạo nội dung chuyển khoản
+            const description = `Mua plugin ${currentPluginForPayment.name}`;
+            descriptionElement.textContent = description;
+
+            // Cập nhật QR code với số tiền và nội dung
+            const qrCodeImg = modal.querySelector('.qr-code img');
+            const encodedDescription = encodeURIComponent(description);
+            qrCodeImg.src = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodedDescription}`;
+
+            modal.style.display = 'flex';
+        }
+
+        function closeBankTransferModal() {
+            document.getElementById('bankTransferModal').style.display = 'none';
+        }
+
+        async function confirmBankTransfer() {
+            if (!currentPluginForPayment) return;
+
+            try {
+                const result = await api.createOrder({
+                    plugin_id: currentPluginForPayment.id,
+                    customer_email: currentUser.email,
+                    customer_name: currentUser.name
+                });
+
+                closeBankTransferModal();
+                
+                alert(currentLanguage === 'vi' 
+                    ? '✅ Đã tạo đơn hàng thành công! Vui lòng chuyển khoản theo thông tin trên và chờ xác nhận. Chúng tôi sẽ liên hệ với bạn trong vòng 24h.' 
+                    : '✅ Order created successfully! Please transfer according to the information above and wait for confirmation. We will contact you within 24 hours.');
+
+                // Load lại danh sách đơn hàng nếu đang ở trang đơn hàng
+                if (document.getElementById('my-orders-page').classList.contains('active')) {
+                    loadUserOrders();
+                }
+
+            } catch (error) {
+                alert(currentLanguage === 'vi' 
+                    ? '❌ Lỗi khi tạo đơn hàng: ' + error.message 
+                    : '❌ Error creating order: ' + error.message);
             }
         }
 
@@ -1547,7 +1667,7 @@
                         <h4>⚡ ${plugin.name}</h4>
                         <p>${plugin.description}</p>
                         <div class="plugin-price">${parseInt(plugin.price).toLocaleString()} VND</div>
-                        <button class="buy-btn" onclick="showPaymentModal(${plugin.id}, '${plugin.name}')" 
+                        <button class="buy-btn" onclick="showPaymentModal(${plugin.id}, '${plugin.name}', ${plugin.price})" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                 `).join('');
@@ -1839,9 +1959,19 @@
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('menuContent');
             const menuBtn = document.querySelector('.menu-btn');
+            const paymentModal = document.getElementById('paymentModal');
+            const bankTransferModal = document.getElementById('bankTransferModal');
             
             if (!menu.contains(event.target) && !menuBtn.contains(event.target)) {
                 menu.style.display = 'none';
+            }
+            
+            if (paymentModal.style.display === 'flex' && event.target === paymentModal) {
+                closePaymentModal();
+            }
+            
+            if (bankTransferModal.style.display === 'flex' && event.target === bankTransferModal) {
+                closeBankTransferModal();
             }
         });
 
