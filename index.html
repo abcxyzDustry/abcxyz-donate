@@ -1358,7 +1358,7 @@
             }
         };
 
-        // Payment Modal Functions
+        // Payment Modal Functions - UPDATED VERSION
         function showPaymentModal(pluginId, pluginName, pluginPrice) {
             if (!userToken) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
@@ -1397,14 +1397,36 @@
             // Hiển thị số tiền
             amountElement.textContent = `${parseInt(currentPluginForPayment.price).toLocaleString()} VND`;
             
-            // Tạo nội dung chuyển khoản
-            const description = `Mua plugin ${currentPluginForPayment.name}`;
+            // Tạo nội dung chuyển khoản dựa trên plugin name
+            let description = '';
+            let qrUrl = '';
+            
+            // Xác định QR code và mô tả dựa trên tên plugin
+            const pluginName = currentPluginForPayment.name.toLowerCase();
+            
+            if (pluginName.includes('shopbank') || pluginName.includes('shop bank')) {
+                description = 'thanh toan shopbank system';
+                qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
+            } 
+            else if (pluginName.includes('trust') && pluginName.includes('system')) {
+                description = 'thanh toan trust system';
+                qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
+            }
+            else if (pluginName.includes('cheat') && pluginName.includes('menu')) {
+                description = 'thanh toan cheat menu';
+                qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
+            }
+            else {
+                // Mặc định cho các plugin khác
+                description = `mua plugin ${currentPluginForPayment.name}`;
+                qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
+            }
+            
             descriptionElement.textContent = description;
 
-            // Cập nhật QR code với số tiền và nội dung
+            // Cập nhật QR code
             const qrCodeImg = modal.querySelector('.qr-code img');
-            const encodedDescription = encodeURIComponent(description);
-            qrCodeImg.src = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodedDescription}`;
+            qrCodeImg.src = qrUrl;
 
             modal.style.display = 'flex';
         }
@@ -1426,8 +1448,8 @@
                 closeBankTransferModal();
                 
                 alert(currentLanguage === 'vi' 
-                    ? '✅ Đã tạo đơn hàng thành công! Vui lòng chuyển khoản theo thông tin trên và chờ xác nhận. Chúng tôi sẽ liên hệ với bạn trong vòng 24h.' 
-                    : '✅ Order created successfully! Please transfer according to the information above and wait for confirmation. We will contact you within 24 hours.');
+                    ? '✅ Đã tạo đơn hàng thành công! Vui lòng chuyển khoản theo thông tin trên và chờ xác nhận. Chúng tôi sẽ liên hệ với bạn trong vòng 15-30 phút.' 
+                    : '✅ Order created successfully! Please transfer according to the information above and wait for confirmation. We will contact you within 15-30 minutes.');
 
                 // Load lại danh sách đơn hàng nếu đang ở trang đơn hàng
                 if (document.getElementById('my-orders-page').classList.contains('active')) {
@@ -1644,7 +1666,7 @@
             }
         }
 
-        // Plugin Management - FIXED
+        // Plugin Management - UPDATED VERSION
         async function loadPlugins() {
             const pluginsList = document.getElementById('plugins-list');
             
@@ -1654,9 +1676,34 @@
                 
                 const plugins = await api.getPlugins();
                 
+                // Nếu không có plugin từ server, hiển thị plugin mặc định
                 if (plugins.length === 0) {
-                    pluginsList.innerHTML = '<div class="loading">' + 
-                        (currentLanguage === 'vi' ? 'Chưa có plugin nào.' : 'No plugins available.') + '</div>';
+                    pluginsList.innerHTML = `
+                        <div class="plugin-item">
+                            <h4>⚡ ShopBank System</h4>
+                            <p>Hệ thống shop và ngân hàng độc quyền cho server</p>
+                            <div class="plugin-price">500,000 VND</div>
+                            <button class="buy-btn" onclick="showPaymentModal(1, 'ShopBank System', 500000)" 
+                                    data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                        </div>
+                        <div class="plugin-item">
+                            <h4>⚡ Trust System</h4>
+                            <p>Hệ thống xếp hạng độ tin cậy cho người chơi</p>
+                            <div class="plugin-price">200,000 VND</div>
+                            <button class="buy-btn" onclick="showPaymentModal(2, 'Trust System', 200000)" 
+                                    data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                        </div>
+                        <div class="plugin-item">
+                            <h4>⚡ Cheat Menu</h4>
+                            <p>Menu cheat với các tính năng đặc biệt</p>
+                            <div class="plugin-price">150,000 VND</div>
+                            <button class="buy-btn" onclick="showPaymentModal(3, 'Cheat Menu', 150000)" 
+                                    data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                        </div>
+                    `;
+                    
+                    // Update language for newly created buttons
+                    changeLanguage(currentLanguage);
                     return;
                 }
 
@@ -1676,8 +1723,33 @@
                 changeLanguage(currentLanguage);
 
             } catch (error) {
-                pluginsList.innerHTML = '<div class="error">' + 
-                    (currentLanguage === 'vi' ? 'Lỗi tải plugins: ' : 'Error loading plugins: ') + error.message + '</div>';
+                // Nếu có lỗi, vẫn hiển thị plugin mặc định
+                pluginsList.innerHTML = `
+                    <div class="plugin-item">
+                        <h4>⚡ ShopBank System</h4>
+                        <p>Hệ thống shop và ngân hàng độc quyền cho server</p>
+                        <div class="plugin-price">500,000 VND</div>
+                        <button class="buy-btn" onclick="showPaymentModal(1, 'ShopBank System', 500000)" 
+                                data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                    </div>
+                    <div class="plugin-item">
+                        <h4>⚡ Trust System</h4>
+                        <p>Hệ thống xếp hạng độ tin cậy cho người chơi</p>
+                        <div class="plugin-price">200,000 VND</div>
+                        <button class="buy-btn" onclick="showPaymentModal(2, 'Trust System', 200000)" 
+                                data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                    </div>
+                    <div class="plugin-item">
+                        <h4>⚡ Cheat Menu</h4>
+                        <p>Menu cheat với các tính năng đặc biệt</p>
+                        <div class="plugin-price">150,000 VND</div>
+                        <button class="buy-btn" onclick="showPaymentModal(3, 'Cheat Menu', 150000)" 
+                                data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
+                    </div>
+                `;
+                
+                // Update language for newly created buttons
+                changeLanguage(currentLanguage);
             }
         }
 
