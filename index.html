@@ -637,10 +637,107 @@
             color: #666;
             font-style: italic;
         }
+
+        /* Payment Modal Styles */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .payment-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #e3344e;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .payment-option.disabled {
+            background: #e9ecef;
+            border-color: #6c757d;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .payment-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #e3344e;
+        }
+
+        .close-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <h3 data-vi="Chọn Phương Thức Thanh Toán" data-en="Select Payment Method">Chọn Phương Thức Thanh Toán</h3>
+            <p data-vi="Vui lòng chọn phương thức thanh toán cho plugin:" data-en="Please select payment method for plugin:">Vui lòng chọn phương thức thanh toán cho plugin:</p>
+            <p id="pluginPaymentName" style="font-weight: bold; color: #e3344e; margin: 10px 0;"></p>
+            
+            <div class="payment-option" onclick="selectPayment('bank')">
+                <div class="payment-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h4 data-vi="Chuyển Khoản Ngân Hàng" data-en="Bank Transfer">Chuyển Khoản Ngân Hàng</h4>
+                <p data-vi="Chuyển khoản qua QR code hoặc số tài khoản" data-en="Transfer via QR code or account number">Chuyển khoản qua QR code hoặc số tài khoản</p>
+            </div>
+            
+            <div class="payment-option disabled">
+                <div class="payment-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h4 data-vi="Thẻ Tín Dụng" data-en="Credit Card">Thẻ Tín Dụng</h4>
+                <p data-vi="Sẽ khả dụng trong thời gian tới" data-en="Coming soon">Sẽ khả dụng trong thời gian tới</p>
+            </div>
+            
+            <div class="payment-option disabled">
+                <div class="payment-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <h4 data-vi="Thẻ Napas" data-en="Napas Card">Thẻ Napas</h4>
+                <p data-vi="Sẽ khả dụng trong thời gian tới" data-en="Coming soon">Sẽ khả dụng trong thời gian tới</p>
+            </div>
+            
+            <button class="close-btn" onclick="closePaymentModal()" data-vi="Đóng" data-en="Close">Đóng</button>
+        </div>
+    </div>
+
     <!-- Menu Button -->
     <button class="menu-btn" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
@@ -651,6 +748,7 @@
         <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
         <a href="#" onclick="showPage('plugin-store')" data-vi="🛒 Cửa Hàng Plugin" data-en="🛒 Plugin Store">🛒 Cửa Hàng Plugin</a>
         <a href="#" onclick="showPage('services')" data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</a>
+        <a href="#" onclick="showPage('account')" data-vi="👤 Tài Khoản" data-en="👤 Account">👤 Tài Khoản</a>
         <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp ý" data-en="💬 Feedback">💬 Góp ý</a>
         <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
     </div>
@@ -668,44 +766,6 @@
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
             <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
-
-            <!-- User Auth Section -->
-            <div id="user-auth-section">
-                <div class="auth-form" id="login-form">
-                    <h3 data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</h3>
-                    <input type="email" id="login-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
-                    <input type="password" id="login-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
-                    <button class="submit-btn" onclick="userLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
-                    <div class="auth-switch">
-                        <span data-vi="Chưa có tài khoản? " data-en="Don't have an account? ">Chưa có tài khoản? </span>
-                        <a onclick="showRegisterForm()" data-vi="Đăng ký ngay" data-en="Register now">Đăng ký ngay</a>
-                    </div>
-                </div>
-
-                <div class="auth-form" id="register-form" style="display: none;">
-                    <h3 data-vi="Đăng Ký" data-en="Register">Đăng Ký</h3>
-                    <input type="text" id="register-name" placeholder="Họ tên" data-vi-placeholder="Họ tên" data-en-placeholder="Full name">
-                    <input type="email" id="register-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
-                    <input type="password" id="register-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
-                    <button class="submit-btn" onclick="userRegister()" data-vi="Đăng Ký" data-en="Register">Đăng Ký</button>
-                    <div class="auth-switch">
-                        <span data-vi="Đã có tài khoản? " data-en="Already have an account? ">Đã có tài khoản? </span>
-                        <a onclick="showLoginForm()" data-vi="Đăng nhập" data-en="Login">Đăng nhập</a>
-                    </div>
-                </div>
-
-                <div class="user-profile" id="user-profile" style="display: none;">
-                    <div class="user-info">
-                        <h3 data-vi="Thông Tin Tài Khoản" data-en="Account Information">Thông Tin Tài Khoản</h3>
-                        <p><strong data-vi="Tên:" data-en="Name:">Tên:</strong> <span id="user-display-name"></span></p>
-                        <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
-                    </div>
-                    <div class="user-actions">
-                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
-                        <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
-                    </div>
-                </div>
-            </div>
 
             <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
                 <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
@@ -728,7 +788,7 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
-                    <span class="info-value">ABCXYZ SERVER</span>
+                    <span class="info-value">KIỀU THANH HẢI</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
@@ -746,6 +806,59 @@
 
             <div class="footer" data-vi="Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!" data-en="ABCXYZ New Gen Server - Thank you for your support!">
                 Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+            </div>
+        </div>
+
+        <!-- Account Page -->
+        <div id="account-page" class="page-content">
+            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            
+            <!-- Language Switcher for Account Page -->
+            <div class="donate-language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
+            <div class="logo">abcxyz</div>
+            <h1 class="title" data-vi="Tài Khoản Cá Nhân" data-en="Personal Account">Tài Khoản Cá Nhân</h1>
+            <p class="subtitle" data-vi="Quản lý tài khoản và đơn hàng của bạn" data-en="Manage your account and orders">Quản lý tài khoản và đơn hàng của bạn</p>
+
+            <!-- User Auth Section -->
+            <div id="user-auth-section">
+                <div class="auth-form" id="login-form">
+                    <h3 data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</h3>
+                    <input type="email" id="login-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
+                    <input type="password" id="login-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
+                    <div class="auth-switch">
+                        <span data-vi="Chưa có tài khoản? " data-en="Don't have an account? ">Chưa có tài khoản? </span>
+                        <a onclick="showRegisterForm()" data-vi="Đăng ký ngay" data-en="Register now">Đăng ký ngay</a>
+                    </div>
+                </div>
+
+                <div class="auth-form" id="register-form" style="display: none;">
+                    <h3 data-vi="Đăng Ký" data-en="Register">Đăng Ký</h3>
+                    <input type="text" id="register-name" placeholder="Họ tên" data-vi-placeholder="Họ tên" data-en-placeholder="Full name">
+                    <input type="email" id="register-email" placeholder="Email @gmail.com" data-vi-placeholder="Email @gmail.com" data-en-placeholder="Email @gmail.com">
+                    <input type="password" id="register-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userRegister()" data-vi="Đăng Ký" data-en="Register">Đăng Ký</button>
+                    <div class="auth-switch">
+                        <span data-vi="Đã có tài khoản? " data-en="Already have an account? ">Đã có tài khoản? </span>
+                        <a onclick="showLoginForm()" data-vi="Đăng nhập" data-en="Login">Đăng nhập</a>
+                    </div>
+                </div>
+
+                <div class="user-profile" id="user-profile" style="display: none;">
+                    <div class="user-info">
+                        <h3 data-vi="Thông Tin Tài Khoản" data-en="Account Information">Thông Tin Tài Khoản</h3>
+                        <p><strong data-vi="Tên:" data-en="Name:">Tên:</strong> <span id="user-display-name"></span></p>
+                        <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
+                    </div>
+                    <div class="user-actions">
+                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
+                        <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -932,7 +1045,7 @@
 
         <!-- My Orders Page -->
         <div id="my-orders-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('account')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</h1>
             <p class="subtitle" data-vi="Quản lý đơn hàng bạn đã đặt" data-en="Manage your orders">Quản lý đơn hàng bạn đã đặt</p>
@@ -1028,6 +1141,7 @@
         let adminToken = localStorage.getItem('adminToken');
         let userToken = localStorage.getItem('userToken');
         let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        let currentPluginForPayment = null;
 
         // API Functions - FIXED VERSION
         const api = {
@@ -1157,6 +1271,56 @@
             }
         };
 
+        // Payment Modal Functions
+        function showPaymentModal(pluginId, pluginName) {
+            if (!userToken) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
+                showPage('account');
+                return;
+            }
+
+            currentPluginForPayment = { id: pluginId, name: pluginName };
+            document.getElementById('pluginPaymentName').textContent = pluginName;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            currentPluginForPayment = null;
+        }
+
+        async function selectPayment(method) {
+            if (method === 'bank') {
+                closePaymentModal();
+                // Hiển thị thông tin chuyển khoản
+                alert(currentLanguage === 'vi' 
+                    ? 'Vui lòng chuyển khoản theo thông tin sau:\n\nNgân hàng: VIB\nSố tài khoản: 068394585\nChủ tài khoản: KIỀU THANH HẢI\nNội dung: Mua plugin ' + currentPluginForPayment.name + '\n\nSau khi chuyển khoản, đơn hàng sẽ được xác nhận trong vòng 24h.'
+                    : 'Please transfer with the following information:\n\nBank: VIB\nAccount Number: 068394585\nAccount Holder: KIỀU THANH HẢI\nDescription: Purchase plugin ' + currentPluginForPayment.name + '\n\nAfter transfer, your order will be confirmed within 24 hours.');
+                
+                // Tạo đơn hàng
+                try {
+                    const result = await api.createOrder({
+                        plugin_id: currentPluginForPayment.id,
+                        customer_email: currentUser.email,
+                        customer_name: currentUser.name
+                    });
+
+                    alert(currentLanguage === 'vi' 
+                        ? 'Đã tạo đơn hàng thành công! Vui lòng chuyển khoản và chờ xác nhận.' 
+                        : 'Order created successfully! Please transfer and wait for confirmation.');
+
+                } catch (error) {
+                    alert(currentLanguage === 'vi' 
+                        ? 'Lỗi khi tạo đơn hàng: ' + error.message 
+                        : 'Error creating order: ' + error.message);
+                }
+            } else {
+                alert(currentLanguage === 'vi' 
+                    ? 'Phương thức thanh toán này sẽ khả dụng trong thời gian tới!' 
+                    : 'This payment method will be available soon!');
+            }
+        }
+
         // Language management
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -1200,6 +1364,12 @@
                 }
             } else if (page === 'my-orders') {
                 loadUserOrders();
+            } else if (page === 'account') {
+                if (userToken && currentUser) {
+                    showUserProfile();
+                } else {
+                    showLoginForm();
+                }
             }
         }
 
@@ -1227,6 +1397,10 @@
             }
         }
 
+        function validateGmail(email) {
+            return email.endsWith('@gmail.com');
+        }
+
         async function userRegister() {
             const name = document.getElementById('register-name').value;
             const email = document.getElementById('register-email').value;
@@ -1234,6 +1408,11 @@
 
             if (!name || !email || !password) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin!' : 'Please fill in all information!');
+                return;
+            }
+
+            if (!validateGmail(email)) {
+                alert(currentLanguage === 'vi' ? 'Vui lòng sử dụng email @gmail.com!' : 'Please use @gmail.com email!');
                 return;
             }
 
@@ -1368,7 +1547,7 @@
                         <h4>⚡ ${plugin.name}</h4>
                         <p>${plugin.description}</p>
                         <div class="plugin-price">${parseInt(plugin.price).toLocaleString()} VND</div>
-                        <button class="buy-btn" onclick="buyPlugin(${plugin.id}, '${plugin.name}')" 
+                        <button class="buy-btn" onclick="showPaymentModal(${plugin.id}, '${plugin.name}')" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                 `).join('');
@@ -1379,31 +1558,6 @@
             } catch (error) {
                 pluginsList.innerHTML = '<div class="error">' + 
                     (currentLanguage === 'vi' ? 'Lỗi tải plugins: ' : 'Error loading plugins: ') + error.message + '</div>';
-            }
-        }
-
-        async function buyPlugin(pluginId, pluginName) {
-            if (!userToken) {
-                alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
-                showLoginForm();
-                return;
-            }
-
-            try {
-                const result = await api.createOrder({
-                    plugin_id: pluginId,
-                    customer_email: currentUser.email,
-                    customer_name: currentUser.name
-                });
-
-                alert(currentLanguage === 'vi' 
-                    ? 'Đã đặt mua thành công! Chúng tôi sẽ liên hệ với bạn qua email.' 
-                    : 'Purchase successful! We will contact you via email.');
-
-            } catch (error) {
-                alert(currentLanguage === 'vi' 
-                    ? 'Lỗi khi đặt mua: ' + error.message 
-                    : 'Purchase error: ' + error.message);
             }
         }
 
