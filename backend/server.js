@@ -95,34 +95,34 @@ async function initializeDatabase() {
       )
     `);
 
-    // Insert default plugins với ảnh thực tế và mô tả tiếng Anh
+    // Insert default plugins với mô tả giữ nguyên như ban đầu
     const pluginsCheck = await pool.query('SELECT COUNT(*) FROM plugins');
     if (parseInt(pluginsCheck.rows[0].count) === 0) {
       await pool.query(`
         INSERT INTO plugins (name, price, description, image_url, gallery_images) VALUES
         (
-          'Shopbank System', 
+          'ShopBank System', 
           500000, 
-          'Hệ thống shop bank hiện đại chơi mini game casino ngay trong mindustry, hệ thống ngân hàng hiện đại, chuyển khoản vay vốn , credit card. | Modern shop bank system with mini casino games inside Mindustry, modern banking system, transfers, loans, credit cards.', 
+          'Hệ thống shop và ngân hàng độc quyền cho server', 
           'https://i.imgur.com/S0T2s7q.png',
           ARRAY['https://i.imgur.com/S0T2s7q.png', 'https://i.imgur.com/wR85ytB.png', 'https://i.imgur.com/P8YtHFc.png']
         ),
         (
           'Trust System', 
           200000, 
-          'Hệ thống anti grifer với lưu data của từng người chơi và hệ thống uy tín đánh giá từng người chơi và các mốc phạt khác nhau và ban vĩnh viễn. | Anti-griefer system with player data storage, reputation system for player evaluation, various penalty levels and permanent bans.', 
+          'Hệ thống xếp hạng độ tin cậy cho người chơi', 
           'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400',
           ARRAY['https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400']
         ),
         (
           'Cheat Menu', 
           150000, 
-          'Hệ thống cheat menu dành riêng cho chủ server admin không thể can thiệp. | Exclusive cheat menu system for server owners, admins cannot interfere.', 
+          'Menu cheat với các tính năng đặc biệt', 
           'https://i.imgur.com/haKTXSM.png',
           ARRAY['https://i.imgur.com/haKTXSM.png', 'https://i.imgur.com/HaOYFyM.png']
         )
       `);
-      console.log('✅ Default plugins inserted with real images and English descriptions');
+      console.log('✅ Default plugins inserted with original descriptions');
     }
 
     // Tạo password hash mới cho owner
@@ -622,7 +622,7 @@ app.get('/', (req, res) => {
       'Admin Panel',
       'Feedback System',
       'Plugin Images & Gallery',
-      'English + Vietnamese Descriptions'
+      'Original Plugin Descriptions'
     ],
     endpoints: {
       health: '/api/health',
@@ -671,12 +671,11 @@ async function startServer() {
       console.log(`🔑 Admin Login: https://abcxyz-backend-9yxb.onrender.com/api/admin/login`);
       console.log(`👤 User Register: https://abcxyz-backend-9yxb.onrender.com/api/users/register`);
       console.log(`🔑 Admin Credentials: username="owner", password="0796438068"`);
-      console.log(`✅ Server is fully operational with REAL PLUGIN IMAGES!`);
-      console.log(`🆕 New Features:`);
-      console.log(`   ✅ Real plugin images from Imgur`);
-      console.log(`   ✅ Multiple gallery images support`);
-      console.log(`   ✅ Bilingual descriptions (VI + EN)`);
-      console.log(`   ✅ Enhanced plugin data structure`);
+      console.log(`✅ Server is fully operational with ORIGINAL PLUGIN DESCRIPTIONS!`);
+      console.log(`🆕 Plugin Descriptions:`);
+      console.log(`   ✅ ShopBank System: "Hệ thống shop và ngân hàng độc quyền cho server"`);
+      console.log(`   ✅ Trust System: "Hệ thống xếp hạng độ tin cậy cho người chơi"`);
+      console.log(`   ✅ Cheat Menu: "Menu cheat với các tính năng đặc biệt"`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
