@@ -1270,7 +1270,8 @@
                 return this.request('/plugins', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(pluginData)
                 });
@@ -1978,21 +1979,44 @@
                 return;
             }
 
+            // Debug: log tất cả giá trị form
             const name = document.getElementById('pluginName').value;
             const price = document.getElementById('pluginPrice').value;
             const description = document.getElementById('pluginDescription').value;
             const imageUrl = document.getElementById('pluginImage').value;
 
-            // Validate input
-            if (!name || name.trim() === '' || !price || !description || description.trim() === '') {
-                alert(currentLanguage === 'vi' ? 'Vui lòng điền đầy đủ thông tin plugin (tên, giá, mô tả)!' : 'Please fill in all plugin information (name, price, description)!');
+            console.log('🔧 DEBUG - Form values:', {
+                name: name,
+                price: price,
+                description: description,
+                imageUrl: imageUrl
+            });
+
+            // Validate input - FIXED: Check for empty strings properly
+            if (!name || name.trim() === '') {
+                alert(currentLanguage === 'vi' ? 'Vui lòng nhập tên plugin!' : 'Please enter plugin name!');
+                return;
+            }
+            if (!price || price.trim() === '') {
+                alert(currentLanguage === 'vi' ? 'Vui lòng nhập giá plugin!' : 'Please enter plugin price!');
+                return;
+            }
+            if (!description || description.trim() === '') {
+                alert(currentLanguage === 'vi' ? 'Vui lòng nhập mô tả plugin!' : 'Please enter plugin description!');
+                return;
+            }
+
+            // Validate price is a number
+            const priceNum = parseFloat(price);
+            if (isNaN(priceNum) || priceNum <= 0) {
+                alert(currentLanguage === 'vi' ? 'Giá phải là số dương!' : 'Price must be a positive number!');
                 return;
             }
 
             try {
                 const pluginData = {
                     name: name.trim(),
-                    price: parseFloat(price),
+                    price: priceNum,
                     description: description.trim()
                 };
 
@@ -2001,14 +2025,15 @@
                     pluginData.image_url = imageUrl.trim();
                 }
 
-                console.log('Sending plugin data:', pluginData);
+                console.log('🔧 DEBUG - Sending plugin data:', pluginData);
+                console.log('🔧 DEBUG - Admin token:', adminToken ? 'Exists' : 'Missing');
 
                 const result = await api.addPlugin(pluginData, adminToken);
 
                 if (result.plugin) {
                     alert(currentLanguage === 'vi' 
-                        ? `Đã thêm plugin: ${name}\nGiá: ${parseFloat(price).toLocaleString()} VND` 
-                        : `Plugin added: ${name}\nPrice: ${parseFloat(price).toLocaleString()} VND`);
+                        ? `✅ Đã thêm plugin: ${name}\n💰 Giá: ${priceNum.toLocaleString()} VND` 
+                        : `✅ Plugin added: ${name}\n💰 Price: ${priceNum.toLocaleString()} VND`);
                     
                     // Reset form
                     document.getElementById('pluginName').value = '';
@@ -2020,10 +2045,10 @@
                     await loadStats();
                 }
             } catch (error) {
-                console.error('Add plugin error:', error);
+                console.error('❌ Add plugin error:', error);
                 alert(currentLanguage === 'vi' 
-                    ? 'Lỗi khi thêm plugin: ' + error.message 
-                    : 'Error adding plugin: ' + error.message);
+                    ? '❌ Lỗi khi thêm plugin: ' + error.message 
+                    : '❌ Error adding plugin: ' + error.message);
             }
         }
 
