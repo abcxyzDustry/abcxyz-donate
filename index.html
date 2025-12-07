@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABCXYZ Mindustry Server</title>
+    <title>Mindustry - Minecraft - Multiplayer - Hub</title>
     <style>
         * {
             margin: 0;
@@ -12,90 +12,255 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.1) 0%, 
+                rgba(118, 75, 162, 0.1) 25%,
+                rgba(20, 184, 166, 0.1) 50%,
+                rgba(56, 189, 248, 0.1) 75%,
+                rgba(168, 85, 247, 0.1) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
             position: relative;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(20, 184, 166, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 20px 60px rgba(102, 126, 234, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             padding: 40px;
             max-width: 500px;
             width: 100%;
             text-align: center;
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .logo {
-            font-size: 2.5em;
-            font-weight: bold;
+            font-size: 2.8em;
+            font-weight: 800;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #e3344e, #4CAF50);
+            background: linear-gradient(45deg, 
+                #e3344e 0%, 
+                #667eea 25%,
+                #764ba2 50%,
+                #14b8a6 75%,
+                #4CAF50 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 
+                0 2px 10px rgba(227, 52, 78, 0.3),
+                0 4px 20px rgba(102, 126, 234, 0.2);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                #e3344e 0%, 
+                #667eea 33%,
+                #14b8a6 66%,
+                #4CAF50 100%);
+            border-radius: 3px;
+            filter: blur(1px);
         }
 
         .title {
             font-size: 1.8em;
-            color: #333;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
         }
 
         .subtitle {
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 30px;
             font-size: 1.1em;
+        }
+
+        /* Liquid Glass Buttons */
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-glass:hover::before {
+            left: 100%;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-glass:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Special Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.3) 0%, 
+                rgba(102, 126, 234, 0.3) 100%);
+            border: 1px solid rgba(227, 52, 78, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, 
+                rgba(20, 184, 166, 0.3) 0%, 
+                rgba(56, 189, 248, 0.3) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, 
+                rgba(76, 175, 80, 0.3) 0%, 
+                rgba(102, 187, 106, 0.3) 100%);
+            border: 1px solid rgba(76, 175, 80, 0.4);
         }
 
         .qr-code {
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            border: 3px solid #e3344e;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             padding: 10px;
-            background: white;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .qr-code img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            border-radius: 8px;
         }
 
-        .bank-info {
-            background: #f8f9fa;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 16px;
             margin: 20px 0;
             text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .bank-info h3 {
-            color: #e3344e;
+        .glass-panel h3 {
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(90deg, #e3344e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .info-item {
             margin: 10px 0;
             display: flex;
             justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
         }
 
         .info-label {
-            font-weight: bold;
-            color: #555;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .info-value {
-            color: #333;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .language-switcher {
@@ -106,30 +271,34 @@
         }
 
         .lang-btn {
-            background: #e3344e;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
             padding: 8px 15px;
             margin: 0 2px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             font-size: 0.9em;
+            backdrop-filter: blur(10px);
         }
 
         .lang-btn:hover {
-            background: #c12c42;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .discord-btn {
-            background: #5865F2;
+            background: linear-gradient(135deg, 
+                rgba(88, 101, 242, 0.3) 0%, 
+                rgba(108, 99, 255, 0.3) 100%);
+            border: 1px solid rgba(88, 101, 242, 0.4);
             color: white;
-            border: none;
             padding: 12px 25px;
             margin: 10px 0;
-            border-radius: 5px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             font-size: 1em;
             display: inline-flex;
             align-items: center;
@@ -137,29 +306,30 @@
             text-decoration: none;
             width: 100%;
             max-width: 300px;
+            backdrop-filter: blur(10px);
         }
 
         .discord-btn:hover {
-            background: #4752c4;
-        }
-
-        .discord-btn i {
-            margin-right: 8px;
-            font-size: 1.2em;
+            background: linear-gradient(135deg, 
+                rgba(88, 101, 242, 0.4) 0%, 
+                rgba(108, 99, 255, 0.4) 100%);
+            transform: translateY(-2px);
         }
 
         .thank-you {
             margin-top: 20px;
             padding: 15px;
-            background: #e8f5e8;
-            border-radius: 10px;
+            background: rgba(232, 245, 232, 0.2);
+            border-radius: 12px;
             color: #2e7d32;
-            font-weight: bold;
+            font-weight: 600;
+            border: 1px solid rgba(46, 125, 50, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .footer {
             margin-top: 30px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9em;
         }
 
@@ -168,14 +338,21 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: #e3344e;
+            background: rgba(227, 52, 78, 0.3);
+            border: 1px solid rgba(227, 52, 78, 0.4);
             color: white;
-            border: none;
             padding: 10px 15px;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 1.2em;
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(227, 52, 78, 0.4);
+            transform: translateY(-2px);
         }
 
         .menu-content {
@@ -183,26 +360,31 @@
             position: absolute;
             top: 60px;
             right: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
             min-width: 250px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            border-radius: 10px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                0 20px 60px rgba(102, 126, 234, 0.15);
+            border-radius: 12px;
             z-index: 1000;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
         }
 
         .menu-content a {
-            color: #333;
+            color: rgba(255, 255, 255, 0.9);
             padding: 12px 16px;
             text-decoration: none;
             display: block;
             text-align: left;
-            border-bottom: 1px solid #f1f1f1;
-            transition: background 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
 
         .menu-content a:hover {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
+            padding-left: 20px;
         }
 
         .menu-content a:last-child {
@@ -217,19 +399,27 @@
 
         .page-content.active {
             display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .review-item {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             margin: 15px 0;
-            border-radius: 10px;
-            border-left: 4px solid #e3344e;
+            border-radius: 12px;
+            border-left: 4px solid rgba(227, 52, 78, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .review-author {
-            font-weight: bold;
-            color: #e3344e;
+            font-weight: 600;
+            color: rgba(227, 52, 78, 0.9);
             margin-bottom: 5px;
         }
 
@@ -239,12 +429,13 @@
         }
 
         .plugin-item {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             margin: 15px 0;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .plugin-image {
@@ -256,33 +447,47 @@
         }
 
         .plugin-price {
-            color: #e3344e;
-            font-weight: bold;
+            color: rgba(227, 52, 78, 0.9);
+            font-weight: 600;
             font-size: 1.2em;
             margin: 10px 0;
         }
 
         .buy-btn {
-            background: #e3344e;
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.3) 0%, 
+                rgba(102, 126, 234, 0.3) 100%);
+            border: 1px solid rgba(227, 52, 78, 0.4);
             color: white;
-            border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.4) 0%, 
+                rgba(102, 126, 234, 0.4) 100%);
+            transform: translateY(-2px);
         }
 
         .delete-btn {
-            background: #dc3545;
+            background: linear-gradient(135deg, 
+                rgba(220, 53, 69, 0.3) 0%, 
+                rgba(220, 53, 69, 0.5) 100%);
+            border: 1px solid rgba(220, 53, 69, 0.4);
             color: white;
-            border: none;
             padding: 5px 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8em;
             position: absolute;
             top: 10px;
             right: 10px;
+            backdrop-filter: blur(10px);
         }
 
         .feedback-form {
@@ -292,106 +497,137 @@
         .feedback-form textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             margin-bottom: 10px;
             resize: vertical;
             min-height: 100px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .feedback-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .feedback-form input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .feedback-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .submit-btn {
-            background: #e3344e;
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.3) 0%, 
+                rgba(102, 126, 234, 0.3) 100%);
+            border: 1px solid rgba(227, 52, 78, 0.4);
             color: white;
-            border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.4) 0%, 
+                rgba(102, 126, 234, 0.4) 100%);
+            transform: translateY(-2px);
         }
 
         .back-btn {
-            background: #6c757d;
+            background: rgba(108, 117, 125, 0.3);
+            border: 1px solid rgba(108, 117, 125, 0.4);
             color: white;
-            border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(108, 117, 125, 0.4);
+            transform: translateY(-2px);
         }
 
         /* Auth Forms */
         .auth-form {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
         }
 
-        .auth-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .auth-form button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+        .auth-form h3 {
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #e3344e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .auth-switch {
             text-align: center;
             margin-top: 15px;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .auth-switch a {
-            color: #e3344e;
+            color: rgba(227, 52, 78, 0.9);
             cursor: pointer;
-            text-decoration: underline;
+            text-decoration: none;
+            font-weight: 600;
         }
 
         /* Admin Login */
         .admin-login-btn {
-            background: #ff6b35;
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 53, 0.3) 0%, 
+                rgba(255, 107, 53, 0.5) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.4);
             color: white;
-            border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin: 10px 0;
             font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .login-form {
-            background: #fff3cd;
+            background: rgba(255, 243, 205, 0.2);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
-            border: 1px solid #ffeaa7;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .login-form button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+            border: 1px solid rgba(255, 234, 167, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         /* Admin Panel */
         .admin-panel {
-            background: #e8f4fd;
+            background: rgba(232, 244, 253, 0.2);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
-            border: 2px solid #2196F3;
+            border: 2px solid rgba(33, 150, 243, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .admin-header {
@@ -402,28 +638,41 @@
         }
 
         .logout-btn {
-            background: #dc3545;
+            background: linear-gradient(135deg, 
+                rgba(220, 53, 69, 0.3) 0%, 
+                rgba(220, 53, 69, 0.5) 100%);
+            border: 1px solid rgba(220, 53, 69, 0.4);
             color: white;
-            border: none;
             padding: 5px 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8em;
+            backdrop-filter: blur(10px);
         }
 
         .plugin-form {
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 8px;
             margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .plugin-form input, .plugin-form textarea {
             width: 100%;
             padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
             margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .plugin-form input::placeholder,
+        .plugin-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .orders-list {
@@ -431,119 +680,131 @@
         }
 
         .order-item {
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
             padding: 10px;
             margin: 8px 0;
-            border-radius: 5px;
-            border-left: 4px solid #4CAF50;
+            border-radius: 8px;
+            border-left: 4px solid rgba(76, 175, 80, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .user-orders {
-            background: #e8f5e8;
+            background: rgba(232, 245, 232, 0.2);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .loading {
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
             font-style: italic;
             padding: 10px;
             text-align: center;
         }
 
         .error {
-            color: #dc3545;
-            background: #f8d7da;
+            color: rgba(220, 53, 69, 0.9);
+            background: rgba(248, 215, 218, 0.2);
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin: 10px 0;
-            border: 1px solid #f5c6cb;
+            border: 1px solid rgba(245, 198, 203, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .success {
-            color: #155724;
-            background: #d4edda;
+            color: rgba(21, 87, 36, 0.9);
+            background: rgba(212, 237, 218, 0.2);
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin: 10px 0;
-            border: 1px solid #c3e6cb;
+            border: 1px solid rgba(195, 230, 203, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .status-pending {
-            color: #ff9800;
-            font-weight: bold;
+            color: rgba(255, 152, 0, 0.9);
+            font-weight: 600;
         }
 
         .status-completed {
-            color: #4CAF50;
-            font-weight: bold;
+            color: rgba(76, 175, 80, 0.9);
+            font-weight: 600;
         }
 
         .status-cancelled {
-            color: #dc3545;
-            font-weight: bold;
-        }
-
-        /* Language switcher for donate page */
-        .donate-language-switcher {
-            margin: 20px 0;
+            color: rgba(220, 53, 69, 0.9);
+            font-weight: 600;
         }
 
         /* Services Page Styles */
         .service-item {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             margin: 15px 0;
-            border-radius: 10px;
-            border: 2px solid #e3344e;
+            border-radius: 12px;
+            border: 2px solid rgba(227, 52, 78, 0.4);
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         .service-icon {
             font-size: 3em;
             margin-bottom: 15px;
-            color: #e3344e;
+            background: linear-gradient(45deg, #e3344e, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .service-title {
             font-size: 1.4em;
-            color: #333;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 10px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .service-description {
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 15px;
             line-height: 1.5;
         }
 
         .service-warning {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(255, 243, 205, 0.2);
+            color: rgba(133, 100, 4, 0.9);
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
             margin: 10px 0;
-            border: 1px solid #ffeaa7;
+            border: 1px solid rgba(255, 234, 167, 0.3);
             font-size: 0.9em;
+            backdrop-filter: blur(10px);
         }
 
         .service-btn {
-            background: #e3344e;
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.3) 0%, 
+                rgba(102, 126, 234, 0.3) 100%);
+            border: 1px solid rgba(227, 52, 78, 0.4);
             color: white;
-            border: none;
             padding: 12px 25px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
             text-decoration: none;
             display: inline-block;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .service-btn:hover {
-            background: #c12c42;
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.4) 0%, 
+                rgba(102, 126, 234, 0.4) 100%);
+            transform: translateY(-2px);
         }
 
         .services-grid {
@@ -557,36 +818,48 @@
             width: 100%;
             border-collapse: collapse;
             margin: 10px 0;
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .leaderboard-table thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.4) 0%, 
+                rgba(118, 75, 162, 0.4) 100%);
             color: white;
         }
 
         .leaderboard-table th, .leaderboard-table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .leaderboard-table tr:hover {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .leaderboard-table tbody tr:nth-child(1) {
-            background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-            font-weight: bold;
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.3) 0%, 
+                rgba(255, 165, 0, 0.3) 100%);
+            font-weight: 600;
         }
 
         .leaderboard-table tbody tr:nth-child(2) {
-            background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
-            font-weight: bold;
+            background: linear-gradient(135deg, 
+                rgba(192, 192, 192, 0.3) 0%, 
+                rgba(128, 128, 128, 0.3) 100%);
+            font-weight: 600;
         }
 
         .leaderboard-table tbody tr:nth-child(3) {
-            background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
-            font-weight: bold;
+            background: linear-gradient(135deg, 
+                rgba(205, 127, 50, 0.3) 0%, 
+                rgba(139, 69, 19, 0.3) 100%);
+            font-weight: 600;
         }
 
         .rank-medal {
@@ -595,23 +868,25 @@
         }
 
         .account-name {
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
         }
 
         .account-balance {
-            color: #e3344e;
-            font-weight: bold;
+            color: rgba(227, 52, 78, 0.9);
+            font-weight: 600;
             text-align: right;
         }
 
         /* User Profile */
         .user-profile {
-            background: #e8f5e8;
+            background: rgba(232, 245, 232, 0.2);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
             text-align: center;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .user-info {
@@ -626,16 +901,22 @@
 
         /* Download Section Styles */
         .download-section {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 20px 0;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
         }
 
         .download-section h3 {
-            color: #e3344e;
+            color: rgba(227, 52, 78, 0.9);
             margin-bottom: 15px;
+            background: linear-gradient(90deg, #e3344e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .download-grid {
@@ -645,9 +926,9 @@
         }
 
         .download-btn {
-            background: #4CAF50;
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.4);
             color: white;
-            border: none;
             padding: 12px 15px;
             border-radius: 8px;
             cursor: pointer;
@@ -656,27 +937,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-align: center;
             min-height: 50px;
+            backdrop-filter: blur(10px);
         }
 
         .download-btn:hover {
-            background: #45a049;
+            background: rgba(76, 175, 80, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .download-btn.android {
-            background: #34A853;
+            background: rgba(52, 168, 83, 0.3);
+            border-color: rgba(52, 168, 83, 0.4);
         }
 
         .download-btn.windows {
-            background: #0078D7;
+            background: rgba(0, 120, 215, 0.3);
+            border-color: rgba(0, 120, 215, 0.4);
         }
 
         .download-btn.ios {
-            background: #000000;
+            background: rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 0, 0, 0.4);
         }
 
         .download-btn i {
@@ -687,7 +972,7 @@
         .download-note {
             margin-top: 15px;
             font-size: 0.85em;
-            color: #666;
+            color: rgba(255, 255, 255, 0.7);
             font-style: italic;
         }
 
@@ -699,58 +984,74 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
 
         .payment-content {
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 16px;
             max-width: 400px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 8px 32px rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
         }
 
         .payment-option {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             margin: 10px 0;
-            border-radius: 8px;
-            border: 2px solid #e3344e;
+            border-radius: 12px;
+            border: 2px solid rgba(227, 52, 78, 0.4);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .payment-option:hover {
-            background: #e9ecef;
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
         }
 
         .payment-option.disabled {
-            background: #e9ecef;
-            border-color: #6c757d;
-            color: #6c757d;
+            background: rgba(233, 236, 239, 0.2);
+            border-color: rgba(108, 117, 125, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             cursor: not-allowed;
         }
 
         .payment-icon {
             font-size: 2em;
             margin-bottom: 10px;
-            color: #e3344e;
+            background: linear-gradient(45deg, #e3344e, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .close-btn {
-            background: #6c757d;
+            background: rgba(108, 117, 125, 0.3);
+            border: 1px solid rgba(108, 117, 125, 0.4);
             color: white;
-            border: none;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(108, 117, 125, 0.4);
+            transform: translateY(-2px);
         }
 
         /* Bank Transfer Modal */
@@ -761,35 +1062,134 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 3000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
 
         .bank-transfer-content {
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 16px;
             max-width: 400px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 8px 32px rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
         }
 
         .confirm-order-btn {
-            background: #4CAF50;
+            background: linear-gradient(135deg, 
+                rgba(76, 175, 80, 0.3) 0%, 
+                rgba(102, 187, 106, 0.3) 100%);
+            border: 1px solid rgba(76, 175, 80, 0.4);
             color: white;
-            border: none;
             padding: 12px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 15px;
             font-size: 1em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .confirm-order-btn:hover {
-            background: #45a049;
+            background: linear-gradient(135deg, 
+                rgba(76, 175, 80, 0.4) 0%, 
+                rgba(102, 187, 106, 0.4) 100%);
+            transform: translateY(-2px);
+        }
+
+        /* Hub Information Box */
+        .hub-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 16px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                #e3344e 0%, 
+                #667eea 33%,
+                #14b8a6 66%,
+                #4CAF50 100%);
+            filter: blur(1px);
+        }
+
+        .hub-title {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, 
+                #e3344e 0%, 
+                #667eea 25%,
+                #764ba2 50%,
+                #14b8a6 75%,
+                #4CAF50 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .hub-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #e3344e, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.9em;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -800,7 +1200,7 @@
         <div class="payment-content">
             <h3 data-vi="Chọn Phương Thức Thanh Toán" data-en="Select Payment Method">Chọn Phương Thức Thanh Toán</h3>
             <p data-vi="Vui lòng chọn phương thức thanh toán cho plugin:" data-en="Please select payment method for plugin:">Vui lòng chọn phương thức thanh toán cho plugin:</p>
-            <p id="pluginPaymentName" style="font-weight: bold; color: #e3344e; margin: 10px 0;"></p>
+            <p id="pluginPaymentName" style="font-weight: 600; color: rgba(227, 52, 78, 0.9); margin: 10px 0;"></p>
             
             <div class="payment-option" onclick="selectPayment('bank')">
                 <div class="payment-icon">
@@ -841,7 +1241,7 @@
                      alt="QR Code Bank Transfer">
             </div>
 
-            <div class="bank-info">
+            <div class="glass-panel">
                 <div class="info-item">
                     <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
                     <span class="info-value">VIB</span>
@@ -856,15 +1256,15 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
-                    <span class="info-value" id="transferAmount" style="color: #e3344e; font-weight: bold;"></span>
+                    <span class="info-value" id="transferAmount" style="color: rgba(227, 52, 78, 0.9); font-weight: 600;"></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
-                    <span class="info-value" id="transferDescription" style="color: #e3344e; font-weight: bold;"></span>
+                    <span class="info-value" id="transferDescription" style="color: rgba(227, 52, 78, 0.9); font-weight: 600;"></span>
                 </div>
             </div>
 
-            <p style="margin: 15px 0; font-size: 0.9em; color: #666;">
+            <p style="margin: 15px 0; font-size: 0.9em; color: rgba(255, 255, 255, 0.8);">
                 <span data-vi="Sau khi chuyển khoản, vui lòng bấm 'Xác Nhận Đã Chuyển Khoản' để chúng tôi xử lý đơn hàng của bạn." data-en="After transferring, please click 'Confirm Transfer' for us to process your order.">
                     Sau khi chuyển khoản, vui lòng bấm 'Xác Nhận Đã Chuyển Khoản' để chúng tôi xử lý đơn hàng của bạn.
                 </span>
@@ -890,7 +1290,7 @@
         <a href="#" onclick="showPage('services')" data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</a>
         <a href="#" onclick="showPage('shopbank')" data-vi="💎 ShopBank Sync" data-en="💎 ShopBank Sync">💎 ShopBank Sync</a>
         <a href="#" onclick="showPage('account')" data-vi="👤 Tài Khoản" data-en="👤 Account">👤 Tài Khoản</a>
-        <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp ý" data-en="💬 Feedback">💬 Góp ý</a>
+        <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp Ý" data-en="💬 Feedback">💬 Góp Ý</a>
     </div>
 
     <!-- Main Container -->
@@ -898,39 +1298,87 @@
         <!-- Home Page (Default) -->
         <div id="home-page" class="page-content active">
             <!-- Language Switcher for Home Page -->
-            <div class="donate-language-switcher">
+            <div class="language-switcher">
                 <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
                 <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
             </div>
 
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Chào Mừng Đến Với ABCXYZ Mindustry Server" data-en="Welcome to ABCXYZ Mindustry Server">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
-            <p class="subtitle" data-vi="Máy chủ Mindustry Server của Việt Nam" data-en="Vietnam's Mindustry Server">Máy chủ Mindustry Server của Việt Nam</p>
+            <div class="logo">MIND-MC-HUB</div>
+            <h1 class="title" data-vi="Chào Mừng Đến Với" data-en="Welcome to">Chào Mừng Đến Với</h1>
+            <h1 class="hub-title">Mindustry - Minecraft - Multiplayer Hub</h1>
+            <p class="subtitle" data-vi="Trung tâm kết nối cộng đồng chơi game" data-en="Gaming community connection center">Trung tâm kết nối cộng đồng chơi game</p>
+
+            <!-- Hub Information Box -->
+            <div class="hub-info">
+                <div class="hub-subtitle" data-vi="🎮 Hub Thông Tin" data-en="🎮 Hub Information">🎮 Hub Thông Tin</div>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="feature-text" data-vi="Minecraft PE" data-en="Minecraft PE">Minecraft PE</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="feature-text" data-vi="Mindustry" data-en="Mindustry">Mindustry</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="feature-text" data-vi="Multiplayer" data-en="Multiplayer">Multiplayer</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="feature-text" data-vi="Chat Thời Gian Thực" data-en="Real-time Chat">Chat Thời Gian Thực</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h4 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 10px;" data-vi="📱 Ứng dụng Mobile" data-en="📱 Mobile App">📱 Ứng dụng Mobile</h4>
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9em; line-height: 1.5;">
+                        <span data-vi="Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:" data-en="Download Android APK for full experience:">
+                            Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:
+                        </span>
+                    </p>
+                    <a href="https://expo.dev/artifacts/eas/6QdBvR3p9LEHs31oZgPX7L.apk" 
+                       target="_blank" class="btn-glass btn-success" style="margin-top: 10px;">
+                        <i class="fas fa-download"></i> 
+                        <span data-vi="Tải APK Android" data-en="Download Android APK">Tải APK Android</span>
+                    </a>
+                    <p style="margin-top: 10px; font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">
+                        <span data-vi="Phiên bản: Dec 04, 2025" data-en="Version: Dec 04, 2025">Phiên bản: Dec 04, 2025</span>
+                    </p>
+                </div>
+            </div>
 
             <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
                 <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
             </a>
             
-            <div class="bank-info">
-                <h3 data-vi="Giới Thiệu Server" data-en="Server Introduction">Giới Thiệu Server</h3>
-                <p data-vi="ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:" data-en="ABCXYZ Mindustry Server is Vietnam's leading Mindustry game server, offering an excellent gaming experience with:">
-                    ABCXYZ Mindustry Server là máy chủ game Mindustry hàng đầu Việt Nam, mang đến trải nghiệm chơi game tuyệt vời với:
-                </p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li data-vi="Hiệu suất ổn định 24/7" data-en="24/7 stable performance">Hiệu suất ổn định 24/7</li>
-                    <li data-vi="Cộng đồng thân thiện, nhiệt tình" data-en="Friendly and enthusiastic community">Cộng đồng thân thiện, nhiệt tình</li>
-                    <li data-vi="Plugin độc quyền và hấp dẫn" data-en="Exclusive and attractive plugins">Plugin độc quyền và hấp dẫn</li>
-                    <li data-vi="Hỗ trợ kỹ thuật nhanh chóng" data-en="Fast technical support">Hỗ trợ kỹ thuật nhanh chóng</li>
+            <div class="glass-panel">
+                <h3 data-vi="Tính Năng Chính" data-en="Main Features">Tính Năng Chính</h3>
+                <ul style="margin: 15px 0; padding-left: 20px; color: rgba(255, 255, 255, 0.9);">
+                    <li data-vi="🎮 Multiplayer Minecraft PE" data-en="🎮 Multiplayer Minecraft PE">🎮 Multiplayer Minecraft PE</li>
+                    <li data-vi="⚡ Multiplayer Mindustry" data-en="⚡ Multiplayer Mindustry">⚡ Multiplayer Mindustry</li>
+                    <li data-vi="💬 Chat thời gian thực" data-en="💬 Real-time Chat">💬 Chat thời gian thực</li>
+                    <li data-vi="👥 Hệ thống kết bạn" data-en="👥 Friend System">👥 Hệ thống kết bạn</li>
+                    <li data-vi="📱 Cross-platform Web/Mobile" data-en="📱 Cross-platform Web/Mobile">📱 Cross-platform Web/Mobile</li>
+                    <li data-vi="🎵 Music Player tự động" data-en="🎵 Auto Music Player">🎵 Music Player tự động</li>
                 </ul>
             </div>
 
             <!-- Download Section -->
             <div class="download-section">
-                <h3 data-vi="Bạn muốn tải game phiên bản mới nhất?" data-en="Want to download the latest version of the game?">
-                    Bạn muốn tải game phiên bản mới nhất?
+                <h3 data-vi="📥 Tải Game Mindustry" data-en="📥 Download Mindustry">
+                    📥 Tải Game Mindustry
                 </h3>
-                <p data-vi="Hãy bấm vào phiên bản mà bạn muốn tải dưới đây:" data-en="Click on the version you want to download below:">
-                    Hãy bấm vào phiên bản mà bạn muốn tải dưới đây:
+                <p data-vi="Phiên bản mới nhất v153:" data-en="Latest version v153:">
+                    Phiên bản mới nhất v153:
                 </p>
                 
                 <div class="download-grid">
@@ -959,13 +1407,13 @@
                     </a>
                 </div>
                 
-                <div class="download-note" data-vi="⚠️ Lưu ý: Các liên kết tải game được cung cấp từ nhà phát triển chính thức" data-en="⚠️ Note: Game download links are provided from the official developer">
-                    ⚠️ Lưu ý: Các liên kết tải game được cung cấp từ nhà phát triển chính thức
+                <div class="download-note" data-vi="⚠️ Các liên kết tải game được cung cấp từ nhà phát triển chính thức" data-en="⚠️ Game download links are provided from the official developer">
+                    ⚠️ Các liên kết tải game được cung cấp từ nhà phát triển chính thức
                 </div>
             </div>
 
-            <div class="footer" data-vi="Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!" data-en="ABCXYZ New Gen Server - Thank you for your support!">
-                Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+            <div class="footer" data-vi="🎮 Mindustry - Minecraft Multiplayer Hub - Kết nối cộng đồng game thủ!" data-en="🎮 Mindustry - Minecraft Multiplayer Hub - Connecting gaming community!">
+                🎮 Mindustry - Minecraft Multiplayer Hub - Kết nối cộng đồng game thủ!
             </div>
         </div>
 
@@ -974,21 +1422,21 @@
             <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             
             <!-- Language Switcher for Donate Page -->
-            <div class="donate-language-switcher">
+            <div class="language-switcher">
                 <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
                 <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
             </div>
 
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
-            <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
+            <div class="logo">MIND-MC-HUB</div>
+            <h1 class="title" data-vi="Ủng Hộ Hub Của Chúng Tôi" data-en="Donate to Our Hub">Ủng Hộ Hub Của Chúng Tôi</h1>
+            <p class="subtitle" data-vi="Mọi đóng góp giúp duy trì và phát triển hub!" data-en="Every contribution helps maintain and develop the hub!">Mọi đóng góp giúp duy trì và phát triển hub!</p>
 
             <div class="qr-code">
                 <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
                      alt="QR Code Donate">
             </div>
 
-            <div class="bank-info">
+            <div class="glass-panel">
                 <h3 data-vi="Thông Tin Chuyển Khoản" data-en="Bank Transfer Information">Thông Tin Chuyển Khoản</h3>
                 <div class="info-item">
                     <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
@@ -1008,12 +1456,12 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
-                    <span class="info-value" data-vi="Ủng hộ máy chủ abcxyz" data-en="Support abcxyz server">Ủng hộ máy chủ abcxyz</span>
+                    <span class="info-value" data-vi="Ủng hộ hub game" data-en="Support gaming hub">Ủng hộ hub game</span>
                 </div>
             </div>
 
-            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the server develop better!">
-                ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
+            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp hub phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the hub develop better!">
+                ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp hub phát triển tốt hơn!
             </div>
         </div>
 
@@ -1022,12 +1470,12 @@
             <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             
             <!-- Language Switcher for Account Page -->
-            <div class="donate-language-switcher">
+            <div class="language-switcher">
                 <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
                 <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
             </div>
 
-            <div class="logo">abcxyz</div>
+            <div class="logo">MIND-MC-HUB</div>
             <h1 class="title" data-vi="Tài Khoản Cá Nhân" data-en="Personal Account">Tài Khoản Cá Nhân</h1>
             <p class="subtitle" data-vi="Quản lý tài khoản và đơn hàng của bạn" data-en="Manage your account and orders">Quản lý tài khoản và đơn hàng của bạn</p>
 
@@ -1063,7 +1511,7 @@
                         <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
                     </div>
                     <div class="user-actions">
-                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
+                        <button class="btn-glass btn-primary" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
                         <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
                     </div>
                 </div>
@@ -1073,10 +1521,10 @@
         <!-- Plugin Store Page -->
         <div id="plugin-store-page" class="page-content">
             <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Cửa Hàng Plugin ABCXYZ" data-en="ABCXYZ Plugin Store">Cửa Hàng Plugin ABCXYZ</h1>
-            <p class="subtitle" data-vi="Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới" data-en="Where you can buy server running plugins or order new plugins">
-                Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới
+            <div class="logo">MIND-MC-HUB</div>
+            <h1 class="title" data-vi="Cửa Hàng Plugin" data-en="Plugin Store">Cửa Hàng Plugin</h1>
+            <p class="subtitle" data-vi="Plugin độc quyền cho Mindustry và Minecraft" data-en="Exclusive plugins for Mindustry and Minecraft">
+                Plugin độc quyền cho Mindustry và Minecraft
             </p>
 
             <!-- Admin Login Button -->
@@ -1090,13 +1538,13 @@
                 <input type="text" id="adminUsername" placeholder="Tên đăng nhập" data-vi-placeholder="Tên đăng nhập" data-en-placeholder="Username">
                 <input type="password" id="adminPassword" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
                 <button class="submit-btn" onclick="adminLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
-                <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                <div style="margin-top: 10px; font-size: 0.9em; color: rgba(255, 255, 255, 0.8);">
                     <span data-vi="Mật khẩu mặc định: 0796438068" data-en="Default password: 0796438068">Mật khẩu mặc định: 0796438068</span>
                 </div>
             </div>
 
             <!-- Plugins List -->
-            <div class="bank-info">
+            <div class="glass-panel">
                 <h3 data-vi="Plugin Đang Bán" data-en="Available Plugins">Plugin Đang Bán</h3>
                 <div id="plugins-list">
                     <div class="loading" data-vi="Đang tải plugins..." data-en="Loading plugins...">Đang tải plugins...</div>
@@ -1140,8 +1588,8 @@
                 </div>
             </div>
 
-            <div class="bank-info">
-                <h3 data-vi="Đặt Hàng Plugin Mới" data-en="Order New Plugin">Đặt Hàng Plugin Mới</h3>
+            <div class="glass-panel">
+                <h3 data-vi="Đặt Hàng Plugin Tùy Chỉnh" data-en="Order Custom Plugin">Đặt Hàng Plugin Tùy Chỉnh</h3>
                 <p data-vi="Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!" data-en="Want a custom plugin based on your idea? Contact us!">
                     Bạn muốn plugin riêng theo ý tưởng của mình? Hãy liên hệ với chúng tôi!
                 </p>
@@ -1154,7 +1602,7 @@
         <!-- My Orders Page -->
         <div id="my-orders-page" class="page-content">
             <button class="back-btn" onclick="showPage('account')" data-vi="← Tài khoản" data-en="← Account">← Tài khoản</button>
-            <div class="logo">abcxyz</div>
+            <div class="logo">MIND-MC-HUB</div>
             <h1 class="title" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</h1>
             <p class="subtitle" data-vi="Quản lý đơn hàng bạn đã đặt" data-en="Manage your orders">Quản lý đơn hàng bạn đã đặt</p>
 
@@ -1166,7 +1614,7 @@
         <!-- Services Page -->
         <div id="services-page" class="page-content">
             <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
-            <div class="logo">abcxyz</div>
+            <div class="logo">MIND-MC-HUB</div>
             <h1 class="title" data-vi="Các Dịch Vụ Khác" data-en="Other Services">Các Dịch Vụ Khác</h1>
             <p class="subtitle" data-vi="Khám phá thêm các dịch vụ đa dạng từ chúng tôi" data-en="Discover more diverse services from us">
                 Khám phá thêm các dịch vụ đa dạng từ chúng tôi
@@ -1224,16 +1672,16 @@
                 Top 30 tỷ phú - Bảng xếp hạng tài khoản ShopBank
             </p>
             
-            <div class="bank-info">
+            <div class="glass-panel">
                 <h3 data-vi="🔄 Thống Kê Real-time" data-en="🔄 Real-time Stats">🔄 Thống Kê Real-time</h3>
                 <div id="shopbank-stats" style="display: grid; gap: 10px; margin: 15px 0;">
                     <div><strong data-vi="Tổng Tài Khoản:" data-en="Total Accounts:">Tổng Tài Khoản:</strong> <span id="total-accounts">-</span></div>
-                    <div><strong data-vi="Tổng Tiền:" data-en="Total Credits:">Tổng Tiền:</strong> <span id="total-credits" style="color: #e3344e; font-weight: bold;">-</span></div>
+                    <div><strong data-vi="Tổng Tiền:" data-en="Total Credits:">Tổng Tiền:</strong> <span id="total-credits" style="color: rgba(227, 52, 78, 0.9); font-weight: 600;">-</span></div>
                     <div><strong data-vi="Cập Nhật:" data-en="Last Updated:">Cập Nhật:</strong> <span id="last-update" style="font-size: 0.9em;">-</span></div>
                 </div>
             </div>
 
-            <div class="bank-info">
+            <div class="glass-panel">
                 <h3 data-vi="🏆 Top 30 Tỷ Phú" data-en="🏆 Top 30 Richest">🏆 Top 30 Tỷ Phú</h3>
                 <div id="shopbank-leaderboard" style="margin: 15px 0; max-height: 500px; overflow-y: auto;">
                     <div class="loading" style="text-align: center;" data-vi="Đang tải bảng xếp hạng..." data-en="Loading leaderboard...">Đang tải bảng xếp hạng...</div>
@@ -1248,17 +1696,17 @@
         <!-- Feedback Page -->
         <div id="feedback-page" class="page-content">
             <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Góp Ý Cho Server" data-en="Server Feedback">Góp Ý Cho Server</h1>
-            <p class="subtitle" data-vi="Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server" data-en="Your feedback helps us improve server quality">
-                Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server
+            <div class="logo">MIND-MC-HUB</div>
+            <h1 class="title" data-vi="Góp Ý Cho Hub" data-en="Hub Feedback">Góp Ý Cho Hub</h1>
+            <p class="subtitle" data-vi="Ý kiến của bạn giúp chúng tôi cải thiện chất lượng" data-en="Your feedback helps us improve quality">
+                Ý kiến của bạn giúp chúng tôi cải thiện chất lượng
             </p>
 
-            <div class="bank-info">
+            <div class="glass-panel">
                 <h3 data-vi="Gửi Góp Ý Của Bạn" data-en="Send Your Feedback">Gửi Góp Ý Của Bạn</h3>
                 <div class="feedback-form">
-                    <input type="email" id="feedback-email" placeholder="Email (tùy chọn)" data-vi-placeholder="Email (tùy chọn)" data-en-placeholder="Email (optional)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                    <textarea id="feedback-text" placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho server..." data-en-placeholder="Please share your opinions, feedback or suggestions for the server..."></textarea>
+                    <input type="email" id="feedback-email" placeholder="Email (tùy chọn)" data-vi-placeholder="Email (tùy chọn)" data-en-placeholder="Email (optional)">
+                    <textarea id="feedback-text" placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho hub..." data-vi-placeholder="Hãy chia sẻ ý kiến, góp ý hoặc đề xuất của bạn cho hub..." data-en-placeholder="Please share your opinions, feedback or suggestions for the hub..."></textarea>
                     <button class="submit-btn" onclick="submitFeedback()" data-vi="Gửi Góp Ý" data-en="Submit Feedback">Gửi Góp Ý</button>
                 </div>
             </div>
@@ -1270,7 +1718,7 @@
     </div>
 
     <script>
-        // Configuration - ĐÃ CẬP NHẬT URL MỚI
+        // Configuration
         const API_BASE_URL = 'https://abcxyz-backend-9yxb.onrender.com/api';
 
         // Global variables
@@ -1280,9 +1728,8 @@
         let userToken = localStorage.getItem('userToken');
         let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         let currentPluginForPayment = null;
-        let currentPluginPrice = 0;
 
-        // API Functions - FIXED VERSION
+        // API Functions
         const api = {
             async request(endpoint, options = {}) {
                 try {
@@ -1306,7 +1753,6 @@
                 }
             },
 
-            // Admin APIs
             async adminLogin(username, password) {
                 return this.request('/admin/login', {
                     method: 'POST',
@@ -1387,7 +1833,6 @@
                 });
             },
 
-            // User APIs - FIXED
             async userRegister(userData) {
                 return this.request('/users/register', {
                     method: 'POST',
@@ -1411,7 +1856,7 @@
             }
         };
 
-        // Payment Modal Functions - UPDATED VERSION
+        // Payment Modal Functions
         function showPaymentModal(pluginId, pluginName, pluginPrice) {
             if (!userToken) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập để mua plugin!' : 'Please login to purchase plugins!');
@@ -1447,14 +1892,11 @@
             const amountElement = document.getElementById('transferAmount');
             const descriptionElement = document.getElementById('transferDescription');
 
-            // Hiển thị số tiền
             amountElement.textContent = `${parseInt(currentPluginForPayment.price).toLocaleString()} VND`;
             
-            // Tạo nội dung chuyển khoản dựa trên plugin name
             let description = '';
             let qrUrl = '';
             
-            // Xác định QR code và mô tả dựa trên tên plugin
             const pluginName = currentPluginForPayment.name.toLowerCase();
             
             if (pluginName.includes('shopbank') || pluginName.includes('shop bank')) {
@@ -1470,14 +1912,12 @@
                 qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
             }
             else {
-                // Mặc định cho các plugin khác
                 description = `mua plugin ${currentPluginForPayment.name}`;
                 qrUrl = `https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=${currentPluginForPayment.price}&des=${encodeURIComponent(description)}`;
             }
             
             descriptionElement.textContent = description;
 
-            // Cập nhật QR code
             const qrCodeImg = modal.querySelector('.qr-code img');
             qrCodeImg.src = qrUrl;
 
@@ -1504,7 +1944,6 @@
                     ? '✅ Đã tạo đơn hàng thành công! Vui lòng chuyển khoản theo thông tin trên và chờ xác nhận. Chúng tôi sẽ liên hệ với bạn trong vòng 15-30 phút.' 
                     : '✅ Order created successfully! Please transfer according to the information above and wait for confirmation. We will contact you within 15-30 minutes.');
 
-                // Load lại danh sách đơn hàng nếu đang ở trang đơn hàng
                 if (document.getElementById('my-orders-page').classList.contains('active')) {
                     loadUserOrders();
                 }
@@ -1551,7 +1990,6 @@
             document.getElementById(page + '-page').classList.add('active');
             document.getElementById('menuContent').style.display = 'none';
 
-            // Load data when switching to specific pages
             if (page === 'plugin-store') {
                 loadPlugins();
                 if (isAdminLoggedIn) {
@@ -1721,7 +2159,7 @@
             }
         }
 
-        // Plugin Management - UPDATED VERSION
+        // Plugin Management
         async function loadPlugins() {
             const pluginsList = document.getElementById('plugins-list');
             
@@ -1731,33 +2169,31 @@
                 
                 const plugins = await api.getPlugins();
                 
-                // Nếu không có plugin từ server, hiển thị plugin mặc định
                 if (plugins.length === 0) {
                     pluginsList.innerHTML = `
                         <div class="plugin-item">
                             <h4>⚡ ShopBank System</h4>
-                            <p>Hệ thống shop và ngân hàng độc quyền cho server</p>
+                            <p>Hệ thống shop và ngân hàng độc quyền</p>
                             <div class="plugin-price">500,000 VND</div>
                             <button class="buy-btn" onclick="showPaymentModal(1, 'ShopBank System', 500000)" 
                                     data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                         </div>
                         <div class="plugin-item">
                             <h4>⚡ Trust System</h4>
-                            <p>Hệ thống xếp hạng độ tin cậy cho người chơi</p>
+                            <p>Hệ thống xếp hạng độ tin cậy</p>
                             <div class="plugin-price">200,000 VND</div>
                             <button class="buy-btn" onclick="showPaymentModal(2, 'Trust System', 200000)" 
                                     data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                         </div>
                         <div class="plugin-item">
                             <h4>⚡ Cheat Menu</h4>
-                            <p>Menu cheat với các tính năng đặc biệt</p>
+                            <p>Menu cheat với tính năng đặc biệt</p>
                             <div class="plugin-price">150,000 VND</div>
                             <button class="buy-btn" onclick="showPaymentModal(3, 'Cheat Menu', 150000)" 
                                     data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                         </div>
                     `;
                     
-                    // Update language for newly created buttons
                     changeLanguage(currentLanguage);
                     return;
                 }
@@ -1774,36 +2210,33 @@
                     </div>
                 `).join('');
 
-                // Update language for newly created buttons
                 changeLanguage(currentLanguage);
 
             } catch (error) {
-                // Nếu có lỗi, vẫn hiển thị plugin mặc định
                 pluginsList.innerHTML = `
                     <div class="plugin-item">
                         <h4>⚡ ShopBank System</h4>
-                        <p>Hệ thống shop và ngân hàng độc quyền cho server</p>
+                        <p>Hệ thống shop và ngân hàng độc quyền</p>
                         <div class="plugin-price">500,000 VND</div>
                         <button class="buy-btn" onclick="showPaymentModal(1, 'ShopBank System', 500000)" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                     <div class="plugin-item">
                         <h4>⚡ Trust System</h4>
-                        <p>Hệ thống xếp hạng độ tin cậy cho người chơi</p>
+                        <p>Hệ thống xếp hạng độ tin cậy</p>
                         <div class="plugin-price">200,000 VND</div>
                         <button class="buy-btn" onclick="showPaymentModal(2, 'Trust System', 200000)" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                     <div class="plugin-item">
                         <h4>⚡ Cheat Menu</h4>
-                        <p>Menu cheat với các tính năng đặc biệt</p>
+                        <p>Menu cheat với tính năng đặc biệt</p>
                         <div class="plugin-price">150,000 VND</div>
                         <button class="buy-btn" onclick="showPaymentModal(3, 'Cheat Menu', 150000)" 
                                 data-vi="Mua Ngay" data-en="Buy Now">Mua Ngay</button>
                     </div>
                 `;
                 
-                // Update language for newly created buttons
                 changeLanguage(currentLanguage);
             }
         }
@@ -1842,8 +2275,8 @@
                 });
                 
                 alert(currentLanguage === 'vi' 
-                    ? 'Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện server.' 
-                    : 'Thank you for your feedback! We will review and improve the server.');
+                    ? 'Cảm ơn bạn đã gửi góp ý! Chúng tôi sẽ xem xét và cải thiện.' 
+                    : 'Thank you for your feedback! We will review and improve.');
                 
                 document.getElementById('feedback-text').value = '';
                 document.getElementById('feedback-email').value = '';
@@ -2038,12 +2471,10 @@
                 
                 const data = await response.json();
                 
-                // Update stats
                 document.getElementById('total-accounts').textContent = data.total_accounts || 0;
                 document.getElementById('total-credits').textContent = (data.total_credits || 0).toLocaleString() + ' 💰';
                 document.getElementById('last-update').textContent = new Date().toLocaleString();
                 
-                // Build leaderboard table
                 if (!data.accounts || data.accounts.length === 0) {
                     leaderboard.innerHTML = '<div class="loading">' + 
                         (currentLanguage === 'vi' ? 'Chưa có dữ liệu tài khoản' : 'No account data yet') + '</div>';
@@ -2083,27 +2514,18 @@
             }
         }
 
-        // Add Plugin - FIXED VERSION
+        // Add Plugin
         async function addPlugin() {
             if (!isAdminLoggedIn) {
                 alert(currentLanguage === 'vi' ? 'Vui lòng đăng nhập admin trước!' : 'Please login as admin first!');
                 return;
             }
 
-            // Debug: log tất cả giá trị form
             const name = document.getElementById('pluginName').value;
             const price = document.getElementById('pluginPrice').value;
             const description = document.getElementById('pluginDescription').value;
             const imageUrl = document.getElementById('pluginImage').value;
 
-            console.log('🔧 DEBUG - Form values:', {
-                name: name,
-                price: price,
-                description: description,
-                imageUrl: imageUrl
-            });
-
-            // Validate input - FIXED: Check for empty strings properly
             if (!name || name.trim() === '') {
                 alert(currentLanguage === 'vi' ? 'Vui lòng nhập tên plugin!' : 'Please enter plugin name!');
                 return;
@@ -2117,7 +2539,6 @@
                 return;
             }
 
-            // Validate price is a number
             const priceNum = parseFloat(price);
             if (isNaN(priceNum) || priceNum <= 0) {
                 alert(currentLanguage === 'vi' ? 'Giá phải là số dương!' : 'Price must be a positive number!');
@@ -2131,13 +2552,9 @@
                     description: description.trim()
                 };
 
-                // Thêm image_url nếu có
                 if (imageUrl && imageUrl.trim() !== '') {
                     pluginData.image_url = imageUrl.trim();
                 }
-
-                console.log('🔧 DEBUG - Sending plugin data:', pluginData);
-                console.log('🔧 DEBUG - Admin token:', adminToken ? 'Exists' : 'Missing');
 
                 const result = await api.addPlugin(pluginData, adminToken);
 
@@ -2146,7 +2563,6 @@
                         ? `✅ Đã thêm plugin: ${name}\n💰 Giá: ${priceNum.toLocaleString()} VND` 
                         : `✅ Plugin added: ${name}\n💰 Price: ${priceNum.toLocaleString()} VND`);
                     
-                    // Reset form
                     document.getElementById('pluginName').value = '';
                     document.getElementById('pluginPrice').value = '';
                     document.getElementById('pluginDescription').value = '';
@@ -2156,7 +2572,7 @@
                     await loadStats();
                 }
             } catch (error) {
-                console.error('❌ Add plugin error:', error);
+                console.error('Add plugin error:', error);
                 alert(currentLanguage === 'vi' 
                     ? '❌ Lỗi khi thêm plugin: ' + error.message 
                     : '❌ Error adding plugin: ' + error.message);
@@ -2185,11 +2601,9 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Load saved language preference
             const savedLanguage = localStorage.getItem('preferredLanguage') || 'vi';
             changeLanguage(savedLanguage);
 
-            // Check if admin is already logged in
             if (adminToken) {
                 isAdminLoggedIn = true;
                 document.getElementById('adminPanel').style.display = 'block';
@@ -2197,14 +2611,12 @@
                 loadAdminData();
             }
 
-            // Check if user is logged in
             if (userToken && currentUser) {
                 showUserProfile();
             } else {
                 showLoginForm();
             }
 
-            // Load plugins on page load
             loadPlugins();
         });
     </script>
