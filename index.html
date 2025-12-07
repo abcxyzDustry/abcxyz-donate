@@ -885,127 +885,18 @@
     <!-- Menu Content -->
     <div class="menu-content" id="menuContent">
         <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
+        <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
         <a href="#" onclick="showPage('plugin-store')" data-vi="🛒 Cửa Hàng Plugin" data-en="🛒 Plugin Store">🛒 Cửa Hàng Plugin</a>
         <a href="#" onclick="showPage('services')" data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</a>
         <a href="#" onclick="showPage('shopbank')" data-vi="💎 ShopBank Sync" data-en="💎 ShopBank Sync">💎 ShopBank Sync</a>
         <a href="#" onclick="showPage('account')" data-vi="👤 Tài Khoản" data-en="👤 Account">👤 Tài Khoản</a>
         <a href="#" onclick="showPage('feedback')" data-vi="💬 Góp ý" data-en="💬 Feedback">💬 Góp ý</a>
-        <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
     </div>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Donate Page (Default) -->
-        <div id="donate-page" class="page-content active">
-            <!-- Language Switcher for Donate Page -->
-            <div class="donate-language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
-
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
-            <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
-
-            <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
-                <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
-            </a>
-
-            <div class="qr-code">
-                <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
-                     alt="QR Code Donate">
-            </div>
-
-            <div class="bank-info">
-                <h3 data-vi="Thông Tin Chuyển Khoản" data-en="Bank Transfer Information">Thông Tin Chuyển Khoản</h3>
-                <div class="info-item">
-                    <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
-                    <span class="info-value">VIB</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-vi="Số tài khoản:" data-en="Account Number:">Số tài khoản:</span>
-                    <span class="info-value">068394585</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
-                    <span class="info-value">KIỀU THANH HẢI</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
-                    <span class="info-value" data-vi="Tùy tâm" data-en="Any amount">Tùy tâm</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
-                    <span class="info-value" data-vi="Ủng hộ máy chủ abcxyz" data-en="Support abcxyz server">Ủng hộ máy chủ abcxyz</span>
-                </div>
-            </div>
-
-            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the server develop better!">
-                ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
-            </div>
-
-            <div class="footer" data-vi="Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!" data-en="ABCXYZ New Gen Server - Thank you for your support!">
-                Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
-            </div>
-        </div>
-
-        <!-- Account Page -->
-        <div id="account-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
-            
-            <!-- Language Switcher for Account Page -->
-            <div class="donate-language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
-
-            <div class="logo">abcxyz</div>
-            <h1 class="title" data-vi="Tài Khoản Cá Nhân" data-en="Personal Account">Tài Khoản Cá Nhân</h1>
-            <p class="subtitle" data-vi="Quản lý tài khoản và đơn hàng của bạn" data-en="Manage your account and orders">Quản lý tài khoản và đơn hàng của bạn</p>
-
-            <!-- User Auth Section -->
-            <div id="user-auth-section">
-                <div class="auth-form" id="login-form">
-                    <h3 data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</h3>
-                    <input type="email" id="login-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
-                    <input type="password" id="login-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
-                    <button class="submit-btn" onclick="userLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
-                    <div class="auth-switch">
-                        <span data-vi="Chưa có tài khoản? " data-en="Don't have an account? ">Chưa có tài khoản? </span>
-                        <a onclick="showRegisterForm()" data-vi="Đăng ký ngay" data-en="Register now">Đăng ký ngay</a>
-                    </div>
-                </div>
-
-                <div class="auth-form" id="register-form" style="display: none;">
-                    <h3 data-vi="Đăng Ký" data-en="Register">Đăng Ký</h3>
-                    <input type="text" id="register-name" placeholder="Họ tên" data-vi-placeholder="Họ tên" data-en-placeholder="Full name">
-                    <input type="email" id="register-email" placeholder="Email @gmail.com" data-vi-placeholder="Email @gmail.com" data-en-placeholder="Email @gmail.com">
-                    <input type="password" id="register-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
-                    <button class="submit-btn" onclick="userRegister()" data-vi="Đăng Ký" data-en="Register">Đăng Ký</button>
-                    <div class="auth-switch">
-                        <span data-vi="Đã có tài khoản? " data-en="Already have an account? ">Đã có tài khoản? </span>
-                        <a onclick="showLoginForm()" data-vi="Đăng nhập" data-en="Login">Đăng nhập</a>
-                    </div>
-                </div>
-
-                <div class="user-profile" id="user-profile" style="display: none;">
-                    <div class="user-info">
-                        <h3 data-vi="Thông Tin Tài Khoản" data-en="Account Information">Thông Tin Tài Khoản</h3>
-                        <p><strong data-vi="Tên:" data-en="Name:">Tên:</strong> <span id="user-display-name"></span></p>
-                        <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
-                    </div>
-                    <div class="user-actions">
-                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
-                        <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Home Page -->
-        <div id="home-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
-            
+        <!-- Home Page (Default) -->
+        <div id="home-page" class="page-content active">
             <!-- Language Switcher for Home Page -->
             <div class="donate-language-switcher">
                 <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
@@ -1015,6 +906,10 @@
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Chào Mừng Đến Với ABCXYZ Mindustry Server" data-en="Welcome to ABCXYZ Mindustry Server">Chào Mừng Đến Với ABCXYZ Mindustry Server</h1>
             <p class="subtitle" data-vi="Máy chủ Mindustry Server của Việt Nam" data-en="Vietnam's Mindustry Server">Máy chủ Mindustry Server của Việt Nam</p>
+
+            <a href="https://discord.gg/BSWfgV3GPR" target="_blank" class="discord-btn" id="discord-btn">
+                <i class="fab fa-discord"></i> <span data-vi="Tham gia Discord của chúng tôi" data-en="Join Our Discord">Tham gia Discord của chúng tôi</span>
+            </a>
             
             <div class="bank-info">
                 <h3 data-vi="Giới Thiệu Server" data-en="Server Introduction">Giới Thiệu Server</h3>
@@ -1069,42 +964,115 @@
                 </div>
             </div>
 
-            <button class="discord-btn" onclick="window.open('https://discord.gg/BSWfgV3GPR', '_blank')">
-                <i class="fab fa-discord"></i> <span data-vi="Tham Gia Discord Ngay" data-en="Join Discord Now">Tham Gia Discord Ngay</span>
-            </button>
+            <div class="footer" data-vi="Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!" data-en="ABCXYZ New Gen Server - Thank you for your support!">
+                Server ABCXYZ New Gen - Cảm ơn sự ủng hộ của bạn!
+            </div>
+        </div>
+
+        <!-- Donate Page -->
+        <div id="donate-page" class="page-content">
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
+            
+            <!-- Language Switcher for Donate Page -->
+            <div class="donate-language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
+            <div class="logo">abcxyz</div>
+            <h1 class="title" data-vi="Ủng Hộ Server ABCXYZ" data-en="Donate to ABCXYZ Server">Ủng Hộ Server ABCXYZ</h1>
+            <p class="subtitle" data-vi="Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!" data-en="Thank you for supporting our server!">Cảm ơn bạn đã ủng hộ máy chủ của chúng tôi!</p>
+
+            <div class="qr-code">
+                <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
+                     alt="QR Code Donate">
+            </div>
 
             <div class="bank-info">
-                <h3 data-vi="Đánh Giá Từ Cộng Đồng" data-en="Community Reviews">Đánh Giá Từ Cộng Đồng</h3>
-                
-                <div class="review-item">
-                    <div class="review-author">Nguyễn Văn A</div>
-                    <div class="rating">★★★★★</div>
-                    <p data-vi="Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình." data-en="This server is the best server I've ever joined! The community is very friendly and the admin is very enthusiastic.">
-                        "Máy chủ này là máy chủ tuyệt nhất mà tôi từng tham gia! Cộng đồng rất thân thiện và admin rất nhiệt tình."
-                    </p>
+                <h3 data-vi="Thông Tin Chuyển Khoản" data-en="Bank Transfer Information">Thông Tin Chuyển Khoản</h3>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
+                    <span class="info-value">VIB</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Số tài khoản:" data-en="Account Number:">Số tài khoản:</span>
+                    <span class="info-value">068394585</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
+                    <span class="info-value">KIỀU THANH HẢI</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
+                    <span class="info-value" data-vi="Tùy tâm" data-en="Any amount">Tùy tâm</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
+                    <span class="info-value" data-vi="Ủng hộ máy chủ abcxyz" data-en="Support abcxyz server">Ủng hộ máy chủ abcxyz</span>
+                </div>
+            </div>
+
+            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the server develop better!">
+                ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp server phát triển tốt hơn!
+            </div>
+        </div>
+
+        <!-- Account Page -->
+        <div id="account-page" class="page-content">
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
+            
+            <!-- Language Switcher for Account Page -->
+            <div class="donate-language-switcher">
+                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
+            </div>
+
+            <div class="logo">abcxyz</div>
+            <h1 class="title" data-vi="Tài Khoản Cá Nhân" data-en="Personal Account">Tài Khoản Cá Nhân</h1>
+            <p class="subtitle" data-vi="Quản lý tài khoản và đơn hàng của bạn" data-en="Manage your account and orders">Quản lý tài khoản và đơn hàng của bạn</p>
+
+            <!-- User Auth Section -->
+            <div id="user-auth-section">
+                <div class="auth-form" id="login-form">
+                    <h3 data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</h3>
+                    <input type="email" id="login-email" placeholder="Email" data-vi-placeholder="Email" data-en-placeholder="Email">
+                    <input type="password" id="login-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userLogin()" data-vi="Đăng Nhập" data-en="Login">Đăng Nhập</button>
+                    <div class="auth-switch">
+                        <span data-vi="Chưa có tài khoản? " data-en="Don't have an account? ">Chưa có tài khoản? </span>
+                        <a onclick="showRegisterForm()" data-vi="Đăng ký ngay" data-en="Register now">Đăng ký ngay</a>
+                    </div>
                 </div>
 
-                <div class="review-item">
-                    <div class="review-author">Trần Thị B</div>
-                    <div class="rating">★★★★★</div>
-                    <p data-vi="Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!" data-en="The exclusive plugins are extremely interesting, cannot be found on other servers. Very worth playing long-term!">
-                        "Plugin độc quyền cực kỳ thú vị, không thể tìm thấy ở server khác. Rất đáng để chơi lâu dài!"
-                    </p>
+                <div class="auth-form" id="register-form" style="display: none;">
+                    <h3 data-vi="Đăng Ký" data-en="Register">Đăng Ký</h3>
+                    <input type="text" id="register-name" placeholder="Họ tên" data-vi-placeholder="Họ tên" data-en-placeholder="Full name">
+                    <input type="email" id="register-email" placeholder="Email @gmail.com" data-vi-placeholder="Email @gmail.com" data-en-placeholder="Email @gmail.com">
+                    <input type="password" id="register-password" placeholder="Mật khẩu" data-vi-placeholder="Mật khẩu" data-en-placeholder="Password">
+                    <button class="submit-btn" onclick="userRegister()" data-vi="Đăng Ký" data-en="Register">Đăng Ký</button>
+                    <div class="auth-switch">
+                        <span data-vi="Đã có tài khoản? " data-en="Already have an account? ">Đã có tài khoản? </span>
+                        <a onclick="showLoginForm()" data-vi="Đăng nhập" data-en="Login">Đăng nhập</a>
+                    </div>
                 </div>
 
-                <div class="review-item">
-                    <div class="review-author">Lê Văn C</div>
-                    <div class="rating">★★★★☆</div>
-                    <p data-vi="Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!" data-en="Stable server, low lag. Some maintenance times but notifications are very clear. Very satisfied!">
-                        "Server ổn định, ít lag. Có vài lúc bảo trì nhưng thông báo rất rõ ràng. Rất hài lòng!"
-                    </p>
+                <div class="user-profile" id="user-profile" style="display: none;">
+                    <div class="user-info">
+                        <h3 data-vi="Thông Tin Tài Khoản" data-en="Account Information">Thông Tin Tài Khoản</h3>
+                        <p><strong data-vi="Tên:" data-en="Name:">Tên:</strong> <span id="user-display-name"></span></p>
+                        <p><strong data-vi="Email:" data-en="Email:">Email:</strong> <span id="user-display-email"></span></p>
+                    </div>
+                    <div class="user-actions">
+                        <button class="buy-btn" onclick="showPage('my-orders')" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</button>
+                        <button class="logout-btn" onclick="userLogout()" data-vi="Đăng Xuất" data-en="Logout">Đăng Xuất</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Plugin Store Page -->
         <div id="plugin-store-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Cửa Hàng Plugin ABCXYZ" data-en="ABCXYZ Plugin Store">Cửa Hàng Plugin ABCXYZ</h1>
             <p class="subtitle" data-vi="Nơi bạn có thể mua các plugin đang chạy của máy chủ hoặc đặt hàng plugin mới" data-en="Where you can buy server running plugins or order new plugins">
@@ -1185,7 +1153,7 @@
 
         <!-- My Orders Page -->
         <div id="my-orders-page" class="page-content">
-            <button class="back-btn" onclick="showPage('account')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('account')" data-vi="← Tài khoản" data-en="← Account">← Tài khoản</button>
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Đơn Hàng Của Tôi" data-en="My Orders">Đơn Hàng Của Tôi</h1>
             <p class="subtitle" data-vi="Quản lý đơn hàng bạn đã đặt" data-en="Manage your orders">Quản lý đơn hàng bạn đã đặt</p>
@@ -1197,7 +1165,7 @@
 
         <!-- Services Page -->
         <div id="services-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Các Dịch Vụ Khác" data-en="Other Services">Các Dịch Vụ Khác</h1>
             <p class="subtitle" data-vi="Khám phá thêm các dịch vụ đa dạng từ chúng tôi" data-en="Discover more diverse services from us">
@@ -1249,7 +1217,7 @@
 
         <!-- ShopBank Sync Page -->
         <div id="shopbank-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             <div class="logo">💎 ShopBank</div>
             <h1 class="title" data-vi="Đồng Bộ Tài Khoản" data-en="Account Sync">Đồng Bộ Tài Khoản</h1>
             <p class="subtitle" data-vi="Top 30 tỷ phú - Bảng xếp hạng tài khoản ShopBank" data-en="Top 30 Richest - ShopBank Account Leaderboard">
@@ -1279,7 +1247,7 @@
 
         <!-- Feedback Page -->
         <div id="feedback-page" class="page-content">
-            <button class="back-btn" onclick="showPage('donate')" data-vi="← Quay lại" data-en="← Back">← Quay lại</button>
+            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
             <div class="logo">abcxyz</div>
             <h1 class="title" data-vi="Góp Ý Cho Server" data-en="Server Feedback">Góp Ý Cho Server</h1>
             <p class="subtitle" data-vi="Ý kiến của bạn giúp chúng tôi cải thiện chất lượng server" data-en="Your feedback helps us improve server quality">
