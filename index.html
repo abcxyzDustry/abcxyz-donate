@@ -275,33 +275,6 @@
             text-align: right;
         }
 
-        .language-switcher {
-            margin: 20px 0;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-
-        .lang-btn {
-            background: rgba(30, 30, 40, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
-            padding: 8px 15px;
-            margin: 0 2px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-            backdrop-filter: blur(10px);
-        }
-
-        .lang-btn:hover {
-            background: rgba(40, 40, 50, 0.7);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
         .thank-you {
             margin-top: 25px;
             padding: 20px;
@@ -806,11 +779,6 @@
                 padding: 20px;
             }
             
-            .language-switcher {
-                top: 15px;
-                left: 15px;
-            }
-            
             .menu-btn {
                 top: 15px;
                 right: 15px;
@@ -838,65 +806,55 @@
 
     <!-- Menu Content -->
     <div class="menu-content" id="menuContent">
-        <a href="#" onclick="showPage('home')" data-vi="🏠 Trang Chủ" data-en="🏠 Home">🏠 Trang Chủ</a>
-        <a href="#" onclick="showPage('donate')" data-vi="💰 Donate" data-en="💰 Donate">💰 Donate</a>
-        <a href="#" onclick="showPage('services')" data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</a>
+        <a href="#" onclick="showPage('home')">🏠 Trang Chủ</a>
+        <a href="#" onclick="showPage('donate')">💰 Donate</a>
+        <a href="#" onclick="showPage('services')">🌟 Dịch Vụ Khác</a>
     </div>
 
     <!-- Main Container -->
     <div class="container">
         <!-- Home Page (Default) -->
         <div id="home-page" class="page-content active">
-            <!-- Language Switcher for Home Page -->
-            <div class="language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
-
             <div class="logo">MIND-MC-HUB</div>
-            <h1 class="title" data-vi="Chào Mừng Đến Với" data-en="Welcome to">Chào Mừng Đến Với</h1>
+            <h1 class="title">Chào Mừng Đến Với</h1>
             <h1 class="hub-title">Mindustry - Minecraft - Multiplayer Hub</h1>
-            <p class="subtitle" data-vi="Trung tâm kết nối cộng đồng chơi game" data-en="Gaming community connection center">Trung tâm kết nối cộng đồng chơi game</p>
+            <p class="subtitle">Trung tâm kết nối cộng đồng chơi game</p>
 
             <!-- Hub Information Box - FIXED LAYOUT -->
             <div class="hub-info">
-                <div class="hub-subtitle" data-vi="🎮 Hub Thông Tin" data-en="🎮 Hub Information">🎮 Hub Thông Tin</div>
+                <div class="hub-subtitle">🎮 Hub Thông Tin</div>
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-gamepad"></i>
                         </div>
-                        <div class="feature-text" data-vi="Minecraft PE" data-en="Minecraft PE">Minecraft PE</div>
+                        <div class="feature-text">Minecraft PE</div>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-server"></i>
                         </div>
-                        <div class="feature-text" data-vi="Mindustry" data-en="Mindustry">Mindustry</div>
+                        <div class="feature-text">Mindustry</div>
                     </div>
                 </div>
                 
                 <!-- Mobile App Section - Separated from grid -->
                 <div class="mobile-app-section">
-                    <h4 data-vi="📱 Ứng dụng Mobile" data-en="📱 Mobile App">📱 Ứng dụng Mobile</h4>
-                    <p data-vi="Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:" data-en="Download Android APK for full experience:">
-                        Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:
-                    </p>
+                    <h4>📱 Ứng dụng Mobile</h4>
+                    <p>Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:</p>
                     <div class="button-container">
                         <a href="https://expo.dev/artifacts/eas/6QdBvR3p9LEHs31oZgPX7L.apk" 
                            target="_blank" class="btn-dark-glass btn-success">
                             <i class="fas fa-download"></i> 
-                            <span data-vi="Tải APK Android" data-en="Download Android APK">Tải APK Android</span>
+                            <span>Tải APK Android</span>
                         </a>
                     </div>
                     <a href="https://abcxyzdustry.github.io/abcxyzdustry-donate/#" 
-                       target="_blank" class="website-link" 
-                       data-vi="🌐 Truy cập Website: abcxyzdustry.github.io" 
-                       data-en="🌐 Visit Website: abcxyzdustry.github.io">
+                       target="_blank" class="website-link">
                         🌐 Truy cập Website: abcxyzdustry.github.io
                     </a>
                     <p style="margin-top: 15px; font-size: 0.85em; color: rgba(255, 255, 255, 0.7);">
-                        <span data-vi="Phiên bản: Dec 04, 2025" data-en="Version: Dec 04, 2025">Phiên bản: Dec 04, 2025</span>
+                        Phiên bản: Dec 04, 2025
                     </p>
                 </div>
             </div>
@@ -905,84 +863,74 @@
             <div class="button-container">
                 <button onclick="showPage('donate')" class="btn-dark-glass btn-primary">
                     <i class="fas fa-heart"></i> 
-                    <span data-vi="💰 Donate Ủng Hộ" data-en="💰 Donate Support">💰 Donate Ủng Hộ</span>
+                    <span>💰 Donate Ủng Hộ</span>
                 </button>
                 <button onclick="showPage('services')" class="btn-dark-glass btn-secondary">
                     <i class="fas fa-star"></i> 
-                    <span data-vi="🌟 Dịch Vụ Khác" data-en="🌟 Other Services">🌟 Dịch Vụ Khác</span>
+                    <span>🌟 Dịch Vụ Khác</span>
                 </button>
             </div>
 
             <div class="dark-panel">
-                <h3 data-vi="Tính Năng Chính" data-en="Main Features">Tính Năng Chính</h3>
+                <h3>Tính Năng Chính</h3>
                 <ul style="margin: 15px 0; padding-left: 20px; color: rgba(255, 255, 255, 0.9); line-height: 1.8;">
-                    <li data-vi="🎮 Multiplayer Minecraft PE" data-en="🎮 Multiplayer Minecraft PE">🎮 Multiplayer Minecraft PE</li>
-                    <li data-vi="⚡ Multiplayer Mindustry" data-en="⚡ Multiplayer Mindustry">⚡ Multiplayer Mindustry</li>
-                    <li data-vi="💬 Chat thời gian thực" data-en="💬 Real-time Chat">💬 Chat thời gian thực</li>
-                    <li data-vi="👥 Hệ thống kết bạn" data-en="👥 Friend System">👥 Hệ thống kết bạn</li>
-                    <li data-vi="📱 Cross-platform Web/Mobile" data-en="📱 Cross-platform Web/Mobile">📱 Cross-platform Web/Mobile</li>
-                    <li data-vi="🎵 Music Player tự động" data-en="🎵 Auto Music Player">🎵 Music Player tự động</li>
+                    <li>🎮 Multiplayer Minecraft PE</li>
+                    <li>⚡ Multiplayer Mindustry</li>
+                    <li>💬 Chat thời gian thực</li>
+                    <li>👥 Hệ thống kết bạn</li>
+                    <li>📱 Cross-platform Web/Mobile</li>
+                    <li>🎵 Music Player tự động</li>
                 </ul>
             </div>
 
             <!-- Download Section -->
             <div class="download-section">
-                <h3 data-vi="📥 Tải Game Mindustry" data-en="📥 Download Mindustry">
-                    📥 Tải Game Mindustry
-                </h3>
-                <p data-vi="Phiên bản mới nhất v153:" data-en="Latest version v153:">
-                    Phiên bản mới nhất v153:
-                </p>
+                <h3>📥 Tải Game Mindustry</h3>
+                <p>Phiên bản mới nhất v153:</p>
                 
                 <div class="download-grid">
                     <a href="https://anuke.itch.io/mindustry/download/eyJpZCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn android">
                         <i class="fab fa-android"></i>
-                        <span data-vi="Mindustry v153 Android" data-en="Mindustry v153 Android">Mindustry v153 Android</span>
+                        <span>Mindustry v153 Android</span>
                     </a>
                     
                     <a href="https://anuke.itch.io/mindustry/download/eyJpZCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn windows">
                         <i class="fab fa-windows"></i>
-                        <span data-vi="Mindustry v153 Windows 64bit" data-en="Mindustry v153 Windows 64bit">Mindustry v153 Windows 64bit</span>
+                        <span>Mindustry v153 Windows 64bit</span>
                     </a>
                     
                     <a href="https://anuke.itch.io/mindustry/download/eyJpJCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn windows">
                         <i class="fab fa-windows"></i>
-                        <span data-vi="Mindustry v153 Windows 32bit" data-en="Mindustry v153 Windows 32bit">Mindustry v153 Windows 32bit</span>
+                        <span>Mindustry v153 Windows 32bit</span>
                     </a>
                     
                     <a href="https://testflight.apple.com/join/79Azm1hZ" 
                        target="_blank" class="download-btn ios">
                         <i class="fab fa-apple"></i>
-                        <span data-vi="Mindustry v153 iOS (TestFlight)" data-en="Mindustry v153 iOS (TestFlight)">Mindustry v153 iOS (TestFlight)</span>
+                        <span>Mindustry v153 iOS (TestFlight)</span>
                     </a>
                 </div>
                 
-                <div class="download-note" data-vi="⚠️ Các liên kết tải game được cung cấp từ nhà phát triển chính thức" data-en="⚠️ Game download links are provided from the official developer">
+                <div class="download-note">
                     ⚠️ Các liên kết tải game được cung cấp từ nhà phát triển chính thức
                 </div>
             </div>
 
-            <div class="footer" data-vi="🎮 Mindustry - Minecraft Multiplayer Hub - Kết nối cộng đồng game thủ!" data-en="🎮 Mindustry - Minecraft Multiplayer Hub - Connecting gaming community!">
+            <div class="footer">
                 🎮 Mindustry - Minecraft Multiplayer Hub - Kết nối cộng đồng game thủ!
             </div>
         </div>
 
         <!-- Donate Page -->
         <div id="donate-page" class="page-content">
-            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
-            
-            <!-- Language Switcher for Donate Page -->
-            <div class="language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
+            <button class="back-btn" onclick="showPage('home')">← Trang chủ</button>
 
             <div class="logo">MIND-MC-HUB</div>
-            <h1 class="title" data-vi="Ủng Hộ Hub Của Chúng Tôi" data-en="Donate to Our Hub">Ủng Hộ Hub Của Chúng Tôi</h1>
-            <p class="subtitle" data-vi="Mọi đóng góp giúp duy trì và phát triển hub!" data-en="Every contribution helps maintain and develop the hub!">Mọi đóng góp giúp duy trì và phát triển hub!</p>
+            <h1 class="title">Ủng Hộ Hub Của Chúng Tôi</h1>
+            <p class="subtitle">Mọi đóng góp giúp duy trì và phát triển hub!</p>
 
             <div class="qr-code">
                 <img src="https://qr.sepay.vn/img?bank=VIB&acc=068394585&template=&amount=&des=ủng+hộ+máy+chủ+abcxyz" 
@@ -990,73 +938,65 @@
             </div>
 
             <div class="dark-panel">
-                <h3 data-vi="Thông Tin Chuyển Khoản" data-en="Bank Transfer Information">Thông Tin Chuyển Khoản</h3>
+                <h3>Thông Tin Chuyển Khoản</h3>
                 <div class="info-item">
-                    <span class="info-label" data-vi="Ngân hàng:" data-en="Bank:">Ngân hàng:</span>
+                    <span class="info-label">Ngân hàng:</span>
                     <span class="info-value">VIB</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" data-vi="Số tài khoản:" data-en="Account Number:">Số tài khoản:</span>
+                    <span class="info-label">Số tài khoản:</span>
                     <span class="info-value">068394585</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" data-vi="Chủ tài khoản:" data-en="Account Holder:">Chủ tài khoản:</span>
+                    <span class="info-label">Chủ tài khoản:</span>
                     <span class="info-value">KIỀU THANH HẢI</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" data-vi="Số tiền:" data-en="Amount:">Số tiền:</span>
-                    <span class="info-value" data-vi="Tùy tâm" data-en="Any amount">Tùy tâm</span>
+                    <span class="info-label">Số tiền:</span>
+                    <span class="info-value">Tùy tâm</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label" data-vi="Nội dung:" data-en="Description:">Nội dung:</span>
-                    <span class="info-value" data-vi="Ủng hộ hub game" data-en="Support gaming hub">Ủng hộ hub game</span>
+                    <span class="info-label">Nội dung:</span>
+                    <span class="info-value">Ủng hộ hub game</span>
                 </div>
             </div>
 
             <div class="button-container">
                 <button onclick="showPage('home')" class="btn-dark-glass btn-primary">
                     <i class="fas fa-home"></i> 
-                    <span data-vi="🏠 Về Trang Chủ" data-en="🏠 Back to Home">🏠 Về Trang Chủ</span>
+                    <span>🏠 Về Trang Chủ</span>
                 </button>
             </div>
 
-            <div class="thank-you" data-vi="❤️ Mọi đóng góp của bạn đều được trân trọng và giúp hub phát triển tốt hơn!" data-en="❤️ Every contribution is appreciated and helps the hub develop better!">
+            <div class="thank-you">
                 ❤️ Mọi đóng góp của bạn đều được trân trọng và giúp hub phát triển tốt hơn!
             </div>
         </div>
 
         <!-- Services Page -->
         <div id="services-page" class="page-content">
-            <button class="back-btn" onclick="showPage('home')" data-vi="← Trang chủ" data-en="← Home">← Trang chủ</button>
-            
-            <!-- Language Switcher for Services Page -->
-            <div class="language-switcher">
-                <button class="lang-btn" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
-                <button class="lang-btn" onclick="changeLanguage('en')">🇺🇸 English</button>
-            </div>
+            <button class="back-btn" onclick="showPage('home')">← Trang chủ</button>
 
             <div class="logo">MIND-MC-HUB</div>
-            <h1 class="title" data-vi="Các Dịch Vụ Khác" data-en="Other Services">Các Dịch Vụ Khác</h1>
-            <p class="subtitle" data-vi="Khám phá thêm các dịch vụ đa dạng từ chúng tôi" data-en="Discover more diverse services from us">
-                Khám phá thêm các dịch vụ đa dạng từ chúng tôi
-            </p>
+            <h1 class="title">Các Dịch Vụ Khác</h1>
+            <p class="subtitle">Khám phá thêm các dịch vụ đa dạng từ chúng tôi</p>
 
             <!-- Casino Service -->
             <div class="service-item">
                 <div class="service-icon">
                     <i class="fas fa-dice"></i>
                 </div>
-                <div class="service-title" data-vi="Sòng Bạc Trực Tuyến" data-en="Online Casino">Sòng Bạc Trực Tuyến</div>
-                <div class="service-description" data-vi="Trải nghiệm casino trực tuyến đẳng cấp với đa dạng trò chơi và tỷ lệ cược hấp dẫn" data-en="Experience premium online casino with diverse games and attractive odds">
+                <div class="service-title">Sòng Bạc Trực Tuyến</div>
+                <div class="service-description">
                     Trải nghiệm casino trực tuyến đẳng cấp với đa dạng trò chơi và tỷ lệ cược hấp dẫn
                 </div>
-                <div class="service-warning" data-vi="⚠️ Khi tham gia, bạn đồng ý với các điều khoản về nạp/rút tiền và quy định của chúng tôi" data-en="⚠️ By participating, you agree to our deposit/withdrawal terms and conditions">
+                <div class="service-warning">
                     ⚠️ Khi tham gia, bạn đồng ý với các điều khoản về nạp/rút tiền và quy định của chúng tôi
                 </div>
                 <div class="button-container">
                     <a href="https://one11bet-com.onrender.com/web/" target="_blank" class="service-btn">
                         <i class="fas fa-external-link-alt"></i> 
-                        <span data-vi="Truy Cập Ngay" data-en="Visit Now">Truy Cập Ngay</span>
+                        <span>Truy Cập Ngay</span>
                     </a>
                 </div>
             </div>
@@ -1066,14 +1006,14 @@
                 <div class="service-icon">
                     <i class="fas fa-plane"></i>
                 </div>
-                <div class="service-title" data-vi="Du Lịch Trung Quốc" data-en="China Travel">Du Lịch Trung Quốc</div>
-                <div class="service-description" data-vi="Khám phá vẻ đẹp Trung Quốc với các tour du lịch chất lượng cao, giá cả hợp lý" data-en="Discover China's beauty with high-quality tours at reasonable prices">
+                <div class="service-title">Du Lịch Trung Quốc</div>
+                <div class="service-description">
                     Khám phá vẻ đẹp Trung Quốc với các tour du lịch chất lượng cao, giá cả hợp lý
                 </div>
                 <div class="button-container">
                     <a href="https://abcxyzdustry.github.io/halong-tour-website/" target="_blank" class="service-btn">
                         <i class="fas fa-external-link-alt"></i> 
-                        <span data-vi="Khám Phá Tour" data-en="Explore Tours">Khám Phá Tour</span>
+                        <span>Khám Phá Tour</span>
                     </a>
                 </div>
             </div>
@@ -1081,41 +1021,18 @@
             <div class="button-container">
                 <button onclick="showPage('home')" class="btn-dark-glass btn-primary">
                     <i class="fas fa-home"></i> 
-                    <span data-vi="🏠 Về Trang Chủ" data-en="🏠 Back to Home">🏠 Về Trang Chủ</span>
+                    <span>🏠 Về Trang Chủ</span>
                 </button>
             </div>
 
             <div class="thank-you" style="margin-top: 30px;">
                 <i class="fas fa-handshake"></i> 
-                <span data-vi="Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!" data-en="Thank you for trusting and using our services!">
-                    Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!
-                </span>
+                <span>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuration
-        let currentLanguage = 'vi';
-
-        // Language management
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            document.querySelectorAll('[data-vi], [data-en]').forEach(element => {
-                if (element.hasAttribute(`data-${lang}`)) {
-                    const newText = element.getAttribute(`data-${lang}`);
-                    if (element.placeholder !== undefined) {
-                        element.placeholder = newText;
-                    } else {
-                        element.textContent = newText;
-                    }
-                }
-            });
-            
-            localStorage.setItem('preferredLanguage', lang);
-        }
-
         // Menu Functions
         function toggleMenu() {
             const menu = document.getElementById('menuContent');
@@ -1128,9 +1045,6 @@
             });
             document.getElementById(page + '-page').classList.add('active');
             document.getElementById('menuContent').style.display = 'none';
-            
-            // Update language on page change
-            changeLanguage(currentLanguage);
         }
 
         // Close menu when clicking outside
@@ -1141,12 +1055,6 @@
             if (!menu.contains(event.target) && !menuBtn.contains(event.target)) {
                 menu.style.display = 'none';
             }
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedLanguage = localStorage.getItem('preferredLanguage') || 'vi';
-            changeLanguage(savedLanguage);
         });
     </script>
 </body>
