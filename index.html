@@ -280,6 +280,7 @@
             position: absolute;
             top: 20px;
             left: 20px;
+            z-index: 10;
         }
 
         .lang-btn {
@@ -331,7 +332,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 1.2em;
-            z-index: 1000;
+            z-index: 10;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
@@ -404,6 +405,8 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             font-size: 0.95em;
+            position: relative;
+            z-index: 5;
         }
 
         .back-btn:hover {
@@ -411,81 +414,7 @@
             transform: translateY(-2px);
         }
 
-        /* Services Page Styles */
-        .service-item {
-            background: rgba(30, 30, 40, 0.6);
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 16px;
-            border: 2px solid rgba(227, 52, 78, 0.3);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .service-item:hover {
-            border-color: rgba(227, 52, 78, 0.5);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .service-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #e3344e, #14b8a6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .service-title {
-            font-size: 1.4em;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .service-description {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .service-warning {
-            background: rgba(255, 243, 205, 0.1);
-            color: rgba(255, 235, 59, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border: 1px solid rgba(255, 235, 59, 0.2);
-            font-size: 0.9em;
-            backdrop-filter: blur(10px);
-        }
-
-        .service-btn {
-            background: linear-gradient(135deg, 
-                rgba(227, 52, 78, 0.3) 0%, 
-                rgba(20, 184, 166, 0.3) 100%);
-            border: 1px solid rgba(227, 52, 78, 0.3);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .service-btn:hover {
-            background: linear-gradient(135deg, 
-                rgba(227, 52, 78, 0.4) 0%, 
-                rgba(20, 184, 166, 0.4) 100%);
-            transform: translateY(-2px);
-        }
-
-        /* Hub Information Box */
+        /* Hub Information Box - FIXED */
         .hub-info {
             background: rgba(30, 30, 40, 0.6);
             padding: 30px;
@@ -494,7 +423,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .hub-info::before {
@@ -531,13 +460,18 @@
             margin-bottom: 25px;
             text-align: center;
             font-weight: 600;
+            position: relative;
+            z-index: 5;
         }
 
+        /* FIXED Grid Layout */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            margin-top: 25px;
+            margin: 25px 0;
+            position: relative;
+            z-index: 5;
         }
 
         .feature-item {
@@ -547,6 +481,13 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .feature-item:hover {
@@ -561,12 +502,151 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            z-index: 5;
         }
 
         .feature-text {
             color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
             font-size: 0.95em;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Mobile App Section - FIXED */
+        .mobile-app-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(40, 40, 50, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 5;
+        }
+
+        .mobile-app-section h4 {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 5;
+        }
+
+        .mobile-app-section p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .website-link {
+            display: block;
+            color: rgba(227, 52, 78, 0.9);
+            font-weight: 600;
+            text-decoration: none;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(227, 52, 78, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(227, 52, 78, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .website-link:hover {
+            background: rgba(227, 52, 78, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Services Page Styles */
+        .service-item {
+            background: rgba(30, 30, 40, 0.6);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 16px;
+            border: 2px solid rgba(227, 52, 78, 0.3);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-item:hover {
+            border-color: rgba(227, 52, 78, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #e3344e, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-title {
+            font-size: 1.4em;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-warning {
+            background: rgba(255, 243, 205, 0.1);
+            color: rgba(255, 235, 59, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 235, 59, 0.2);
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-btn {
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.3) 0%, 
+                rgba(20, 184, 166, 0.3) 100%);
+            border: 1px solid rgba(227, 52, 78, 0.3);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5;
+        }
+
+        .service-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(227, 52, 78, 0.4) 0%, 
+                rgba(20, 184, 166, 0.4) 100%);
+            transform: translateY(-2px);
         }
 
         /* Download Section Styles */
@@ -578,6 +658,8 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5;
         }
 
         .download-section h3 {
@@ -588,12 +670,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            z-index: 5;
         }
 
         .download-grid {
             display: grid;
             gap: 15px;
             margin-top: 20px;
+            position: relative;
+            z-index: 5;
         }
 
         .download-btn {
@@ -612,6 +698,8 @@
             text-align: center;
             min-height: 60px;
             backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5;
         }
 
         .download-btn:hover {
@@ -646,6 +734,8 @@
             color: rgba(255, 255, 255, 0.6);
             font-style: italic;
             line-height: 1.5;
+            position: relative;
+            z-index: 5;
         }
 
         /* Mobile Responsive */
@@ -688,6 +778,10 @@
                 padding: 20px;
                 margin: 20px 0;
             }
+            
+            .mobile-app-section {
+                padding: 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -711,6 +805,27 @@
             .service-item {
                 padding: 20px;
             }
+            
+            .language-switcher {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .menu-btn {
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        /* Fix for overlapping elements */
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container > * {
+            position: relative;
+            z-index: 2;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -743,7 +858,7 @@
             <h1 class="hub-title">Mindustry - Minecraft - Multiplayer Hub</h1>
             <p class="subtitle" data-vi="Trung tâm kết nối cộng đồng chơi game" data-en="Gaming community connection center">Trung tâm kết nối cộng đồng chơi game</p>
 
-            <!-- Hub Information Box -->
+            <!-- Hub Information Box - FIXED LAYOUT -->
             <div class="hub-info">
                 <div class="hub-subtitle" data-vi="🎮 Hub Thông Tin" data-en="🎮 Hub Information">🎮 Hub Thông Tin</div>
                 <div class="feature-grid">
@@ -759,26 +874,13 @@
                         </div>
                         <div class="feature-text" data-vi="Mindustry" data-en="Mindustry">Mindustry</div>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="feature-text" data-vi="Multiplayer" data-en="Multiplayer">Multiplayer</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <div class="feature-text" data-vi="Chat Thời Gian Thực" data-en="Real-time Chat">Chat Thời Gian Thực</div>
-                    </div>
                 </div>
                 
-                <div style="margin-top: 25px; padding: 20px; background: rgba(40, 40, 50, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                    <h4 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px;" data-vi="📱 Ứng dụng Mobile" data-en="📱 Mobile App">📱 Ứng dụng Mobile</h4>
-                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95em; line-height: 1.6; margin-bottom: 15px;">
-                        <span data-vi="Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:" data-en="Download Android APK for full experience:">
-                            Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:
-                        </span>
+                <!-- Mobile App Section - Separated from grid -->
+                <div class="mobile-app-section">
+                    <h4 data-vi="📱 Ứng dụng Mobile" data-en="📱 Mobile App">📱 Ứng dụng Mobile</h4>
+                    <p data-vi="Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:" data-en="Download Android APK for full experience:">
+                        Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:
                     </p>
                     <div class="button-container">
                         <a href="https://expo.dev/artifacts/eas/6QdBvR3p9LEHs31oZgPX7L.apk" 
@@ -787,6 +889,12 @@
                             <span data-vi="Tải APK Android" data-en="Download Android APK">Tải APK Android</span>
                         </a>
                     </div>
+                    <a href="https://abcxyzdustry.github.io/abcxyzdustry-donate/#" 
+                       target="_blank" class="website-link" 
+                       data-vi="🌐 Truy cập Website: abcxyzdustry.github.io" 
+                       data-en="🌐 Visit Website: abcxyzdustry.github.io">
+                        🌐 Truy cập Website: abcxyzdustry.github.io
+                    </a>
                     <p style="margin-top: 15px; font-size: 0.85em; color: rgba(255, 255, 255, 0.7);">
                         <span data-vi="Phiên bản: Dec 04, 2025" data-en="Version: Dec 04, 2025">Phiên bản: Dec 04, 2025</span>
                     </p>
