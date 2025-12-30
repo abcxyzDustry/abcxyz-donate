@@ -14,11 +14,11 @@
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, 
-                rgba(30, 30, 40, 1) 0%, 
-                rgba(25, 25, 35, 1) 25%,
-                rgba(20, 20, 30, 1) 50%,
-                rgba(15, 15, 25, 1) 75%,
-                rgba(10, 10, 20, 1) 100%);
+                rgba(30, 40, 30, 1) 0%, 
+                rgba(25, 35, 25, 1) 25%,
+                rgba(20, 30, 20, 1) 50%,
+                rgba(25, 35, 15, 1) 75%,
+                rgba(30, 40, 10, 1) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -38,15 +38,15 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(227, 52, 78, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(76, 175, 80, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 195, 74, 0.15) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
 
         .container {
-            background: rgba(20, 20, 30, 0.8);
+            background: rgba(25, 35, 25, 0.85);
             border-radius: 24px;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.4),
@@ -74,15 +74,15 @@
             font-weight: 800;
             margin-bottom: 30px;
             background: linear-gradient(45deg, 
-                #e3344e 0%, 
-                #14b8a6 50%,
-                #4CAF50 100%);
+                #4CAF50 0%, 
+                #8BC34A 50%,
+                #FF9800 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 
-                0 2px 10px rgba(227, 52, 78, 0.3),
-                0 4px 20px rgba(20, 184, 166, 0.2);
+                0 2px 10px rgba(76, 175, 80, 0.3),
+                0 4px 20px rgba(255, 152, 0, 0.2);
             position: relative;
             display: inline-block;
         }
@@ -95,9 +95,9 @@
             width: 100%;
             height: 3px;
             background: linear-gradient(90deg, 
-                #e3344e 0%, 
-                #14b8a6 50%,
-                #4CAF50 100%);
+                #4CAF50 0%, 
+                #8BC34A 50%,
+                #FF9800 100%);
             border-radius: 3px;
             filter: blur(1px);
         }
@@ -117,10 +117,10 @@
             line-height: 1.6;
         }
 
-        /* Dark Glass Buttons */
-        .btn-dark-glass {
-            background: rgba(30, 30, 40, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        /* Green-Orange Glass Buttons */
+        .btn-gradient {
+            background: rgba(30, 40, 30, 0.6);
+            border: 1px solid rgba(76, 175, 80, 0.3);
             color: white;
             padding: 14px 28px;
             border-radius: 12px;
@@ -143,7 +143,7 @@
             max-width: 300px;
         }
 
-        .btn-dark-glass::before {
+        .btn-gradient::before {
             content: '';
             position: absolute;
             top: 0;
@@ -157,20 +157,20 @@
             transition: left 0.5s ease;
         }
 
-        .btn-dark-glass:hover::before {
+        .btn-gradient:hover::before {
             left: 100%;
         }
 
-        .btn-dark-glass:hover {
-            background: rgba(40, 40, 50, 0.7);
-            border-color: rgba(255, 255, 255, 0.25);
+        .btn-gradient:hover {
+            background: rgba(40, 50, 40, 0.7);
+            border-color: rgba(76, 175, 80, 0.5);
             transform: translateY(-2px);
             box-shadow: 
                 0 8px 25px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
-        .btn-dark-glass:active {
+        .btn-gradient:active {
             transform: translateY(0);
             box-shadow: 
                 0 2px 10px rgba(0, 0, 0, 0.2),
@@ -180,23 +180,23 @@
         /* Button Variations */
         .btn-primary {
             background: linear-gradient(135deg, 
-                rgba(227, 52, 78, 0.3) 0%, 
-                rgba(227, 52, 78, 0.2) 100%);
-            border: 1px solid rgba(227, 52, 78, 0.3);
+                rgba(76, 175, 80, 0.3) 0%, 
+                rgba(139, 195, 74, 0.3) 100%);
+            border: 1px solid rgba(76, 175, 80, 0.4);
         }
 
         .btn-secondary {
             background: linear-gradient(135deg, 
-                rgba(20, 184, 166, 0.3) 0%, 
-                rgba(20, 184, 166, 0.2) 100%);
-            border: 1px solid rgba(20, 184, 166, 0.3);
+                rgba(255, 152, 0, 0.3) 0%, 
+                rgba(255, 193, 7, 0.3) 100%);
+            border: 1px solid rgba(255, 152, 0, 0.4);
         }
 
-        .btn-success {
+        .btn-warning {
             background: linear-gradient(135deg, 
-                rgba(76, 175, 80, 0.3) 0%, 
-                rgba(76, 175, 80, 0.2) 100%);
-            border: 1px solid rgba(76, 175, 80, 0.3);
+                rgba(255, 87, 34, 0.3) 0%, 
+                rgba(255, 152, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 87, 34, 0.4);
         }
 
         .button-container {
@@ -211,8 +211,8 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            background: rgba(30, 30, 40, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 40, 30, 0.6);
+            border: 2px solid rgba(76, 175, 80, 0.3);
             border-radius: 12px;
             padding: 10px;
             backdrop-filter: blur(10px);
@@ -229,13 +229,13 @@
             border-radius: 8px;
         }
 
-        .dark-panel {
-            background: rgba(30, 30, 40, 0.6);
+        .green-panel {
+            background: rgba(30, 40, 30, 0.6);
             padding: 25px;
             border-radius: 16px;
             margin: 25px 0;
             text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 
@@ -243,11 +243,11 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        .dark-panel h3 {
+        .green-panel h3 {
             color: rgba(255, 255, 255, 0.95);
             margin-bottom: 20px;
             font-size: 1.3em;
-            background: linear-gradient(90deg, #e3344e, #14b8a6);
+            background: linear-gradient(90deg, #4CAF50, #FF9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -258,7 +258,7 @@
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
         }
 
         .info-item:last-child {
@@ -278,11 +278,11 @@
         .thank-you {
             margin-top: 25px;
             padding: 20px;
-            background: rgba(20, 30, 20, 0.3);
+            background: rgba(76, 175, 80, 0.15);
             border-radius: 12px;
             color: #4CAF50;
             font-weight: 600;
-            border: 1px solid rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
             backdrop-filter: blur(10px);
         }
 
@@ -298,8 +298,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(227, 52, 78, 0.2);
-            border: 1px solid rgba(227, 52, 78, 0.3);
+            background: rgba(76, 175, 80, 0.25);
+            border: 1px solid rgba(76, 175, 80, 0.4);
             color: white;
             padding: 10px 15px;
             border-radius: 10px;
@@ -311,7 +311,7 @@
         }
 
         .menu-btn:hover {
-            background: rgba(227, 52, 78, 0.3);
+            background: rgba(76, 175, 80, 0.35);
             transform: translateY(-2px);
         }
 
@@ -320,7 +320,7 @@
             position: absolute;
             top: 60px;
             right: 20px;
-            background: rgba(30, 30, 40, 0.95);
+            background: rgba(30, 40, 30, 0.95);
             min-width: 250px;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.3),
@@ -328,7 +328,7 @@
             border-radius: 12px;
             z-index: 1000;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
             backdrop-filter: blur(20px);
         }
 
@@ -338,12 +338,12 @@
             text-decoration: none;
             display: block;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
             transition: all 0.3s ease;
         }
 
         .menu-content a:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(76, 175, 80, 0.15);
             padding-left: 25px;
         }
 
@@ -368,8 +368,8 @@
         }
 
         .back-btn {
-            background: rgba(108, 117, 125, 0.3);
-            border: 1px solid rgba(108, 117, 125, 0.4);
+            background: rgba(158, 158, 158, 0.3);
+            border: 1px solid rgba(158, 158, 158, 0.4);
             color: white;
             padding: 10px 20px;
             border-radius: 8px;
@@ -383,17 +383,17 @@
         }
 
         .back-btn:hover {
-            background: rgba(108, 117, 125, 0.4);
+            background: rgba(158, 158, 158, 0.4);
             transform: translateY(-2px);
         }
 
-        /* Hub Information Box - FIXED */
+        /* Hub Information Box */
         .hub-info {
-            background: rgba(30, 30, 40, 0.6);
+            background: rgba(30, 40, 30, 0.6);
             padding: 30px;
             border-radius: 16px;
             margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: visible;
@@ -407,9 +407,9 @@
             right: 0;
             height: 3px;
             background: linear-gradient(90deg, 
-                #e3344e 0%, 
-                #14b8a6 50%,
-                #4CAF50 100%);
+                #4CAF50 0%, 
+                #8BC34A 50%,
+                #FF9800 100%);
             filter: blur(1px);
         }
 
@@ -418,9 +418,9 @@
             font-weight: 800;
             margin-bottom: 15px;
             background: linear-gradient(45deg, 
-                #e3344e 0%, 
-                #14b8a6 50%,
-                #4CAF50 100%);
+                #4CAF50 0%, 
+                #8BC34A 50%,
+                #FF9800 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -437,7 +437,7 @@
             z-index: 5;
         }
 
-        /* FIXED Grid Layout */
+        /* Grid Layout */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -448,11 +448,11 @@
         }
 
         .feature-item {
-            background: rgba(40, 40, 50, 0.4);
+            background: rgba(40, 50, 40, 0.4);
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
             transition: all 0.3s ease;
             position: relative;
             z-index: 5;
@@ -464,14 +464,14 @@
         }
 
         .feature-item:hover {
-            background: rgba(50, 50, 60, 0.6);
+            background: rgba(50, 60, 50, 0.6);
             transform: translateY(-3px);
         }
 
         .feature-icon {
             font-size: 2em;
             margin-bottom: 15px;
-            background: linear-gradient(45deg, #e3344e, #14b8a6);
+            background: linear-gradient(45deg, #4CAF50, #FF9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -487,13 +487,13 @@
             z-index: 5;
         }
 
-        /* Mobile App Section - FIXED */
+        /* Mobile App Section */
         .mobile-app-section {
             margin-top: 25px;
             padding: 20px;
-            background: rgba(40, 40, 50, 0.4);
+            background: rgba(40, 50, 40, 0.4);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.2);
             position: relative;
             z-index: 5;
         }
@@ -515,34 +515,24 @@
             z-index: 5;
         }
 
-        .website-link {
-            display: block;
-            color: rgba(227, 52, 78, 0.9);
-            font-weight: 600;
-            text-decoration: none;
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(227, 52, 78, 0.1);
+        .warning-box {
+            background: rgba(255, 152, 0, 0.15);
+            color: rgba(255, 152, 0, 0.9);
+            padding: 15px;
             border-radius: 8px;
-            border: 1px solid rgba(227, 52, 78, 0.2);
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            z-index: 5;
-        }
-
-        .website-link:hover {
-            background: rgba(227, 52, 78, 0.2);
-            transform: translateY(-2px);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            margin: 15px 0;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         /* Services Page Styles */
         .service-item {
-            background: rgba(30, 30, 40, 0.6);
+            background: rgba(30, 40, 30, 0.6);
             padding: 25px;
             margin: 20px 0;
             border-radius: 16px;
-            border: 2px solid rgba(227, 52, 78, 0.3);
+            border: 2px solid rgba(255, 152, 0, 0.4);
             text-align: center;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
@@ -551,7 +541,7 @@
         }
 
         .service-item:hover {
-            border-color: rgba(227, 52, 78, 0.5);
+            border-color: rgba(255, 152, 0, 0.6);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
@@ -559,7 +549,7 @@
         .service-icon {
             font-size: 3em;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #e3344e, #14b8a6);
+            background: linear-gradient(45deg, #4CAF50, #FF9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -585,12 +575,12 @@
         }
 
         .service-warning {
-            background: rgba(255, 243, 205, 0.1);
+            background: rgba(255, 243, 205, 0.15);
             color: rgba(255, 235, 59, 0.9);
             padding: 15px;
             border-radius: 10px;
             margin: 15px 0;
-            border: 1px solid rgba(255, 235, 59, 0.2);
+            border: 1px solid rgba(255, 235, 59, 0.3);
             font-size: 0.9em;
             backdrop-filter: blur(10px);
             position: relative;
@@ -599,9 +589,9 @@
 
         .service-btn {
             background: linear-gradient(135deg, 
-                rgba(227, 52, 78, 0.3) 0%, 
-                rgba(20, 184, 166, 0.3) 100%);
-            border: 1px solid rgba(227, 52, 78, 0.3);
+                rgba(76, 175, 80, 0.3) 0%, 
+                rgba(255, 152, 0, 0.3) 100%);
+            border: 1px solid rgba(76, 175, 80, 0.4);
             color: white;
             padding: 12px 25px;
             border-radius: 10px;
@@ -617,29 +607,29 @@
 
         .service-btn:hover {
             background: linear-gradient(135deg, 
-                rgba(227, 52, 78, 0.4) 0%, 
-                rgba(20, 184, 166, 0.4) 100%);
+                rgba(76, 175, 80, 0.4) 0%, 
+                rgba(255, 152, 0, 0.4) 100%);
             transform: translateY(-2px);
         }
 
         /* Download Section Styles */
         .download-section {
-            background: rgba(30, 30, 40, 0.6);
+            background: rgba(30, 40, 30, 0.6);
             padding: 25px;
             border-radius: 16px;
             margin: 30px 0;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
             backdrop-filter: blur(10px);
             position: relative;
             z-index: 5;
         }
 
         .download-section h3 {
-            color: rgba(227, 52, 78, 0.9);
+            color: rgba(76, 175, 80, 0.9);
             margin-bottom: 20px;
             font-size: 1.3em;
-            background: linear-gradient(90deg, #e3344e, #14b8a6);
+            background: linear-gradient(90deg, #4CAF50, #FF9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -656,8 +646,8 @@
         }
 
         .download-btn {
-            background: rgba(40, 40, 50, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(40, 50, 40, 0.6);
+            border: 1px solid rgba(76, 175, 80, 0.3);
             color: white;
             padding: 15px;
             border-radius: 10px;
@@ -676,24 +666,24 @@
         }
 
         .download-btn:hover {
-            background: rgba(50, 50, 60, 0.8);
+            background: rgba(50, 60, 50, 0.8);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .download-btn.android {
-            background: rgba(52, 168, 83, 0.2);
-            border-color: rgba(52, 168, 83, 0.3);
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.4);
         }
 
         .download-btn.windows {
-            background: rgba(0, 120, 215, 0.2);
-            border-color: rgba(0, 120, 215, 0.3);
+            background: rgba(255, 152, 0, 0.2);
+            border-color: rgba(255, 152, 0, 0.4);
         }
 
         .download-btn.ios {
-            background: rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(139, 195, 74, 0.2);
+            border-color: rgba(139, 195, 74, 0.4);
         }
 
         .download-btn i {
@@ -709,6 +699,19 @@
             line-height: 1.5;
             position: relative;
             z-index: 5;
+        }
+
+        /* Features List */
+        .features-list {
+            margin: 20px 0;
+            padding-left: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .features-list li {
+            margin: 10px 0;
+            padding-left: 10px;
+            line-height: 1.6;
         }
 
         /* Mobile Responsive */
@@ -732,7 +735,7 @@
                 margin-bottom: 30px;
             }
             
-            .btn-dark-glass {
+            .btn-gradient {
                 padding: 12px 24px;
                 max-width: 100%;
             }
@@ -747,7 +750,7 @@
                 margin: 20px 0;
             }
             
-            .dark-panel {
+            .green-panel {
                 padding: 20px;
                 margin: 20px 0;
             }
@@ -820,9 +823,10 @@
             <h1 class="hub-title">Mindustry - Minecraft - Multiplayer Hub</h1>
             <p class="subtitle">Trung tâm kết nối cộng đồng chơi game</p>
 
-            <!-- Hub Information Box - FIXED LAYOUT -->
+            <!-- Hub Information Box -->
             <div class="hub-info">
                 <div class="hub-subtitle">🎮 Hub Thông Tin</div>
+                
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">
@@ -837,80 +841,81 @@
                         <div class="feature-text">Mindustry</div>
                     </div>
                 </div>
-                
-                <!-- Mobile App Section - Separated from grid -->
+
+                <!-- Minecraft PE Download Button -->
+                <div class="button-container">
+                    <a href="https://hoathienphu.com.vn" 
+                       target="_blank" class="btn-gradient btn-primary">
+                        <i class="fas fa-download"></i> 
+                        <span>Tải Minecraft PE</span>
+                    </a>
+                </div>
+
+                <!-- Mobile App Section -->
                 <div class="mobile-app-section">
                     <h4>📱 Ứng dụng Mobile</h4>
-                    <p>Tải ứng dụng Android APK để trải nghiệm đầy đủ tính năng:</p>
-                    <div class="button-container">
-                        <a href="https://expo.dev/artifacts/eas/6QdBvR3p9LEHs31oZgPX7L.apk" 
-                           target="_blank" class="btn-dark-glass btn-success">
-                            <i class="fas fa-download"></i> 
-                            <span>Tải APK Android</span>
-                        </a>
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Bản build APK hiện không khả dụng vì vẫn còn lỗi
                     </div>
-                    <a href="https://abcxyzdustry.github.io/abcxyzdustry-donate/#" 
-                       target="_blank" class="website-link">
-                        🌐 Truy cập Website: abcxyzdustry.github.io
-                    </a>
-                    <p style="margin-top: 15px; font-size: 0.85em; color: rgba(255, 255, 255, 0.7);">
-                        Phiên bản: Dec 04, 2025
-                    </p>
+                </div>
+
+                <!-- Features List -->
+                <div class="green-panel">
+                    <h3>✨ Tính Năng Chính Của Ứng Dụng</h3>
+                    <ul class="features-list">
+                        <li>🎮 Multiplayer Minecraft PE</li>
+                        <li>⚡ Multiplayer Mindustry</li>
+                        <li>💬 Chat thời gian thực</li>
+                        <li>👥 Hệ thống kết bạn</li>
+                        <li>📱 Cross-platform Web/Mobile</li>
+                        <li>🎵 Music Player tự động</li>
+                        <li>🎯 Hệ thống ranking</li>
+                        <li>📊 Thống kê chi tiết</li>
+                    </ul>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="button-container">
-                <button onclick="showPage('donate')" class="btn-dark-glass btn-primary">
+                <button onclick="showPage('donate')" class="btn-gradient btn-primary">
                     <i class="fas fa-heart"></i> 
                     <span>💰 Donate Ủng Hộ</span>
                 </button>
-                <button onclick="showPage('services')" class="btn-dark-glass btn-secondary">
+                <button onclick="showPage('services')" class="btn-gradient btn-secondary">
                     <i class="fas fa-star"></i> 
                     <span>🌟 Dịch Vụ Khác</span>
                 </button>
             </div>
 
-            <div class="dark-panel">
-                <h3>Tính Năng Chính</h3>
-                <ul style="margin: 15px 0; padding-left: 20px; color: rgba(255, 255, 255, 0.9); line-height: 1.8;">
-                    <li>🎮 Multiplayer Minecraft PE</li>
-                    <li>⚡ Multiplayer Mindustry</li>
-                    <li>💬 Chat thời gian thực</li>
-                    <li>👥 Hệ thống kết bạn</li>
-                    <li>📱 Cross-platform Web/Mobile</li>
-                    <li>🎵 Music Player tự động</li>
-                </ul>
-            </div>
-
             <!-- Download Section -->
             <div class="download-section">
                 <h3>📥 Tải Game Mindustry</h3>
-                <p>Phiên bản mới nhất v153:</p>
+                <p>Phiên bản mới nhất:</p>
                 
                 <div class="download-grid">
                     <a href="https://anuke.itch.io/mindustry/download/eyJpZCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn android">
                         <i class="fab fa-android"></i>
-                        <span>Mindustry v153 Android</span>
+                        <span>Mindustry Android</span>
                     </a>
                     
                     <a href="https://anuke.itch.io/mindustry/download/eyJpZCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn windows">
                         <i class="fab fa-windows"></i>
-                        <span>Mindustry v153 Windows 64bit</span>
+                        <span>Mindustry Windows 64bit</span>
                     </a>
                     
                     <a href="https://anuke.itch.io/mindustry/download/eyJpJCI6MTQwMTY5LCJleHBpcmVzIjoxNzYzNTkyNjU2fQ%3d%3d%2e2msTiUMYgsOcDiu3s8D5UPmcIic%3d" 
                        target="_blank" class="download-btn windows">
                         <i class="fab fa-windows"></i>
-                        <span>Mindustry v153 Windows 32bit</span>
+                        <span>Mindustry Windows 32bit</span>
                     </a>
                     
                     <a href="https://testflight.apple.com/join/79Azm1hZ" 
                        target="_blank" class="download-btn ios">
                         <i class="fab fa-apple"></i>
-                        <span>Mindustry v153 iOS (TestFlight)</span>
+                        <span>Mindustry iOS (TestFlight)</span>
                     </a>
                 </div>
                 
@@ -937,7 +942,7 @@
                      alt="QR Code Donate">
             </div>
 
-            <div class="dark-panel">
+            <div class="green-panel">
                 <h3>Thông Tin Chuyển Khoản</h3>
                 <div class="info-item">
                     <span class="info-label">Ngân hàng:</span>
@@ -962,7 +967,7 @@
             </div>
 
             <div class="button-container">
-                <button onclick="showPage('home')" class="btn-dark-glass btn-primary">
+                <button onclick="showPage('home')" class="btn-gradient btn-primary">
                     <i class="fas fa-home"></i> 
                     <span>🏠 Về Trang Chủ</span>
                 </button>
@@ -1019,7 +1024,7 @@
             </div>
 
             <div class="button-container">
-                <button onclick="showPage('home')" class="btn-dark-glass btn-primary">
+                <button onclick="showPage('home')" class="btn-gradient btn-primary">
                     <i class="fas fa-home"></i> 
                     <span>🏠 Về Trang Chủ</span>
                 </button>
